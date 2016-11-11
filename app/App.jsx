@@ -13,17 +13,17 @@ class App extends React.Component {
   static contextTypes = {
     router: React.PropTypes.object
   };
-  static self;
+  //var self;
   constructor(props) {
     super(props);
-    self = this;
+    //self = this;
   }
   componentWillMount() {
     let xhr = new XMLHttpRequest();
      xhr.open('get', '/getLoggedInUsername');
-     xhr.onload = function() {
+     xhr.onload = () => {
        console.log(this.response);
-       self.props.dispatch({type: 'STORE_USER', who: this.response});
+       this.props.dispatch({type: 'STORE_USER', who: this.response});
      };
      xhr.send();
   }
