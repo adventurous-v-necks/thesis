@@ -4,9 +4,9 @@
 
 ## Team
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
-  - __Development Team Members__: teamMember, teamMember
+  - __Product Owner__: Tom Grek
+  - __Scrum Master__: Hans Trautlein
+  - __Development Team Members__: Clark Downer, Aleks Basalilov
 
 ## Table of Contents
 
@@ -28,7 +28,6 @@
 - Redis 2.6.x
 - Postgresql 9.1.x
 - etc
-- etc
 
 ## Development
 
@@ -37,16 +36,16 @@
 From within the root directory:
 
 ```sh
-sudo npm install -g bower
-npm install
-bower install
+#probably an npm install...
 ```
+
 
 ### Roadmap
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+View the project roadmap [here](https://github.com/adventurous-v-necks/thesis/issues)
 
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines. Please make sure that your code adheres to our [style guide](StYLE-GUIDE.md).
+
