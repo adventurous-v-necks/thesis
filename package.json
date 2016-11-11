@@ -1,5 +1,5 @@
 {
-  "name": "dj-Controller",
+  "name": "dj-controller",
   "version": "0.1.0",
   "description": "A skeleton for prototyping bootcamp projects: node, express, react, TDD, mongo, sass",
   "main": "server.js",
