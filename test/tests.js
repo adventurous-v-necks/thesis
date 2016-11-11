@@ -23,6 +23,7 @@ it('should return "hello " + whatever is passed in, over http', function(done) {
   chai.request(DEV_SERVER)
       .get('/example_rest_endpoint/best%20developer')
       .end(function(err, res) {
+        console.log(res);
         res.text.should.equal('hello best developer');
         done();
       });

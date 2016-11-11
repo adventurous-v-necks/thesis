@@ -1,7 +1,7 @@
 {
   "name": "dj-controller",
   "version": "0.1.0",
-  "description": "A skeleton for prototyping bootcamp projects: node, express, react, TDD, mongo, sass",
+  "description": "Online, social DJing. A DAW in the browser. Hack Reactor Thesis Project.",
   "main": "server.js",
   "repository": {
     "type": "git",
