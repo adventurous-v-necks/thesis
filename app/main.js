@@ -8,6 +8,7 @@ import SuccessBox from './SuccessBox.jsx';
 import UrlParamBox from './UrlParamBox.jsx';
 import FourOhFour from './FourOhFour.jsx';
 import LoginForm from './LoginForm.jsx';
+import Landing from './Landing.jsx';
 
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
@@ -33,7 +34,7 @@ render(
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route component={App} title="[Path]">
-          <Route path="/" component={SuccessBox} />
+          <Route path="/" component={Landing} />
           <Route path="abc/:id" component={UrlParamBox} />
           <Route path="tryLogin(/:failed)" component={LoginForm} />
           <Route path="*" component={FourOhFour}/>

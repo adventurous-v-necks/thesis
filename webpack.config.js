@@ -40,6 +40,9 @@ module.exports = {
       test: /\.json?$/,
       loader: 'json'
     }, {
+      test   : /\.(png|jpg)$/,
+      loader : 'url-loader?limit=8192'
+    }, {
       test: /\.css$/,
       loader: 'style!css?modules&localIdentName=[name]---[local]---[hash:base64:5]'
     }, {
