@@ -1,4 +1,5 @@
-/* This is a CSS reset */
+
+
 * {
   margin: 0;
   padding: 0;
@@ -8,49 +9,427 @@
   background: transparent;
   color: black;
   text-decoration: none;
+  display: inline-block;
+  box-sizing: border-box;
   height: 100%;
+  list-style: none;
+  font-family: 'Exo', sans-serif;
+}
+head {
+  display: none;
 }
 html {
   font-size: 16px;
-  overflow: hidden;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 body {
   width: 100%;
 }
-.app {
+nav {
+  width: 100%;
+  color: white;
+  background-color: rgba(33,33,33,0.6);
+  height: 4em;
+  position: fixed;
+  z-index: 10;
+}
+nav > ul {
+  width: 100%;
+}
+nav > ul > li {
+  float: right;
+}
+.menu-item {
+  background-color: rgba(11,11,11,0.8);
+  border-radius: 2px;
+  margin-right: 1em;
+  padding: 0 1em;
+  height: 80%;
+  top: 10%;
+  position: relative;
+  cursor: pointer;
+}
+.menu-item:hover {
+  background-color: rgba(130,11,44,0.8);
+}
+nav > ul > li > a {
+  color: white;
+  position: relative;
+  line-height: 2.2em;
+  font-size: 1.4em;
+  font-family: 'Permanent Marker', cursive;
+}
+.logo {
+  position: relative;
+  left: 1em;
+  float: left;
+}
+.logo > a {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 2.2em;
+  line-height: 1.6em;
+}
+.hero {
+  background-image: url("../public/images/hero.jpg");
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+}
+.hero2 {
+  background-image: url("../public/images/hero1.jpg");
+  background-size: cover;
+  min-height: 50%;
+  max-height: 800px;
+  width: 100%;
+}
+.hello {
+  width: 10em;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  font-size: 5em;
+  font-family: 'Permanent Marker', cursive;
+  height: 1em;
+  display: block;
+  top: 20%;
+  color: #efefef;
+  text-shadow: 3px -3px 10px #000;
+  cursor: default;
+}
+.hero > button {
+  background-color: rgba(0,0,0,0.5);
+  top: 35%;
+  height: 1.4em;
+  font-size: 4em;
+  font-family: 'Permanent Marker', cursive;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  color: #efefef;
+  border-radius: 2px;
+  line-height: 0.6em;
+  padding: 0.2em 1em;
+  border: 1px solid #efefef;
+  text-shadow: 3px -3px 10px rgba(249,63,25,0.7);
+  box-shadow: 3px -3px 20px rgba(0,0,0,0.9);
+  cursor: pointer;
+}
+.hero > button:hover {
+  background-color: rgba(70,70,70,0.5);
+}
+.hero > button:active {
+  background-color: rgba(150,150,150,0.5);
+}
+.app-info {
+  width: 100%;
+  min-height: 40%;
+  max-height: 800px;
+  display: block;
+  padding: 10% 5%;
+  border-bottom: 1px solid black;
+}
+.app-info h1 {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  height: 1em;
+  text-align: center;
+  font-size: 3em;
+  margin-bottom: 1em;
+}
+.app-info-box {
+  width: 33%;
+  text-align: center;
+  padding: 1em 1em;
+  float: left;
+  height: auto;
+  top: 10%;
+  position: relative;
+}
+.app-info-text {
+  min-height: 10em;
+  height: auto;
+  padding-top: 2em;
+  text-align: justify;
+}
+.screenshot {
+  border-radius: 50%;
+  background-image: url(https://placehold.it/160x160);
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1em;
+  height: 160px;
+  width: 160px;
+}
+
+.footer {
+  height: 36%;
+  width: 100%;
+  background-color: #454545;
+  padding: 5% 5%;
+}
+.footer-info {
   width: 100%;
   height: 100%;
 }
-/* This is a little bit of SASS */
-$softWhite: #fefdfd;
-$softBlack: #444;
-
-.header {
-  width: 100%;
-  display: inline-block;
-  height: 2em;
-  background-color: aliceblue;
-  font-family: sans-serif;
-  font-size: 1.6em;
-  line-height: 2em;
+.footer-info li {
+  color: #bbbbbb;
+  font-size: 1.5em;
+  height: auto;
+  line-height: 1.6em;
 }
-.successBox {
-  background-color: $softWhite;
-  margin: 0;
-  border: 2px dashed $softBlack;
-  max-height: 6em;
+.footer-info .col-1 {
+  width: 30%;
+  height: 100%;
+  float: left;
+  padding: 5% 5%;
+  clear: both;
+}
+.footer-info .col-2 {
+  width: 70%;
+  padding: 5% 5%;
+  color: #bbbbbb;
+  font-size: 1.5em;
+  line-height: 1.6em;
+  text-align: right;
+}
+.footer-info .col-2 img {
+  height: 80px;
   position: relative;
-  top: 10%;
-  width: 90%;
-  left: 5%;
-  font-family: sans-serif;
-  text-align: center;
-  line-height: 6em;
-  font-size: 2em;
-  color: $softBlack;
-  -webkit-user-select: none;
-  cursor: default;
+  top: 50%;
 }
+
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)
+and (orientation : landscape) {
+  nav {
+    max-width: 1024px;
+  }
+}
+
+.team-info {
+  width: 100%;
+  padding-bottom: 5em;
+}
+
+section {
+  display: block;
+  position: initial;
+  vertical-align: initial;
+  box-sizing: initial;
+  height: auto;
+}
+.cd-container {
+  width: 90%;
+  max-width: 1170px;
+  margin: 0 auto;
+}
+#cd-timeline {
+  position: relative;
+  padding: 2em 0;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+#cd-timeline::before {
+  /* this is the vertical line */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 18px;
+  height: 100%;
+  width: 4px;
+  background: #554444;
+}
+@media only screen and (min-width: 1170px) {
+  #cd-timeline {
+    margin-top: 3em;
+    margin-bottom: 3em;
+  }
+  #cd-timeline::before {
+    left: 50%;
+    margin-left: -2px;
+  }
+}
+
+.cd-timeline-block {
+  position: relative;
+  margin: 2em 0;
+  width: 100%;
+}
+.cd-timeline-block:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.cd-timeline-block:first-child {
+  margin-top: 0;
+}
+.cd-timeline-block:last-child {
+  margin-bottom: 0;
+}
+@media only screen and (min-width: 1170px) {
+  .cd-timeline-block {
+    margin: 4em 0;
+  }
+  .cd-timeline-block:first-child {
+    margin-top: 0;
+  }
+  .cd-timeline-block:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.cd-timeline-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: -60px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+}
+.cd-timeline-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 50%;
+}
+.cd-timeline-img.cd-picture {
+  background: #75ce66;
+}
+.cd-timeline-img.cd-movie {
+  background: #c03b44;
+}
+.cd-timeline-img.cd-location {
+  background: #f0ca45;
+}
+@media only screen and (min-width: 1170px) {
+  .cd-timeline-img {
+    width: 120px;
+    height: 120px;
+    left: 50%;
+    margin-left: -60px;
+    -webkit-backface-visibility: hidden;
+  }
+}
+.cd-timeline-content {
+  position: relative;
+  margin-left: 60px;
+  background: white;
+  border-radius: 0.25em;
+  padding: 1em;
+  box-shadow: 0 3px 0 #554444;
+}
+.cd-timeline-content:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.cd-timeline-content h2 {
+  color: #554444;
+}
+.cd-timeline-content p, .cd-timeline-content .cd-read-more, .cd-timeline-content .cd-date {
+  font-size: 13px;
+  font-size: 0.8125rem;
+}
+.cd-timeline-content .cd-read-more, .cd-timeline-content .cd-date {
+  display: inline-block;
+}
+.cd-timeline-content p {
+  margin: 1em 0;
+  line-height: 1.6;
+}
+.cd-timeline-content .cd-read-more {
+  float: right;
+  padding: .8em 1em;
+  background: #acb7c0;
+  color: white;
+  border-radius: 0.25em;
+}
+.no-touch .cd-timeline-content .cd-read-more:hover {
+  background-color: #bac4cb;
+}
+.cd-timeline-content .cd-date {
+  float: left;
+  padding: .8em 0;
+  opacity: .7;
+}
+.cd-timeline-content::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  right: 100%;
+  height: 0;
+  width: 0;
+  border: 7px solid transparent;
+  border-right: 7px solid white;
+}
+@media only screen and (min-width: 768px) {
+  .cd-timeline-content h2 {
+    font-size: 20px;
+    font-size: 1.4rem;
+  }
+  .cd-timeline-content p {
+    font-size: 1.2em;
+  }
+  .cd-timeline-content .cd-timeline-content .cd-date {
+    font-size: 14px;
+    font-size: 0.875rem;
+  }
+}
+@media only screen and (min-width: 1170px) {
+  .cd-timeline-content {
+    margin-left: 0;
+    padding: 1.6em;
+    width: 44%;
+  }
+  .cd-timeline-content::before {
+    top: 24px;
+    left: 100%;
+    border-color: transparent;
+    border-left-color: white;
+  }
+  .cd-timeline-content {
+    float: left;
+  }
+  .cd-timeline-content .cd-date {
+    position: absolute;
+    width: 140%;
+    left: 133%;
+    top: 36px;
+    font-size: 16px;
+    font-size: 1rem;
+  }
+  .cd-timeline-block:nth-child(even) .cd-timeline-content {
+    float: right;
+  }
+  .cd-timeline-block:nth-child(even) .cd-timeline-content::before {
+    top: 24px;
+    left: auto;
+    right: 100%;
+    border-color: transparent;
+    border-right-color: white;
+  }
+  .cd-timeline-block:nth-child(even) .cd-timeline-content .cd-read-more {
+    float: right;
+  }
+  .cd-timeline-block:nth-child(even) .cd-timeline-content .cd-date {
+    left: auto;
+    right: 133%;
+    text-align: right;
+  }
+}
+
 
 .page-transition-enter {
   transition: opacity 1s ease-out;

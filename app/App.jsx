@@ -13,16 +13,13 @@ class App extends React.Component {
   static contextTypes = {
     router: React.PropTypes.object
   };
-  //var self;
   constructor(props) {
     super(props);
-    //self = this;
   }
   componentWillMount() {
     let xhr = new XMLHttpRequest();
      xhr.open('get', '/getLoggedInUsername');
      xhr.onload = () => {
-       console.log(this.response);
        this.props.dispatch({type: 'STORE_USER', who: this.response});
      };
      xhr.send();
@@ -36,11 +33,13 @@ class App extends React.Component {
   render() {
     return (
       <div id="app">
-        <span className="header">
-          <Link to="/abc/A_URL_Parameter" activeClassName="youAreHere">Try clicking me</Link>
-          <Link to="/tryLogin" style={{marginLeft: '3em'}}>Log In|({this.props.user})</Link>
-          <Link to="#" onClick={this.context.router.goBack} style={{float:"right"}}>GO BACK</Link>
-        </span>
+        <nav>
+          <ul>
+            <li className="logo"><a href="/">DJ Controller</a></li>
+            <li className="menu-item"><a href="/signup">Sign Up</a></li>
+            <li className="menu-item"><a href="/signin">Sign In</a></li>
+          </ul>
+        </nav>
         <ReactCSSTransitionGroup component="div" transitionName="page-transition" transitionEnterTimeout={100} transitionLeaveTimeout={100}>
           {React.cloneElement(this.props.children, {key: this.props.location.key})}
         </ReactCSSTransitionGroup>
