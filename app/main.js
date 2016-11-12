@@ -10,6 +10,7 @@ import LoginForm from './components/LoginForm.jsx';
 import Landing from './components/Landing.jsx';
 
 import reducer from './reducer.js';
+import Sampler from './components/Sampler.jsx'
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 export const store = createStore(reducer);
@@ -21,7 +22,9 @@ render(
     <Router history={browserHistory}>
       <Route component={App} title="[Path]">
           <Route path="/" component={Landing} />
-          <Route path="/player" component={Player} /> {/* haven't changed anyhting in server.js yet */}
+          <Route path="/player" component={Player} /> {/* haven't changed anything in server.js yet */}
+          <Route path="/sampler" component={Sampler} />
+          <Route path="abc/:id" component={UrlParamBox} />
           <Route path="tryLogin(/:failed)" component={LoginForm} />
           <Route path="*" component={FourOhFour}/>
       </Route>
