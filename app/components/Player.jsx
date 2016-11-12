@@ -2,6 +2,7 @@ import React from 'react';
 import styles from '../App.scss';
 import {connect} from 'react-redux';
 import Keyboard from './Keyboard.jsx';
+import Fader from './Fader.jsx';
 
 class Player extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class Player extends React.Component {
   render() {
     return (
       <div className="player">
+        <Fader id="globalVolume" vertical width="8em"/>
         <Keyboard />
       </div>
     );
@@ -22,4 +24,3 @@ const mapStateToProps = function(state) {
 }
 
 export default connect(mapStateToProps)(Player);
-

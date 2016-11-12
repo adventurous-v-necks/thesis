@@ -28,11 +28,11 @@ class Keyboard extends React.Component {
     masterGain.connect(this.props.audioContext.destination);
 
     keyboard.keyDown = (note, frequency) => {
-      let oscillator = this.props.audioContext.createOscillator();
-      oscillator.type = 'square';
-      oscillator.frequency.value = frequency;
-      oscillator.connect(masterGain);
-      oscillator.start(0);
+        let oscillator = this.props.audioContext.createOscillator();
+        oscillator.type = 'square';
+        oscillator.frequency.value = frequency;
+        oscillator.connect(masterGain);
+        oscillator.start(0);
 
       nodes.push(oscillator);
       this.props.dispatch({type: 'KEY_DOWN', note, frequency});
