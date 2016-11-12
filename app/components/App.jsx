@@ -1,6 +1,6 @@
 // you need these two imports minimum
 import React from 'react';
-import styles from './App.scss';
+import styles from '../App.scss';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './App.scss';
+import styles from '../App.scss';
 
 export default class LoginForm extends React.Component {
   constructor(props) {
