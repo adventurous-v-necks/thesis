@@ -5,7 +5,6 @@ import { Router, Route, browserHistory } from 'react-router';
 
 import App from './components/App.jsx';
 import Player from './components/Player.jsx';
-import SuccessBox from './SuccessBox.jsx';
 import FourOhFour from './components/FourOhFour.jsx';
 import LoginForm from './components/LoginForm.jsx';
 import Landing from './components/Landing.jsx';
@@ -22,7 +21,7 @@ render(
     <Router history={browserHistory}>
       <Route component={App} title="[Path]">
           <Route path="/" component={Landing} />
-          <Route path="/player" component={Player} />
+          <Route path="/player" component={Player} /> {/* haven't changed anyhting in server.js yet */}
           <Route path="tryLogin(/:failed)" component={LoginForm} />
           <Route path="*" component={FourOhFour}/>
       </Route>
