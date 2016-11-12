@@ -56,6 +56,15 @@ User.findById(new mongoose.Types.ObjectId('57cc9cc8a14964733c889966')).then(func
 const port = isDeveloping ? 3000 : process.env.PORT;
 // create the app (Express server)
 const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
+io.on('connection', function(socket) {
+  console.log('Socket IO connection');
+  socket.on('disconnect', function() {
+    console.log('Socket disconnected');
+  });
+});
 
 // serve static files - JS, CSS, fonts etc - from the public directory
 // e.g. on the filesystem /home/app/public/jquery.js would become http://localhost:3000/jquery.js

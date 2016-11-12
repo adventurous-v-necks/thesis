@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../App.scss';
 import {connect} from 'react-redux';
+import Transport from './Transport.jsx';
 import Keyboard from './Keyboard.jsx';
 import Fader from './Fader.jsx';
 
@@ -13,6 +14,7 @@ class Player extends React.Component {
       <div className="player">
         <Fader id="globalVolume" vertical width="8em"/>
         <Keyboard />
+        <Transport />
       </div>
     );
   }
