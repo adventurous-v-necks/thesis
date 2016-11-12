@@ -6,15 +6,14 @@ import {connect} from 'react-redux';
 
 let counter = 0; 
 
-const list = ['once', 'twice', 'three times a lady']
+const list = ['drums', 'twice', 'three times a lady']
 class BoxList extends React.Component {
 
   renderList() {
     return list.map((box) => {
       return (
         <li key={counter++}>
-        || Box number {counter}
-        {box} ||
+        <Box /> 
         </li>
         );
     });
