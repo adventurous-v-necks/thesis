@@ -26,6 +26,11 @@ export default function (state, action) {
     case 'CREATE_AUDIO_CONTEXT': {
       return Object.assign({}, state, {audioContext: new AudioContext()});
     }
+    case 'FADER_CHANGE': {
+      // TODO: do something with the data e.g. adjust volume
+      console.log('a fader called '+action.id+' changed to '+ action.value);
+      return Object.assign({}, state);
+    }
     default: {
       console.error('Reducer Error: ', action);
       return Object.assign({}, state);
