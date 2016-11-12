@@ -24,7 +24,6 @@ render(
           <Route path="/" component={Landing} />
           <Route path="/player" component={Player} /> {/* haven't changed anything in server.js yet */}
           <Route path="/sampler" component={Sampler} />
-          <Route path="abc/:id" component={UrlParamBox} />
           <Route path="tryLogin(/:failed)" component={LoginForm} />
           <Route path="*" component={FourOhFour}/>
       </Route>
