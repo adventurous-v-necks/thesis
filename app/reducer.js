@@ -1,5 +1,5 @@
 export default function (state, action) {
-  if (state === undefined) { 
+  if (state === undefined) {
     return {clicks: 0, text: 'If you can see this, it works :)', user: 'none'};
   }
 
@@ -23,10 +23,12 @@ export default function (state, action) {
       console.log('key down', action);
       return Object.assign({}, state, {performance: state.performance.push({action, timestamp: Date.now() - state.timeZero})});
     }
+    case 'CREATE_AUDIO_CONTEXT': {
+      return Object.assign({}, state, {audioContext: new AudioContext()});
+    }
     default: {
       console.error('Reducer Error: ', action);
       return Object.assign({}, state);
     }
   }
 };
-

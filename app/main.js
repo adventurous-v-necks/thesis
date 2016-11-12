@@ -13,9 +13,10 @@ import reducer from './reducer.js';
 import Sampler from './components/Sampler.jsx'
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
-export const store = createStore(reducer);
 
-// with React Router, you can nest these routes
+export const store = createStore(reducer);
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
 // note that when you add a top level route here e.g. / or abc, need to make corresponding changes in server/server.js
 render(
   <Provider store={store}>

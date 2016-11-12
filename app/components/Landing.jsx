@@ -1,6 +1,6 @@
-// you need these two imports minimum
 import React from 'react';
 import styles from '../App.scss';
+import {Link} from 'react-router';
 
 export default class Landing extends React.Component {
   constructor(props) {
@@ -13,7 +13,7 @@ export default class Landing extends React.Component {
       <div>
         <div className="hero">
           <span className="hello">Online, social DJing</span>
-          <button>Try a demo</button>
+          <Link to="/player"><button>Try a demo</button></Link>
         </div>
         <div className="app-info">
           <h1>DJing in the style of Ableton, in your browser.</h1>
