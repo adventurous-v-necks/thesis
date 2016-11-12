@@ -10,11 +10,7 @@ export default class Box extends React.Component {
   }
   render() {
     return (
-      <div >
-      <div>
-        <h3>Details for a Box</h3>
-      </div>      
-      </div>
+        <div className="sampleBox">Details for a Box</div>
     );
   }
 }

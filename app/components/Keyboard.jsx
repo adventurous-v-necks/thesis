@@ -1,26 +1,25 @@
-// you need these two imports minimum
 import React from 'react';
 import styles from '../App.scss';
-import QwertyHancock from 'qwerty-hancock';
-
 import {connect} from 'react-redux';
+import QwertyHancock from 'qwerty-hancock';
 
 class Keyboard extends React.Component {
   constructor(props) {
     super(props);
   }
+
   componentDidMount() {
 
     let keyboard = new QwertyHancock({
-                 id: 'keyboard',
-                 width: 600,
-                 height: 150,
-                 octaves: 2,
-                 startNote: 'A3',
-                 whiteNotesColour: 'white',
-                 blackNotesColour: 'black',
-                 hoverColour: '#f3e939'
-            });
+       id: 'keyboard',
+       width: 600,
+       height: 150,
+       octaves: 2,
+       startNote: 'A3',
+       whiteNotesColour: 'white',
+       blackNotesColour: 'black',
+       hoverColour: '#f3e939'
+    });
 
     let masterGain = this.props.audioContext.createGain();
     let nodes = [];
@@ -35,27 +34,27 @@ class Keyboard extends React.Component {
         oscillator.connect(masterGain);
         oscillator.start(0);
 
-        nodes.push(oscillator);
-        this.props.dispatch({type: 'KEY_DOWN', note, frequency});
+      nodes.push(oscillator);
+      this.props.dispatch({type: 'KEY_DOWN', note, frequency});
     };
 
     keyboard.keyUp = (note, frequency) => {
-        let new_nodes = [];
+      let new_nodes = [];
 
-        for (let i = 0; i < nodes.length; i++) {
-            if (Math.round(nodes[i].frequency.value) === Math.round(frequency)) {
-                nodes[i].stop(0);
-                nodes[i].disconnect();
-            } else {
-                new_nodes.push(nodes[i]);
-            }
+      for (let i = 0; i < nodes.length; i++) {
+        if (Math.round(nodes[i].frequency.value) === Math.round(frequency)) {
+          nodes[i].stop(0);
+          nodes[i].disconnect();
+        } else {
+          new_nodes.push(nodes[i]);
         }
+      }
 
-        nodes = new_nodes;
-        this.props.dispatch({type: 'KEY_UP', note, frequency});
+      nodes = new_nodes;
+      this.props.dispatch({type: 'KEY_UP', note, frequency});
     };
-
   }
+
   render() {
     return (
       <div id="keyboard">

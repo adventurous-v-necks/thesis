@@ -208,6 +208,14 @@ nav > ul > li > a {
   top: 50%;
 }
 
+// Keyboard Component
+#keyboard {
+  position: absolute;
+  bottom: 20px;
+  width: 600px;
+  left: 100px;
+}
+
 @media only screen
 and (min-device-width : 768px)
 and (max-device-width : 1024px)
@@ -534,4 +542,11 @@ input[type=range]:focus::-ms-fill-lower {
 }
 input[type=range]:focus::-ms-fill-upper {
   background: #171714;
+}
+
+.sampleBox {
+  display: block; 
+  border: 1px solid black;
+  height: 100px;
+  width: 100px;
 }
