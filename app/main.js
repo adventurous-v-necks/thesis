@@ -23,6 +23,21 @@ function reducer(state, action) {
     case 'STORE_USER': {
       return Object.assign({}, state, {user: action.who});
     }
+    case 'TIME_ZERO': {
+      return Object.assign({}, state, {timeZero: Date.now()});
+    }
+    case 'KEY_UP': {
+      console.log('key up', action);
+      return Object.assign({}, state, {performance: state.performance.push({action, timestamp: Date.now() - state.timeZero})});
+    }
+    case 'KEY_DOWN': {
+      console.log('key down', action);
+      return Object.assign({}, state, {performance: state.performance.push({action, timestamp: Date.now() - state.timeZero})});
+    }
+    default: {
+      console.error('Reducer Error: ', action);
+      return Object.assign({}, state);
+    }
   }
 }
 

@@ -1,4 +1,6 @@
 import React, {PropTypes} from 'react';
+import Keyboard from './components/Keyboard.jsx';
+import Transport from './components/Transport.jsx';
 
 import {connect} from 'react-redux';
 
@@ -51,7 +53,10 @@ class SuccessBox extends React.Component {
       <div id="successBox1" className="successBox" onClick={this.boxClick}>
         {this.props.text} - clicked {this.props.numClicks} times<br />
         <input type="text" onChange={this.inputTextChanged} value={this.state.inputTextValue} style={{border:"1px solid black", lineHeight: "1.2em", height: "2em"}}/>
+
       </div>
+      <Keyboard />
+      <Transport />
     </div>
     );
   }
