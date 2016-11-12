@@ -23,6 +23,7 @@ function reducer(state, action) {
       return Object.assign({}, state, {user: action.who});
     }
     case 'TIME_ZERO': {
+      console.log('time zero');
       return Object.assign({}, state, {timeZero: Date.now()});
     }
     case 'KEY_UP': {
