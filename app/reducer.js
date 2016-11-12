@@ -11,9 +11,17 @@ export default function (state, action) {
     case 'STORE_USER': {
       return Object.assign({}, state, {user: action.who});
     }
-    case 'TIME_ZERO': {
-      console.log('time zero');
-      return Object.assign({}, state, {timeZero: Date.now()});
+    case 'PRESS_PLAY': {
+      console.log('time zero and listening for incoming events');
+      return Object.assign({}, state, {timeZero: Date.now()}); // INCOMPLETE, add logic to listen for incoming events
+    }
+    case 'AUDIO_RECORD': {
+      console.log('record music');
+      return Object.assign({}, state, {performance: []}); //INCOMPLETE, initialize performance array, override push to push and fire to socket.io
+    }
+    case 'AUDIO_STOP': {
+      console.log('stop music');
+      return Object.assign({}, state); //INCOMPLETE
     }
     case 'KEY_UP': {
       console.log('key up', action);
