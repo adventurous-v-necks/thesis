@@ -10,8 +10,7 @@ class Keyboard extends React.Component {
     super(props);
   }
   componentDidMount() {
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    let context = new AudioContext();
+
     let keyboard = new QwertyHancock({
                  id: 'keyboard',
                  width: 600,
@@ -23,14 +22,14 @@ class Keyboard extends React.Component {
                  hoverColour: '#f3e939'
             });
 
-    let masterGain = context.createGain();
+    let masterGain = this.props.audioContext.createGain();
     let nodes = [];
 
     masterGain.gain.value = 0.3;
-    masterGain.connect(context.destination); 
+    masterGain.connect(this.props.audioContext.destination);
 
     keyboard.keyDown = (note, frequency) => {
-        let oscillator = context.createOscillator();
+        let oscillator = this.props.audioContext.createOscillator();
         oscillator.type = 'square';
         oscillator.frequency.value = frequency;
         oscillator.connect(masterGain);
@@ -67,7 +66,9 @@ class Keyboard extends React.Component {
 
 
 const mapStateToProps = function(state) {
-  return {};
+  return {
+    audioContext: state.audioContext
+  };
 }
 
 export default connect(mapStateToProps)(Keyboard);

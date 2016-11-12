@@ -1,6 +1,6 @@
 // you need these two imports minimum
 import React from 'react';
-import styles from '../App.scss';
+import styles from './App.scss';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
@@ -23,7 +23,7 @@ class App extends React.Component {
        this.props.dispatch({type: 'STORE_USER', who: this.response});
      };
      xhr.send();
-     this.props.dispatch({type:'CREATE_AUDIO_CONTEXT'});
+     this.props.dispatch({type: 'CREATE_AUDIO_CONTEXT'});
   }
   // a few other React methods:
   // componentWillMount() {}
@@ -36,9 +36,9 @@ class App extends React.Component {
       <div id="app">
         <nav>
           <ul>
-            <li className="logo"><Link to="/">DJ Controller</Link></li>
-            <li className="menu-item"><Link to="/signup">Sign Up</Link></li>
-            <li className="menu-item"><Link to="/signin">Sign In</Link></li>
+            <li className="logo"><a href="/">DJ Controller</a></li>
+            <li className="menu-item"><a href="/signup">Sign Up</a></li>
+            <li className="menu-item"><a href="/signin">Sign In</a></li>
           </ul>
         </nav>
         <ReactCSSTransitionGroup component="div" transitionName="page-transition" transitionEnterTimeout={100} transitionLeaveTimeout={100}>

@@ -1,5 +1,3 @@
-
-
 * {
   margin: 0;
   padding: 0;
@@ -36,6 +34,7 @@ nav {
   height: 4em;
   position: fixed;
   z-index: 10;
+  top: 0;
 }
 nav > ul {
   width: 100%;
@@ -100,7 +99,10 @@ nav > ul > li > a {
   text-shadow: 3px -3px 10px #000;
   cursor: default;
 }
-.hero > button {
+.hero > a {
+  width: 100%;
+}
+.hero > a > button {
   background-color: rgba(0,0,0,0.5);
   top: 35%;
   height: 1.4em;
