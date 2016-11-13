@@ -3,16 +3,20 @@ import styles from '../App.scss';
 import { connect } from 'react-redux';
 
 class Volume extends React.Component {
+
   constructor(props) {
     super(props);
   }
-  componentWillMount() {
-    console.log('componentWillMount Volume, woot!')  
+
+  changeVolume(e) {
+    console.log('eeeeeeee', e)
   }
+
   render() {
+
     return (
       <div className="samplerVol"> 
-        <svg viewBox="-6 -6 12 12" className="dial">
+        <svg onMouseDown={this.changeVolume.bind(this)} onMouseUp={this.changeVolume.bind(this)} viewBox="-6 -6 12 12" className="dial">
           <defs>
             <radialGradient id="knobgradient">
               <stop offset="0" stopColor="yellow"/>
@@ -41,3 +45,34 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Volume);
+
+//   render() {
+//     var style = {};
+//     if (this.props.width) style.width = this.props.width;
+//     if (this.props.vertical) style.transform = 'rotateZ(270deg)';
+//     return (
+//       <div className="fader">
+//         <input type="range" style={style} onChange={this.report.bind(this)}></input>
+//       </div>
+//     );
+//   }
+// }
+
+
+
+// var style = {};
+//     if (this.props.width) style.width = 'rotateX(360deg)';
+//     if (this.props.vertical) style.transform = 'rotateZ(360deg)';
+//     return (
+//       <div className="fader">
+//         <input type="range" style={style} onChange={this.report.bind(this)}></input>
+//       </div>
+//     );
+
+
+
+
+
+
+
+
