@@ -472,6 +472,7 @@ section {
   text-decoration: line-through;
 }
 
+<<<<<<< a88d16ee8ffaffde48645182aeb6beb5df1a0a84
 input[type=range] {
   -webkit-appearance: none;
   width: 100%;
@@ -558,8 +559,25 @@ input[type=range]:focus::-ms-fill-upper {
   background: #171714;
 }
 
+<<<<<<< 3de497ffab22e2ff3500564ab8cd1bb9b4d6dc9a
 .samplerBoxList {
   z-index: 1;
+  display: block; 
+  position: absolute;
+  border: 1px solid black;
+  height: auto;
+  width: 100px;
+}
+
+
+.samplerBox {
+  display: block; 
+=======
+.sampleBox {
+=======
+.samplerBoxList {
+  z-index: 1;
+>>>>>>> Add knob
   display: block; 
   position: absolute;
   border: 1px solid black;
@@ -599,7 +617,6 @@ svg.dial {
 }
 
 .dial .knob {
-  /*transition: 500ms transform;*/
 }
 .dial .knob circle {
   stroke: gray;
@@ -621,8 +638,6 @@ svg.dial {
   text-anchor: middle;
   dominant-baseline: central;
   pointer-events: none;
-  
-  /* https://stackoverflow.com/questions/826782/css-rule-to-disable-text-selection-highlighting */
   -webkit-touch-callout: none;
   -ms-user-select: none;
   -moz-user-select: none;
