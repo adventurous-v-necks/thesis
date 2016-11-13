@@ -458,6 +458,7 @@ section {
   text-decoration: line-through;
 }
 
+<<<<<<< a88d16ee8ffaffde48645182aeb6beb5df1a0a84
 input[type=range] {
   -webkit-appearance: none;
   width: 100%;
@@ -545,8 +546,75 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .sampleBox {
+=======
+.samplerBoxList {
+  z-index: 1;
+>>>>>>> Add knob
   display: block; 
+  position: absolute;
+  border: 1px solid black;
+  height: auto;
+  width: 100px;
+}
+
+
+.samplerBox {
+  display: block; 
+  position: relative;
   border: 1px solid black;
   height: 100px;
   width: 100px;
+}
+
+.samplerVol {
+  z-index: 2;
+  width: 256px;
+  height: 256px;
+  position: relative;
+  display: inline-block; 
+  height: 100px;
+  width: 100px;
+  pointer-events: none;
+}
+
+.samplerSpan {
+  height: 5em;
+}
+
+
+svg.dial {
+  width: 256px;
+  height: 256px;
+  border: 1px gray dotted;
+}
+
+.dial .knob {
+  /*transition: 500ms transform;*/
+}
+.dial .knob circle {
+  stroke: gray;
+  stroke-width: 0.25px;
+  fill: url(#knobgradient);
+}
+.dial .knob line {
+  stroke: gray;
+  stroke-width: 0.5px;
+  stroke-linecap: round;
+}
+.dial .knob_number {
+  fill: white;
+  stroke: gray;
+  stroke-width: 0.0625px;
+  font-size: 6px;
+  font-family: "Helvetica", "Arial", sans-serif;
+  letter-spacing: -0.5px;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+  
+  -webkit-touch-callout: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../App.scss';
 import Box from './Box.jsx';
+import Volume from './Volume.jsx';
 import { bindActionCreators } from 'redux';
 import {connect} from 'react-redux';
 
@@ -12,9 +13,9 @@ class BoxList extends React.Component {
   renderList() {
     return list.map((box) => {
       return (
-        <li key={counter++}>
+        <span className='samplerSpan' key={counter++}>
         <Box /> 
-        </li>
+        </span>
         );
     });
 
@@ -22,9 +23,10 @@ class BoxList extends React.Component {
 
   render() {
     return (
-      <ul>
+      <div className="samplerBoxList">
       {this.renderList()}
-      </ul>
+      <Volume />
+      </div>
       )
   }
 }
