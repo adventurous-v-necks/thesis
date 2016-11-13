@@ -71,7 +71,6 @@ export default function reduce(state, action) {
       if (action.id === 'tempoFader') {
         return Object.assign({}, state, {bpmFactor: action.value, performance: temp});
       }
-
       return Object.assign({}, state, {performance: temp});
     }
     case 'PLAY': {
@@ -79,7 +78,7 @@ export default function reduce(state, action) {
       playTime = state.audioContext.currentTime;
       window.requestAnimationFrame(sched.bind(state));
       return Object.assign({}, state);
-    }   
+    }
     case 'KNOB_TWIDDLE': {
       console.log('a knob has been twiddled ',action);
       return Object.assign({}, state, {volume: action.volume});
