@@ -9,7 +9,9 @@ class Tempo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tempo: 128
+      bpmFactor: 50, // inherit from fader
+      minTempo: 60,
+      maxTempo: 180
     }
   }
   componentDidMount() {
@@ -19,7 +21,7 @@ class Tempo extends React.Component {
   render() {
     return (
       <div className="tempo">
-        {this.state.tempo} BPM
+        <div className="tempoDisplay">{(this.state.bpmFactor * (this.state.maxTempo - this.state.minTempo) / 100 ) + this.state.minTempo} BPM</div>
         <Fader id='tempoFader'/>
       </div>
     );
@@ -28,7 +30,9 @@ class Tempo extends React.Component {
 
 
 const mapStateToProps = function(state) {
-  return {};
+  return {
+    bpmFactor: state.bpmFactor
+  };
 }
 
 export default connect(mapStateToProps)(Tempo);

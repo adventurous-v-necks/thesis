@@ -16,13 +16,13 @@ class Transport extends React.Component {
   }
 
   render() {
-    // <Volume /> component to be added, being built elsewhere
     return (
       <div className="transportContainer">
         <TimeSig />
         <Tempo />
         <Marker />
         <Controls />
+        <Volume />
       </div>
     );
   }
