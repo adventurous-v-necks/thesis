@@ -13,8 +13,8 @@ class Marker extends React.Component {
 
   render() {
     return (
-      <div className="transport" id="marker">
-        Marker
+      <div className="marker">
+        Marker PlaceHolder
       </div>
     );
   }

@@ -14,7 +14,7 @@ class TimeSig extends React.Component {
 
   render() {
     return (
-      <div className="transport" id="timeSig">
+      <div className="timeSig">
         4/4
       </div>
     );
