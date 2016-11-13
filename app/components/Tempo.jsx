@@ -8,16 +8,18 @@ import {connect} from 'react-redux';
 class Tempo extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      tempo: 128
+    }
   }
   componentDidMount() {
 
   }
 
   render() {
-    // <Fader /> component to be added, being built elsewhere
     return (
       <div className="tempo">
-        128 BPM
+        {this.state.tempo} BPM
         <Fader id='tempoFader'/>
       </div>
     );
