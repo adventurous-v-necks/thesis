@@ -440,6 +440,21 @@ section {
   }
 }
 
+.transportContainer {
+  display: inline-block;
+  border: 1px solid black;
+}
+
+.transport {
+  display: inline-block;
+  border: 1px solid black;
+}
+
+#transport {
+  width: auto;
+  border: 1px solid black;
+}
+
 .page-transition-enter {
   transition: opacity 1s ease-out;
   opacity: 0;

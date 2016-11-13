@@ -1,6 +1,10 @@
-// you need these two imports minimum
 import React from 'react';
 import styles from '../App.scss';
+import TimeSig from './TimeSig.jsx';
+import Tempo from './Tempo.jsx';
+import Marker from './Marker.jsx';
+import Controls from './Controls.jsx';
+import Volume from './Volume.jsx';
 
 import {connect} from 'react-redux';
 
@@ -15,8 +19,7 @@ class Transport extends React.Component {
   render() {
     // <Volume /> component to be added, being built elsewhere
     return (
-      <div id="transport" style={{border: '1px solid black', width: '25em'}}>
-      HERE IS Transport!
+      <div className="transportContainer" id="transport">
         <TimeSig />
         <Tempo />
         <Marker />

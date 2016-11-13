@@ -13,8 +13,8 @@ class Player extends React.Component {
     return (
       <div className="player">
         <Fader id="globalVolume" vertical width="8em"/>
-        <Keyboard />
         <Transport />
+        <Keyboard />
       </div>
     );
   }
