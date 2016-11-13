@@ -13,13 +13,12 @@ class Transport extends React.Component {
     super(props);
   }
   componentDidMount() {
-
   }
 
   render() {
     // <Volume /> component to be added, being built elsewhere
     return (
-      <div className="transportContainer" id="transport">
+      <div className="transportContainer">
         <TimeSig />
         <Tempo />
         <Marker />

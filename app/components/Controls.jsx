@@ -29,12 +29,11 @@ class Controls extends React.Component {
   }
   render() {
     return (
-      <div className="transport" id="controls">
-      HERE IS Controls!
-        <i className="fa fa-play" aria-hidden="true" style={{width: '2em', height: '2em', border: 'solid 1px black'}} onClick={this.transportPlay}></i>
-        <i className="fa fa-pause" aria-hidden="true" style={{width: '2em', height: '2em', border: 'solid 1px black'}} /* onClick={this.transportPause} */></i>
-        <i className="fa fa-circle" aria-hidden="true" style={{width: '2em', height: '2em', border: 'solid 1px black'}} onClick={this.transportRecord}></i>
-        <i className="fa fa-stop" aria-hidden="true" style={{width: '2em', height: '2em', border: 'solid 1px black'}} onClick={this.transportStop}></i>
+      <div className="controls">
+        <i className="fa fa-play" aria-hidden="true" style={{width: '2em', height: '2em'}} onClick={this.transportPlay}></i>
+        <i className="fa fa-pause" aria-hidden="true" style={{width: '2em', height: '2em'}} /* onClick={this.transportPause} */></i>
+        <i className="fa fa-circle" aria-hidden="true" style={{width: '2em', height: '2em'}} onClick={this.transportRecord}></i>
+        <i className="fa fa-stop" aria-hidden="true" style={{width: '2em', height: '2em'}} onClick={this.transportStop}></i>
       </div>
     );
   }

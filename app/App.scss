@@ -443,15 +443,14 @@ section {
 .transportContainer {
   display: inline-block;
   border: 1px solid black;
+  width: 100%;
+  height: auto;
+  position: absolute;
+  margin-top: 64px;
 }
 
 .transport {
   display: inline-block;
-  border: 1px solid black;
-}
-
-#transport {
-  width: auto;
   border: 1px solid black;
 }
 
