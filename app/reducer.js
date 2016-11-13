@@ -1,6 +1,23 @@
-export default function (state, action) {
+let events = 0;
+let playTime = 0;
+
+const sched = function() {
+  var nextEvent = this.performance[events];
+  if (!nextEvent) return;
+  window.requestAnimationFrame(sched.bind(this));
+  var when = Math.abs(nextEvent.timestamp - this.timeZero);
+  var delta = playTime + when;
+  //console.log(this.audioContext.currentTime - delta);
+  if (Math.abs(this.audioContext.currentTime - delta) < 0.05) {
+    // trigger the event
+    reduce(this,nextEvent.action);
+    events++;
+  }
+};
+
+export default function reduce(state, action) {
   if (state === undefined) {
-    return {clicks: 0, text: 'If you can see this, it works :)', user: 'none'};
+    return {performance: [], user: 'none'};
   }
 
   switch (action.type) {
@@ -23,15 +40,19 @@ export default function (state, action) {
       console.log('stop music');
       return Object.assign({}, state); //INCOMPLETE
     }
+    case 'TIME_ZERO': {
+      console.log('time zero');
+      return Object.assign({}, state, {timeZero: state.audioContext.currentTime});
+    }
     case 'KEY_UP': {
       console.log('key up', action);
-      return Object.assign({}, state, 
+      return Object.assign({}, state,
         // {performance: state.performance.push({action, timestamp: Date.now() - state.timeZero})}
       );
     }
     case 'KEY_DOWN': {
       console.log('key down', action);
-      return Object.assign({}, state, 
+      return Object.assign({}, state,
         // {performance: state.performance.push({action, timestamp: Date.now() - state.timeZero})}
       );
     }
@@ -41,6 +62,18 @@ export default function (state, action) {
     case 'FADER_CHANGE': {
       // TODO: do something with the data e.g. adjust volume
       console.log('a fader called '+action.id+' changed to '+ action.value);
+
+      document.getElementById(action.id).value = action.value;
+
+      console.log(state.performance);
+      var temp = state.performance.slice();
+      temp.push({action: action, timestamp: state.audioContext.currentTime});
+      return Object.assign({}, state, {performance: temp});
+    }
+    case 'PLAY': {
+      events = 0;
+      playTime = state.audioContext.currentTime;
+      window.requestAnimationFrame(sched.bind(state));
       return Object.assign({}, state);
     }
     default: {

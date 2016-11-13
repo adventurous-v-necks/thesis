@@ -11,11 +11,22 @@ class Fader extends React.Component {
   }
   render() {
     var style = {};
+    var labelStyle = {fontSize:'0.8em'};
     if (this.props.width) style.width = this.props.width;
-    if (this.props.vertical) style.transform = 'rotateZ(270deg)';
+    if (this.props.vertical) {
+      style.transform = 'rotateZ(270deg)';
+      labelStyle.transform = 'rotateZ(270deg)';
+      labelStyle.marginLeft = '-5.5em';
+    } else {
+      labelStyle.position = 'relative';
+      labelStyle.top = '1.5em';
+      labelStyle.left = '-50%';
+    }
+
     return (
-      <div className="fader">
-        <input type="range" style={style} onChange={this.report.bind(this)}></input>
+      <div className="fader" style={{height:'auto',position:'relative',top:'50%'}}>
+        <input type="range" id={this.props.id} style={style} onChange={this.report.bind(this)}></input>
+        <span style={labelStyle}>{this.props.id}</span>
       </div>
     );
   }

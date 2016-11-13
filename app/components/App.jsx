@@ -51,8 +51,6 @@ class App extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    numClicks: state.clicks,
-    text: state.text,
     user: state.user
   };
 }
