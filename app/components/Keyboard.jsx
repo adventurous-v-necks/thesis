@@ -15,7 +15,7 @@ class Keyboard extends React.Component {
        width: 600,
        height: 150,
        octaves: 2,
-       startNote: 'A3',
+       startNote: 'C3',
        whiteNotesColour: 'white',
        blackNotesColour: 'black',
        hoverColour: '#f3e939'
