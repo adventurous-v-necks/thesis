@@ -25,11 +25,15 @@ export default function (state, action) {
     }
     case 'KEY_UP': {
       console.log('key up', action);
-      return Object.assign({}, state, {performance: state.performance.push({action, timestamp: Date.now() - state.timeZero})});
+      return Object.assign({}, state, 
+        // {performance: state.performance.push({action, timestamp: Date.now() - state.timeZero})}
+      );
     }
     case 'KEY_DOWN': {
       console.log('key down', action);
-      return Object.assign({}, state, {performance: state.performance.push({action, timestamp: Date.now() - state.timeZero})});
+      return Object.assign({}, state, 
+        // {performance: state.performance.push({action, timestamp: Date.now() - state.timeZero})}
+      );
     }
     case 'CREATE_AUDIO_CONTEXT': {
       return Object.assign({}, state, {audioContext: new AudioContext()});
