@@ -16,13 +16,13 @@ class Transport extends React.Component {
   }
 
   render() {
-    // <Volume /> component to be added, being built elsewhere
     return (
       <div className="transportContainer">
         <TimeSig />
         <Tempo />
         <Marker />
         <Controls />
+        <Volume />
       </div>
     );
   }
@@ -30,7 +30,9 @@ class Transport extends React.Component {
 
 
 const mapStateToProps = function(state) {
-  return {};
+  return {
+    bpmFactor: state.bpmFactor
+  };
 }
 
 export default connect(mapStateToProps)(Transport);
