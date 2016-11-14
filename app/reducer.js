@@ -16,7 +16,15 @@ const sched = function() {
 
 export default function reduce(state, action) {
   if (state === undefined) {
-    return {performance: [], user: 'none'};
+    return {
+      performance: [],
+      user: 'none'}
+      clicks: 0,
+      // Tempo
+      bpmFactor: 50,
+      minTempo: 60,
+      maxTempo: 180,
+    };
   }
 
   switch (action.type) {

@@ -30,7 +30,9 @@ class Transport extends React.Component {
 
 
 const mapStateToProps = function(state) {
-  return {};
+  return {
+    bpmFactor: state.bpmFactor
+  };
 }
 
 export default connect(mapStateToProps)(Transport);
