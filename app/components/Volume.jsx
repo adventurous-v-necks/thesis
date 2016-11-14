@@ -9,14 +9,15 @@ class Volume extends React.Component {
   }
 
   changeVolume(e) {
-    console.log('eeeeeeee', e)
+    console.log('eeeeeeee', e.nativeEvent)
   }
 
   render() {
 
     return (
+      <div onMouseDown={this.changeVolume.bind(this)} onMouseUp={this.changeVolume.bind(this)}>
       <div className="samplerVol"> 
-        <svg onMouseDown={this.changeVolume.bind(this)} onMouseUp={this.changeVolume.bind(this)} viewBox="-6 -6 12 12" className="dial">
+        <svg viewBox="-6 -6 12 12" className="dial">
           <defs>
             <radialGradient id="knobgradient">
               <stop offset="0" stopColor="yellow"/>
@@ -26,12 +27,13 @@ class Volume extends React.Component {
       <g className="knob">
         <circle className="knob_center" cx="0" cy="0" r="0.015625"/>
           <g className="knob_gfx">
-            <circle cx="0" cy="0" r="5"/>
+            <circle onMouseDown={this.changeVolume.bind(this)} onMouseUp={this.changeVolume.bind(this)} cx="0" cy="0" r="5"/>
               <line x1="0" y1="-2.5" x2="0" y2="-4.5"/>
           </g>
       <text className="knob_number"/>
       </g>
       </svg>    
+      </div>
       </div>
       );
   }
