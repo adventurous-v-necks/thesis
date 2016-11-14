@@ -44,9 +44,8 @@ export default function (state, action) {
       return Object.assign({}, state);
     }   
     case 'KNOB_TWIDDLE': {
-      // TODO: do something with the data e.g. adjust volume
-      console.log('a knob has been twiddled '+action.id+' twiddled to '+ action.value);
-      return Object.assign({}, state);
+      console.log('a knob has been twiddled ',action);
+      return Object.assign({}, state, {volume: action.volume});
     }
     default: {
       console.error('Reducer Error: ', action);
