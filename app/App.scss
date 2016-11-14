@@ -445,8 +445,9 @@ section {
   border: 1px solid black;
   width: 100%;
   height: auto;
-  position: absolute;
+  position: fixed;
   margin-top: 64px;
+  top: 0px;
 }
 
 .transport {
