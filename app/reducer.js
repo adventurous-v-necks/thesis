@@ -27,10 +27,6 @@ export default function reduce(state, action) {
     case 'STORE_USER': {
       return Object.assign({}, state, {user: action.who});
     }
-    case 'PRESS_PLAY': {
-      console.log('time zero and listening for incoming events');
-      return Object.assign({}, state, {timeZero: Date.now()}); // INCOMPLETE, add logic to listen for incoming events
-    }
     case 'AUDIO_RECORD': {
       console.log('record music');
       return Object.assign({}, state, {performance: []}); //INCOMPLETE, initialize performance array, override push to push and fire to socket.io
@@ -64,6 +60,13 @@ export default function reduce(state, action) {
       document.getElementById(action.id).value = action.value;
       var temp = state.performance.slice();
       temp.push({action: action, timestamp: state.audioContext.currentTime});
+
+      if (action.id === 'tempoFader') {
+        console.log('a fader called '+action.id+' changed to '+ action.value);
+        console.log('state: ', state);
+        return Object.assign({}, state, {bpmFactor: action.value, performance: temp});
+      }
+
       return Object.assign({}, state, {performance: temp});
     }
     case 'PLAY': {
