@@ -70,8 +70,6 @@ export default function reduce(state, action) {
       temp.push({action: action, timestamp: state.audioContext.currentTime});
 
       if (action.id === 'tempoFader') {
-        console.log('a fader called '+action.id+' changed to '+ action.value);
-        console.log('state: ', state);
         return Object.assign({}, state, {bpmFactor: action.value, performance: temp});
       }
 
