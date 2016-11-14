@@ -488,10 +488,12 @@ input[type=range] {
   width: 100%;
   margin: 6.35px 0;
 }
+
 input[type=range]:focus {
   outline: none;
 }
-input[type=range]::-webkit-slider-runnable-track {
+
+input[type=range]:-webkit-slider-runnable-track {
   width: 100%;
   height: 3.3px;
   cursor: pointer;
@@ -500,6 +502,7 @@ input[type=range]::-webkit-slider-runnable-track {
   border-radius: 1.3px;
   border: 0.2px solid #010101;
 }
+
 input[type=range]::-webkit-slider-thumb {
   box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
   border: 1px solid #000000;
@@ -511,9 +514,11 @@ input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
   margin-top: -6.55px;
 }
+
 input[type=range]:focus::-webkit-slider-runnable-track {
   background: #171714;
 }
+
 input[type=range]::-moz-range-track {
   width: 100%;
   height: 3.3px;
@@ -523,6 +528,7 @@ input[type=range]::-moz-range-track {
   border-radius: 1.3px;
   border: 0.2px solid #010101;
 }
+
 input[type=range]::-moz-range-thumb {
   box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
   border: 1px solid #000000;
@@ -532,6 +538,7 @@ input[type=range]::-moz-range-thumb {
   background: #ac41fc;
   cursor: pointer;
 }
+
 input[type=range]::-ms-track {
   width: 100%;
   height: 3.3px;
@@ -571,7 +578,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 .samplerBoxList {
   z-index: 1;
-  display: block;
+  display: block; 
   position: absolute;
   border: 1px solid black;
   height: auto;
@@ -580,7 +587,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 
 .samplerBox {
-  display: block;
+  display: block; 
   position: relative;
   border: 1px solid black;
   height: 100px;
@@ -592,7 +599,7 @@ input[type=range]:focus::-ms-fill-upper {
   width: 256px;
   height: 256px;
   position: relative;
-  display: inline-block;
+  display: inline-block; 
   height: 100px;
   width: 100px;
   pointer-events: none;
