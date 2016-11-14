@@ -8,11 +8,6 @@ import {connect} from 'react-redux';
 class Tempo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      bpmFactor: 50, // inherit from fader
-      minTempo: 60,
-      maxTempo: 180
-    }
   }
   componentDidMount() {
 
@@ -21,7 +16,7 @@ class Tempo extends React.Component {
   render() {
     return (
       <div className="tempo">
-        <div className="tempoDisplay">{(this.state.bpmFactor * (this.state.maxTempo - this.state.minTempo) / 100 ) + this.state.minTempo} BPM</div>
+        <div className="tempoDisplay">{Math.round((this.props.bpmFactor * (this.props.maxTempo - this.props.minTempo) / 100 ) + this.props.minTempo)} BPM</div>
         <Fader id='tempoFader'/>
       </div>
     );
@@ -31,7 +26,9 @@ class Tempo extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    bpmFactor: state.bpmFactor
+    bpmFactor: state.bpmFactor,
+    maxTempo: state.maxTempo,
+    minTempo: state.minTempo
   };
 }
 
