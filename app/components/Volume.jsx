@@ -11,7 +11,6 @@ export default class Volume extends React.Component {
 
   render() {
 
-
     return (
       <div>
       <Knob />
