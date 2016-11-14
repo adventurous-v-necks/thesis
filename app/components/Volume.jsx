@@ -9,29 +9,38 @@ class Volume extends React.Component {
   }
 
   changeVolume(e) {
-    console.log('eeeeeeee', e)
+  console.log('b4', this.props.volume)
+  var adjustedVol = e.nativeEvent.clientX * 4;
+  var newVol = adjustedVol + 180
+    this.props.dispatch({type:'KNOB_TWIDDLE', volume: newVol});
+   this.forceUpdate()
   }
 
   render() {
 
+    var style = {};
+    style.transform = 'rotate('+this.props.volume+'deg)';
+
     return (
+      <div onMouseMove={this.changeVolume.bind(this)} onMouseUp={this.changeVolume.bind(this)}>
       <div className="samplerVol"> 
-        <svg onMouseDown={this.changeVolume.bind(this)} onMouseUp={this.changeVolume.bind(this)} viewBox="-6 -6 12 12" className="dial">
+        <svg viewBox="-6 -6 12 12" className="dial">
           <defs>
             <radialGradient id="knobgradient">
               <stop offset="0" stopColor="yellow"/>
               <stop offset="1" stopColor="silver"/>
             </radialGradient>
           </defs>
-      <g className="knob">
+      <g  style={style}  className="knob">
         <circle className="knob_center" cx="0" cy="0" r="0.015625"/>
-          <g className="knob_gfx">
-            <circle cx="0" cy="0" r="5"/>
+          <g className="knob_gfx" >
+            <circle onMouseDown={this.changeVolume.bind(this)} onMouseUp={this.changeVolume.bind(this)} cx="0" cy="0" r="5"/>
               <line x1="0" y1="-2.5" x2="0" y2="-4.5"/>
           </g>
       <text className="knob_number"/>
       </g>
       </svg>    
+      </div>
       </div>
       );
   }
@@ -39,36 +48,12 @@ class Volume extends React.Component {
 
 
 function mapStateToProps(state) {
-  return {
+  return { 
     volume: state.volume
   };
 }
 
 export default connect(mapStateToProps)(Volume);
-
-//   render() {
-//     var style = {};
-//     if (this.props.width) style.width = this.props.width;
-//     if (this.props.vertical) style.transform = 'rotateZ(270deg)';
-//     return (
-//       <div className="fader">
-//         <input type="range" style={style} onChange={this.report.bind(this)}></input>
-//       </div>
-//     );
-//   }
-// }
-
-
-
-// var style = {};
-//     if (this.props.width) style.width = 'rotateX(360deg)';
-//     if (this.props.vertical) style.transform = 'rotateZ(360deg)';
-//     return (
-//       <div className="fader">
-//         <input type="range" style={style} onChange={this.report.bind(this)}></input>
-//       </div>
-//     );
-
 
 
 

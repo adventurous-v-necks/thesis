@@ -42,6 +42,10 @@ export default function (state, action) {
       // TODO: do something with the data e.g. adjust volume
       console.log('a fader called '+action.id+' changed to '+ action.value);
       return Object.assign({}, state);
+    }   
+    case 'KNOB_TWIDDLE': {
+      console.log('a knob has been twiddled ',action);
+      return Object.assign({}, state, {volume: action.volume});
     }
     default: {
       console.error('Reducer Error: ', action);
