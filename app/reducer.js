@@ -18,7 +18,7 @@ export default function reduce(state, action) {
   if (state === undefined) {
     return {
       performance: [],
-      user: 'none'}
+      user: 'none',
       clicks: 0,
       // Tempo
       bpmFactor: 50,
