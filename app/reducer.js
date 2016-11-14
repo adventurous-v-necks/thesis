@@ -18,7 +18,7 @@ export default function reduce(state, action) {
   if (state === undefined) {
     return {
       performance: [],
-      user: 'none',
+      user: 'none'}
       clicks: 0,
       // Tempo
       bpmFactor: 50,
@@ -68,9 +68,11 @@ export default function reduce(state, action) {
       document.getElementById(action.id).value = action.value;
       var temp = state.performance.slice();
       temp.push({action: action, timestamp: state.audioContext.currentTime});
+
       if (action.id === 'tempoFader') {
         return Object.assign({}, state, {bpmFactor: action.value, performance: temp});
       }
+
       return Object.assign({}, state, {performance: temp});
     }
     case 'PLAY': {

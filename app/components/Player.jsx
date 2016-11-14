@@ -3,7 +3,6 @@ import styles from '../App.scss';
 import {connect} from 'react-redux';
 import Transport from './Transport.jsx';
 import Synth from './Synth.jsx';
-import Fader from './Fader.jsx';
 
 class Player extends React.Component {
   constructor(props) {
