@@ -80,6 +80,11 @@ export default function reduce(state, action) {
       playTime = state.audioContext.currentTime;
       window.requestAnimationFrame(sched.bind(state));
       return Object.assign({}, state);
+    }   
+    case 'KNOB_TWIDDLE': {
+      // TODO: do something with the data e.g. adjust volume
+      console.log('a knob has been twiddled '+action.id+' twiddled to '+ action.value);
+      return Object.assign({}, state);
     }
     default: {
       console.error('Reducer Error: ', action);
