@@ -6,6 +6,13 @@ let COLUMNS = 5;
 let SAMPLES_PER_COLUMN = 5;
 
 import {store} from './main.js';
+import io from 'socket.io-client';
+
+let socket = io();
+
+socket.on('new_peer', (peer) => {
+ console.log(peer);
+});
 
 const sched = function() {
   let state = store.getState();
