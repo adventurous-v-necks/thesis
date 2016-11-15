@@ -1,7 +1,9 @@
 import React from 'react';
 import styles from '../App.scss';
+import EffectsDropDown from './EffectsDropDown.jsx';
 
 import {connect} from 'react-redux';
+
 
 class EffectsRack extends React.Component {
   constructor(props) {
@@ -31,9 +33,9 @@ class EffectsRack extends React.Component {
   		// border: '1px solid darkorchid',
   	};
     return (
-    	  // map custom effects components here
-    	<div className="effectsContainer" style={containerStyle}>
-    	 	<i className="fa fa-plus-square-o" aria-hidden="true" style={style} onClick={this.generateNewEffect}></i>
+        // <i className="fa fa-plus-square-o" aria-hidden="true" style={style} onClick={this.generateNewEffect}></i>
+      <div className="effectsContainer" style={containerStyle}>
+        <EffectsDropDown />
     	</div>
     );
   }
