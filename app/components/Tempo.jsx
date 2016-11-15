@@ -30,7 +30,7 @@ class Tempo extends React.Component {
     };
     return (
       <div className="tempo" style={containerStyle}>
-        <div className="tempoDisplay" style={style}>{Math.round((this.props.bpmFactor * (this.props.maxTempo - this.props.minTempo) / 100 ) + this.props.minTempo)} BPM</div>
+        <div className="tempoDisplay" style={style}>{this.props.BPM} BPM</div>
         <div style={faderStyle}>
           <Fader id='tempoFader'/>
         </div>
@@ -42,9 +42,7 @@ class Tempo extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    bpmFactor: state.bpmFactor,
-    maxTempo: state.maxTempo,
-    minTempo: state.minTempo
+    BPM: state.BPM,
   };
 }
 
