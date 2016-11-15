@@ -55,8 +55,7 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {user: action.who});
     }
     case 'AUDIO_RECORD': {
-      console.log('record music');
-      return Object.assign({}, state, {performance: []}); //INCOMPLETE, initialize performance array, override push to push and fire to socket.io
+      return Object.assign({}, state, {timeZero: state.audioContext.currentTime, performance: []}); //INCOMPLETE, override push to push and fire to socket.io
     }
     case 'AUDIO_STOP': {
       console.log('stop music');
@@ -85,13 +84,16 @@ export default function reduce(state, action) {
       console.log('a fader called '+action.id+' changed to '+ action.value);
       // replay the UI action (it wasn't necessarily caused by a UI change - could be synthetic)
       document.getElementById(action.id).value = action.value;
-      var temp = state.performance.slice();
+      let temp = Object.assign([], state.performance);
       temp.push({action: action, timestamp: state.audioContext.currentTime});
+      let bpm = Object.assign({}, state.BPM);
       if (action.id === 'tempoFader') {
-        console.log('state: ', state);
-        return Object.assign({}, state, {BPM: Math.round((action.value * (state.maxTempo - state.minTempo) / 100) + state.minTempo), performance: temp});
+        bpm = Math.round((action.value * (state.maxTempo - state.minTempo) / 100) + state.minTempo);
+        // i can't figure out why, but the state change is not being propagated down to the Tempo
+        // text component as it changes. So instead, update the component here by brute force.
+          document.getElementById('tempoDisplay').textContent = bpm + ' BPM';
       }
-      return Object.assign({}, state, {performance: temp});
+      return Object.assign({}, state, {BPM: bpm, performance: temp});
     }
     case 'PLAY': {
       events = 0;
