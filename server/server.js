@@ -35,10 +35,12 @@ process.on('SIGINT', gracefulExit).on('SIGTERM', gracefulExit);
 const port = isDeveloping ? 3000 : process.env.PORT;
 
 const app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
 io.on('connection', function(socket) {
+  console.log('connection')
  console.log('a user connected', socket.conn.remoteAddress);
  io.emit('new_peer', socket.conn.remoteAddress);
 });
@@ -135,7 +137,7 @@ app.use(function(err, req, res, next) {
   res.status(404).sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
-app.listen(port, '0.0.0.0', function onStart(err) {
+server.listen(port, '0.0.0.0', function onStart(err) {
   if (err) {
     console.log(err);
   }
