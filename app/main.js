@@ -13,6 +13,7 @@ import reducer from './reducer.js';
 import Sampler from './components/Sampler.jsx'
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
+import Volume from './components/Volume.jsx'
 
 export const store = createStore(reducer);
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -24,7 +25,7 @@ render(
       <Route component={App} title="[Path]">
           <Route path="/" component={Landing} />
           <Route path="/player" component={Player} /> {/* haven't changed anything in server.js yet */}
-          <Route path="/sampler" component={Sampler} />
+          <Route path="/sampler" component={Volume} />
           <Route path="/signin" component={SignIn} />
           <Route path="tryLogin(/:failed)" component={LoginForm} />
           <Route path="*" component={FourOhFour}/>

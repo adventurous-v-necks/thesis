@@ -10,7 +10,7 @@ class Knob extends React.Component {
 
   changeVolume(e) {
   var adjustedVol = e.nativeEvent.clientX * 4;
-  var newVol = adjustedVol + 180
+  var newVol = adjustedVol - 254
    this.props.dispatch({type:'KNOB_TWIDDLE', volume: newVol});
    this.forceUpdate()
   }
@@ -18,10 +18,11 @@ class Knob extends React.Component {
   render() {
 
     var style = {};
+    style.fontSize = '2px'
     style.transform = 'rotate('+this.props.volume+'deg)';
-
     return (
-      <div onMouseMove={this.changeVolume.bind(this)} onMouseUp={this.changeVolume.bind(this)}>
+      <div onMouseDown={this.changeVolume.bind(this)} onMouseUp={this.changeVolume.bind(this)}>
+      {this.props.volume}
       <div className="samplerVol"> 
         <svg viewBox="-6 -6 12 12" className="dial">
           <defs>
@@ -33,10 +34,10 @@ class Knob extends React.Component {
       <g  style={style}  className="knob">
         <circle className="knob_center" cx="0" cy="0" r="0.015625"/>
           <g className="knob_gfx" >
-            <circle onMouseDown={this.changeVolume.bind(this)} onMouseUp={this.changeVolume.bind(this)} cx="0" cy="0" r="5"/>
+            <circle cx="0" cy="0" r="5"/>
               <line x1="0" y1="-2.5" x2="0" y2="-4.5"/>
           </g>
-      <text className="knob_number"/>
+          <text className="knob_number"/>
       </g>
       </svg>    
       </div>
