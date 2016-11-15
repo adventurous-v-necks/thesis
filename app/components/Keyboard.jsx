@@ -12,8 +12,8 @@ class Keyboard extends React.Component {
 
     let keyboard = new QwertyHancock({
        id: 'keyboard',
-       width: 600,
-       height: 150,
+       width: 500,
+       height: 125,
        octaves: 2,
        startNote: 'C3',
        whiteNotesColour: 'white',
@@ -56,8 +56,18 @@ class Keyboard extends React.Component {
   }
 
   render() {
+    const style = {
+      padding: '10px 5px 10px 5px',
+      border: '3px solid purple',
+      width: '482px',
+      height: '130',
+      position: 'absolute',
+      bottom: '2px',
+      left: 'calc(50% - 250px + 3px)' // little extra b.c. of bizarre "extra key"
+    }
+
     return (
-      <div id="keyboard">
+      <div id="keyboard" style={style}>
       </div>
     );
   }
