@@ -8,13 +8,19 @@ class Patch extends React.Component {
   }
 
   render() {
+    const style = {
+      top: '10%',
+      height: '25%',
+      width: '20%',
+      border: '5px solid green',
+      // float: 'right',
+      position: 'absolute',
+      right: '3%',
+    }
+
     return (
       <div className="patch">
-        <div style={{
-          height: "50px",
-          width: "250px",
-          border: "5px solid green",
-        }}>
+        <div style={style}>
           <p>Here is the patch box</p>
         </div>
       </div>
