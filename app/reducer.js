@@ -20,7 +20,6 @@ export default function reduce(state, action) {
       performance: [],
       user: 'none',
       clicks: 0,
-      // Tempo
       bpmFactor: 50,
       minTempo: 60,
       maxTempo: 180,

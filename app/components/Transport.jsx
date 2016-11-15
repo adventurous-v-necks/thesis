@@ -16,13 +16,20 @@ class Transport extends React.Component {
   }
 
   render() {
+    const volumeSizing = {
+      width: 'auto',
+      float: 'right',
+    };
+
     return (
       <div className="transportContainer">
         <TimeSig />
         <Tempo />
         <Marker />
         <Controls />
-        <Volume />
+        <div style={volumeSizing}>
+          <Volume />
+        </div>
       </div>
     );
   }

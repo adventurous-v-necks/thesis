@@ -13,8 +13,16 @@ class TimeSig extends React.Component {
   }
 
   render() {
+    const style = {
+      height: '100%',
+      width: '10%',
+      textAlign: 'center',
+      top: '50%',
+      transform: 'translateY(-50%)',
+    };
+
     return (
-      <div className="timeSig">
+      <div className="timeSig" style={style}>
         4/4
       </div>
     );
