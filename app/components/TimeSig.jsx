@@ -15,7 +15,7 @@ class TimeSig extends React.Component {
   render() {
     const style = {
       height: '100%',
-      width: '8%',
+      width: '10%',
       textAlign: 'center',
       top: '50%',
       transform: 'translateY(-50%)',

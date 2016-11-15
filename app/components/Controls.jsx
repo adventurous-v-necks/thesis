@@ -29,6 +29,7 @@ class Controls extends React.Component {
   }
   render() {
     const containerStyle = {
+      width: '25%',
       top: '50%',
       transform: 'translateY(-40%)',
     };
