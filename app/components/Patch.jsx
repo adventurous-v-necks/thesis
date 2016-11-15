@@ -9,7 +9,8 @@ class Patch extends React.Component {
 
   render() {
     const style = {
-      height: '75px',
+      top: '10%',
+      height: '25%',
       width: '20%',
       border: '5px solid green',
       // float: 'right',

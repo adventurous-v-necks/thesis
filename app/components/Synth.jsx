@@ -24,7 +24,14 @@ class Synth extends React.Component {
       <div className="synth" style={style}>
         <Oscillators />
         {/* <Volume /> would like to be able to add eventually */}
-        <div className="synth-volume-placeholder" style={{border: '2px solid DarkKhaki', position: 'absolute', height: '100px', width: '100px', right: '30%'}}>
+        <div className="synth-volume-placeholder" style={{
+          border: '2px solid DarkKhaki', 
+          position: 'absolute', 
+          height: '100px', 
+          top: '5%',
+          width: '100px', 
+          right: '30%'
+        }}>
           Volume Placeholder
         </div>
         <Patch />
