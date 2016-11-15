@@ -67,6 +67,9 @@ export default function reduce(state, action) {
       recordTimeZero: false,
       suspended: false,
       markerTime: 0
+      effectsMenuActive: true,
+      customEffects: ['placeholder effect', 'another', 'fx', 'sfx'],
+      activeEffects: ['1', '2']
     };
   }
 
@@ -246,9 +249,24 @@ export default function reduce(state, action) {
       newOscs[action.num] = action.wave;
       return Object.assign({}, state, {oscs: newOscs});
     }
+    case 'NEW_EFFECT': {
+      console.log('new effect');
+      let allCustomEffects = state.customEffects.slice();
+      console.log('customEffects: ', state.customEffects);
+      allCustomEffects.push({effect: 'new effect'}); //INCOMPLETE, create new empty custom effect
+      return Object.assign({}, state, {customEffects: allCustomEffects});
+    }
+    case 'EFFECT_MENU_TOGGLE': {
+      console.log('menu toggle');
+      return Object.assign({}, state, {effectsMenuActive: !state.effectsMenuActive});
+    }
     default: {
       console.error('Reducer Error: ', action);
       return Object.assign({}, state);
     }
   }
 };
+
+
+
+
