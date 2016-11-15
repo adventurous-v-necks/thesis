@@ -15,7 +15,7 @@ class Knob extends React.Component {
     let newVol = this.props.volume + Number(e.movementX);
     newVol = Math.max(0,newVol);
     newVol = Math.min(newVol,255);
-    this.props.dispatch({type:'KNOB_TWIDDLE', id: this.props.id, volume: newVol});
+    this.props.dispatch({type:'KNOB_TWIDDLE', id: this.props.id, value: newVol});
   }
 
 handleMouseDown() {
