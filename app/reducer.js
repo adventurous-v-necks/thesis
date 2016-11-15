@@ -1,6 +1,10 @@
 let events = 0;
 let playTime = 0;
 
+// set up our samples grid - 5x5 boxes
+let COLUMNS = 5;
+let SAMPLES_PER_COLUMN = 5;
+
 const sched = function() {
   var nextEvent = this.performance[events];
   if (!nextEvent) return;
@@ -16,13 +20,29 @@ const sched = function() {
 
 export default function reduce(state, action) {
   if (state === undefined) {
+    let samples = [];
+    for (var col = 0; col < COLUMNS; col++) {
+      var column = [];
+      for (var sample = 0; sample < SAMPLES_PER_COLUMN; sample++) {
+        column.push({sampleUrl: col < 3 ? '/samples/100bpm_Hamir_Kick.wav' : '/samples/100bpm_Hamir_Clap.wav',
+                    index: sample,
+                    column: col,
+                    sampleName: 'Drum Loop '+col+sample,
+                    playing: false,
+                    loaded: false,
+                    buffer: null
+                  });
+      }
+      samples.push(column);
+    }
     return {
       performance: [],
       user: 'none',
-      clicks: 0,
       bpmFactor: 50,
       minTempo: 60,
       maxTempo: 180,
+      numColumns: COLUMNS,
+      samples: samples
     };
   }
 
@@ -63,7 +83,7 @@ export default function reduce(state, action) {
     case 'FADER_CHANGE': {
       // TODO: do something with the data e.g. adjust volume
       console.log('a fader called '+action.id+' changed to '+ action.value);
-
+      // replay the UI action (it wasn't necessarily caused by a UI change - could be synthetic)
       document.getElementById(action.id).value = action.value;
       var temp = state.performance.slice();
       temp.push({action: action, timestamp: state.audioContext.currentTime});
@@ -82,6 +102,24 @@ export default function reduce(state, action) {
     case 'KNOB_TWIDDLE': {
       console.log('a knob has been twiddled ',action);
       return Object.assign({}, state, {volume: action.volume});
+    }
+    case 'PLAY_SAMPLE': {
+      let allSamples = state.samples.slice(); //clone to avoid mutation
+      let theSample = allSamples[action.sample.column][action.sample.index]; //find relevant sample
+      theSample.playing = !theSample.playing;
+      if (theSample.playing) {
+        theSample.source = state.audioContext.createBufferSource();
+        //var g = audioContext.createGain();
+        theSample.source.loop = true;
+        theSample.source.buffer = action.buffer;
+        theSample.source.connect(state.audioContext.destination);
+        theSample.source.start();
+      } else {
+        console.log('stopping');
+        theSample.source.stop();
+        theSample.source = null;
+      }
+      return Object.assign({}, state, {samples: allSamples});
     }
     default: {
       console.error('Reducer Error: ', action);
