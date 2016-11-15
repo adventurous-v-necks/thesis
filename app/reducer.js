@@ -53,16 +53,8 @@ export default function reduce(state, action) {
       maxTempo: 180,
       numColumns: COLUMNS,
       samples: samples,
-      volume: 100
+      volume: 100,
       oscs: [0, 1, 2]
-      osc: {
-        osc1: {
-          wave: '2'
-        },
-        osc2: {
-          wave: '2'
-        }
-      }
     };
   }
 
