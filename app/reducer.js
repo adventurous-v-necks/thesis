@@ -65,7 +65,9 @@ export default function reduce(state, action) {
       numColumns: COLUMNS,
       samples: samples,
       volume: 100,
-      oscs: [0, '1', '2']
+      oscs: [0, '1', '2'],
+      masterOut: null,
+      audioContext: null
     };
   }
 
@@ -100,7 +102,10 @@ export default function reduce(state, action) {
         );
     }
     case 'CREATE_AUDIO_CONTEXT': {
-      return Object.assign({}, state, {audioContext: new AudioContext()});
+      let audioCtx = new AudioContext();
+      let gainNode = audioCtx.createGain();
+      gainNode.connect(audioCtx.destination);
+      return Object.assign({}, state, {audioContext: audioCtx, masterOut: gainNode});
     }
     case 'FADER_CHANGE': {
           socket.emit('my other event', { my: action });
@@ -130,7 +135,11 @@ export default function reduce(state, action) {
       if (!action.synthetic) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
-      return Object.assign({}, state, {volume: action.volume, performance: temp});
+      if (action.id === 'volume') {
+        state.masterOut.gain.value = action.value / 100;
+        return Object.assign({}, state, {volume: action.value, performance: temp});
+      }
+      return Object.assign({}, state, {performance: temp});
     }
     case 'PLAY_SAMPLE': {
       let allSamples = state.samples.slice(); //clone to avoid mutation
@@ -141,10 +150,9 @@ export default function reduce(state, action) {
         //var g = audioContext.createGain();
         theSample.source.loop = true;
         theSample.source.buffer = action.buffer;
-        theSample.source.connect(state.audioContext.destination);
+        theSample.source.connect(state.masterOut); //audioContext.destination
         theSample.source.start();
       } else {
-        console.log('stopping');
         theSample.source.stop();
         theSample.source = null;
       }
