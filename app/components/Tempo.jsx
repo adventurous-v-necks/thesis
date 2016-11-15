@@ -12,7 +12,9 @@ class Tempo extends React.Component {
   componentDidMount() {
 
   }
-
+  dragStart(e) {
+    console.log('dragging');
+  }
   render() {
     const containerStyle = {
       height: '100%',
