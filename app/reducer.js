@@ -38,7 +38,7 @@ export default function reduce(state, action) {
     return {
       performance: [],
       user: 'none',
-      bpmFactor: 50,
+      BPM: 120,
       minTempo: 60,
       maxTempo: 180,
       numColumns: COLUMNS,
@@ -87,9 +87,9 @@ export default function reduce(state, action) {
       document.getElementById(action.id).value = action.value;
       var temp = state.performance.slice();
       temp.push({action: action, timestamp: state.audioContext.currentTime});
-
       if (action.id === 'tempoFader') {
-        return Object.assign({}, state, {bpmFactor: action.value, performance: temp});
+        console.log('state: ', state);
+        return Object.assign({}, state, {BPM: Math.round((action.value * (state.maxTempo - state.minTempo) / 100) + state.minTempo), performance: temp});
       }
       return Object.assign({}, state, {performance: temp});
     }
