@@ -12,9 +12,17 @@ class Marker extends React.Component {
   }
 
   render() {
+    const style = {
+      height: '100%',
+      width: '20%',
+      textAlign: 'center',
+      top: '50%',
+      transform: 'translateY(-50%)',
+    };
+
     return (
-      <div className="marker">
-        Marker PlaceHolder
+      <div className="marker" style={style}>
+        0000.00.00
       </div>
     );
   }

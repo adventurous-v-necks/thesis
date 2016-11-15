@@ -14,10 +14,24 @@ class Tempo extends React.Component {
   }
 
   render() {
+    const containerStyle = {
+      height: '100%',
+      width: '32%',
+    };
+    const style = {
+      height: 'auto',
+      transform: 'translateY(25%)',
+    };
+    const faderStyle = {
+      height: 'auto',
+      transform: 'translateY(15%)',
+    };
     return (
-      <div className="tempo">
-        <div className="tempoDisplay">{Math.round((this.props.bpmFactor * (this.props.maxTempo - this.props.minTempo) / 100 ) + this.props.minTempo)} BPM</div>
-        <Fader id='tempoFader'/>
+      <div className="tempo" style={containerStyle}>
+        <div className="tempoDisplay" style={style}>{Math.round((this.props.bpmFactor * (this.props.maxTempo - this.props.minTempo) / 100 ) + this.props.minTempo)} BPM</div>
+        <div style={faderStyle}>
+          <Fader id='tempoFader'/>
+        </div>
       </div>
     );
   }

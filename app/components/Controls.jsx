@@ -16,7 +16,7 @@ class Controls extends React.Component {
 
   }
   transportPlay() {
-    this.props.dispatch({type: 'PRESS_PLAY'}); //SINGLE DISPATCH
+    this.props.dispatch({type: 'PLAY'});
   }
   transportPause() {
     // no functionality in MVP
@@ -28,12 +28,22 @@ class Controls extends React.Component {
     this.props.dispatch({type: 'AUDIO_STOP'});
   }
   render() {
+    const containerStyle = {
+      top: '50%',
+      transform: 'translateY(-40%)',
+    };
+    const style = {
+      fontSize: '2em',
+      height: 'auto',
+      width: '1.2em',
+      textAlign: 'center',
+    };
     return (
-      <div className="controls">
-        <i className="fa fa-play" aria-hidden="true" style={{width: '2em', height: '2em'}} onClick={this.transportPlay}></i>
-        <i className="fa fa-pause" aria-hidden="true" style={{width: '2em', height: '2em'}} /* onClick={this.transportPause} */></i>
-        <i className="fa fa-circle" aria-hidden="true" style={{width: '2em', height: '2em'}} onClick={this.transportRecord}></i>
-        <i className="fa fa-stop" aria-hidden="true" style={{width: '2em', height: '2em'}} onClick={this.transportStop}></i>
+      <div className="controls" style={containerStyle}>
+        <i className="fa fa-play-circle-o" aria-hidden="true" style={style} onClick={this.transportPlay}></i>
+        <i className="fa fa-pause-circle-o" aria-hidden="true" style={style} /* onClick={this.transportPause} */></i>
+        <i className="fa fa-circle" aria-hidden="true" style={style} onClick={this.transportRecord}></i>
+        <i className="fa fa-stop-circle-o" aria-hidden="true" style={style} onClick={this.transportStop}></i>
       </div>
     );
   }
