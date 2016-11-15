@@ -587,8 +587,18 @@ input[type=range]:focus::-ms-fill-upper {
   height: 100px;
   width: 100px;
   pointer-events: none;
+  user-select: none;
+  cursor: crosshair;
 }
-
+.knob-text {
+  float: left;
+  position: absolute;
+  top: 18%;
+  left: 18%;
+  user-select: none;
+  color: rgba(0,0,0,0.4);
+  height: auto;
+}
 .samplerSpan {
   height: 5em;
 }
@@ -597,19 +607,15 @@ input[type=range]:focus::-ms-fill-upper {
 svg.dial {
   width: 60px;
   height: 60px;
-  border: 1px gray dotted;
-}
-
-.dial .knob {
 }
 
 .dial .knob circle {
   stroke: gray;
-  stroke-width: 0.25px;
-  fill: url(#knobgradient);
+  stroke-width: 0.6px;
+  fill: none;
 }
 .dial .knob line {
-  stroke: gray;
+  stroke: black;
   stroke-width: 0.5px;
   stroke-linecap: round;
 }

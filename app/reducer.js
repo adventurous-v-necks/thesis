@@ -5,15 +5,18 @@ let playTime = 0;
 let COLUMNS = 5;
 let SAMPLES_PER_COLUMN = 5;
 
+import {store} from './main.js';
+
 const sched = function() {
-  var nextEvent = this.performance[events];
+  let state = store.getState();
+  let nextEvent = state.performance[events];
   if (!nextEvent) return;
-  window.requestAnimationFrame(sched.bind(this));
-  var when = Math.abs(nextEvent.timestamp - this.timeZero);
+  window.requestAnimationFrame(sched);
+  var when = Math.abs(nextEvent.timestamp - state.timeZero);
   var delta = playTime + when;
-  if (this.audioContext.currentTime - delta >= 0) {
+  if (state.audioContext.currentTime - delta >= 0) {
     // trigger the event
-    reduce(this,nextEvent.action);
+    store.dispatch(Object.assign(nextEvent.action, {synthetic: true}));
     events++;
   }
 };
@@ -42,7 +45,8 @@ export default function reduce(state, action) {
       minTempo: 60,
       maxTempo: 180,
       numColumns: COLUMNS,
-      samples: samples
+      samples: samples,
+      volume: 100
     };
   }
 
@@ -81,29 +85,31 @@ export default function reduce(state, action) {
     }
     case 'FADER_CHANGE': {
       // TODO: do something with the data e.g. adjust volume
-      console.log('a fader called '+action.id+' changed to '+ action.value);
       // replay the UI action (it wasn't necessarily caused by a UI change - could be synthetic)
       document.getElementById(action.id).value = action.value;
       let temp = Object.assign([], state.performance);
-      temp.push({action: action, timestamp: state.audioContext.currentTime});
+      if (!action.synthetic) {
+        temp.push({action: action, timestamp: state.audioContext.currentTime});
+      }
       let bpm = Object.assign({}, state.BPM);
       if (action.id === 'tempoFader') {
         bpm = Math.round((action.value * (state.maxTempo - state.minTempo) / 100) + state.minTempo);
-        // i can't figure out why, but the state change is not being propagated down to the Tempo
-        // text component as it changes. So instead, update the component here by brute force.
-          document.getElementById('tempoDisplay').textContent = bpm + ' BPM';
       }
       return Object.assign({}, state, {BPM: bpm, performance: temp});
     }
     case 'PLAY': {
       events = 0;
       playTime = state.audioContext.currentTime;
-      window.requestAnimationFrame(sched.bind(state));
+      window.requestAnimationFrame(sched);
       return Object.assign({}, state);
     }
     case 'KNOB_TWIDDLE': {
-      console.log('a knob has been twiddled ',action);
-      return Object.assign({}, state, {volume: action.volume});
+      let temp = Object.assign([], state.performance);
+      console.log(action);
+      if (!action.synthetic) {
+        temp.push({action: action, timestamp: state.audioContext.currentTime});
+      }
+      return Object.assign({}, state, {volume: action.volume, performance: temp});
     }
     case 'PLAY_SAMPLE': {
       let allSamples = state.samples.slice(); //clone to avoid mutation

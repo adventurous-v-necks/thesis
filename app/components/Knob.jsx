@@ -7,58 +7,50 @@ import ReactDOM from 'react-dom';
 class Knob extends React.Component {
 
   constructor(props) {
-  super(props)
-  const context = this;
-  this.handleMouseMove = this.handleMouseMove.bind(this)
+    super(props)
+    this.handleMouseMove = this.handleMouseMove.bind(this);
   }
 
   changeVolume(e) {
-  var adjustedVol = e.clientX;
-  var newVol = adjustedVol%360
-  if(newVol < 15){
-    newVol =  newVol -100
-  }
-   this.props.dispatch({type:'KNOB_TWIDDLE', volume: newVol});
+    let newVol = this.props.volume + Number(e.movementX);
+    newVol = Math.max(0,newVol);
+    newVol = Math.min(newVol,255);
+    this.props.dispatch({type:'KNOB_TWIDDLE', id: this.props.id, volume: newVol});
   }
 
 handleMouseDown() {
   document.addEventListener ('mousemove', this.handleMouseMove);
-}
-
-handleMouseUp() {
-  document.removeEventListener ('mousemove', this.handleMouseMove)
+  document.addEventListener('mouseup', () => document.removeEventListener ('mousemove', this.handleMouseMove));
 }
 
 handleMouseMove(e) {
-  this.changeVolume(e)
+  this.changeVolume(e);
 }
 
   render() {
 
-    var style = {};
-    style.transform = 'rotate('+this.props.volume+'deg)';
-
+    let style = {};
+    let transform = (this.props.volume - 100);
+    transform = Math.max(-100, transform);
+    transform = Math.min(100, transform);
+    style.transform = 'rotate('+transform+'deg)';
 
     return (
-      <div onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={()=> this.handleMouseUp()} >
-      {this.props.volume}
-      <div className="samplerVol"> 
+      <div onMouseDown={this.handleMouseDown.bind(this)}>
+
+      <div className="samplerVol">
+        <span className="knob-text">{this.props.volume}</span>
         <svg viewBox="-6 -6 12 12" className="dial">
           <defs>
-            <radialGradient id="knobgradient">
-              <stop offset="0" stopColor="yellow"/>
-              <stop offset="1" stopColor="silver"/>
-            </radialGradient>
           </defs>
       <g  style={style}  className="knob">
-        <circle className="knob_center" cx="0" cy="0" r="0.015625"/>
           <g className="knob_gfx" >
             <circle cx="0" cy="0" r="5"/>
-              <line x1="0" y1="-2.5" x2="0" y2="-4.5"/>
+              <line x1="0" y1="-1.5" x2="0" y2="-4.4"/>
           </g>
           <text className="knob_number"/>
       </g>
-      </svg>    
+      </svg>
       </div>
       </div>
       );
@@ -67,16 +59,9 @@ handleMouseMove(e) {
 
 
 function mapStateToProps(state) {
-  return { 
+  return {
     volume: state.volume
   };
 }
 
 export default connect(mapStateToProps)(Knob);
-
-
-
-
-
-
-
