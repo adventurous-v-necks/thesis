@@ -32,7 +32,7 @@ class Sample extends React.Component {
           cursor: 'pointer',
           height:'calc(20% - 0.6em)',
           borderBottom: '2px solid white',
-          width:'100%'}} onClick={this.playSample.bind(this)}><span style={{userSelect:'none',height:'auto',maxHeight:'1em', cursor:'text'}} contentEditable>{this.props.sample.sampleName}</span><br/>
+          width:'100%'}} onClick={this.playSample.bind(this)}><span style={{userSelect:'none',height:'auto',maxHeight:'1em', cursor:'text'}} contentEditable suppressContentEditableWarning>{this.props.sample.sampleName}</span><br/>
         {!this.props.playing ? (<i className="fa fa-play" id={`sample${this.props.sample.column}-${this.props.sample.index}`}></i>) : (<i id={`playbt${this.props.sample.column}-${this.props.sample.index}`}className="fa fa-square"></i>)}
       </div>
     );

@@ -12,9 +12,9 @@ class Column extends React.Component {
 
   render() {
     return (
-      <div className="samplerColumn" style={{overflow:'hidden',height:'100%', width:'calc(20% - 0.2em)', border:'1px solid black', textAlign:'center', marginRight:'0.2em'}}>
-        {this.mySamples().map(sample => <Sample sample={sample} playing={sample.playing}/>) }
-      <Volume />
+      <div className="samplerColumn" key={this.props.colNum} style={{overflow:'hidden',height:'100%', width:'calc(20% - 0.2em)', border:'1px solid black', textAlign:'center', marginRight:'0.2em'}}>
+        {this.mySamples().map(sample => <Sample key={sample.column+sample.index} sample={sample} playing={sample.playing}/>) }
+      <Volume key={'vol'+this.props.colNum}/>
       </div>
       )
   }

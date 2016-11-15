@@ -629,3 +629,10 @@ svg.dial {
   -webkit-user-select: none;
   user-select: none;
 }
+.controls > i:hover {
+  color: #ac41fc;
+}
+.controls > i:active {
+  color: #ac41fc;
+  text-shadow: 1px -1px 2px black;
+}

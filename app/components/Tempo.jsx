@@ -12,9 +12,6 @@ class Tempo extends React.Component {
   componentDidMount() {
 
   }
-  dragStart(e) {
-    console.log('dragging');
-  }
   render() {
     const containerStyle = {
       height: '100%',
@@ -30,9 +27,9 @@ class Tempo extends React.Component {
     };
     return (
       <div className="tempo" style={containerStyle}>
-        <div className="tempoDisplay" style={style}>{this.props.BPM} BPM</div>
+        <span className="tempoDisplay" id="tempoDisplay" style={style}>120 BPM</span>
         <div style={faderStyle}>
-          <Fader id='tempoFader'/>
+          <Fader id='tempoFader' />
         </div>
       </div>
     );
