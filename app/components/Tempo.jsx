@@ -27,7 +27,7 @@ class Tempo extends React.Component {
     };
     return (
       <div className="tempo" style={containerStyle}>
-        <span className="tempoDisplay" id="tempoDisplay" style={style}>120 BPM</span>
+        <span className="tempoDisplay" id="tempoDisplay" style={style}>{this.props.BPM}</span>
         <div style={faderStyle}>
           <Fader id='tempoFader' />
         </div>

@@ -15,7 +15,7 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import Volume from './components/Volume.jsx'
 
-export const store = createStore(reducer);
+export const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 // note that when you add a top level route here e.g. / or abc, need to make corresponding changes in server/server.js

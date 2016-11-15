@@ -12,17 +12,9 @@ export default class Volume extends React.Component {
   render() {
 
     return (
-      <div>
-      <Knob />
+      <div style={{cursor:'crosshair'}}>
+      <Knob id="volume"/>
       </div>
       );
   }
 }
-
-
-
-
-
-
-
-
