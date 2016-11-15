@@ -1,27 +1,46 @@
 import React from 'react';
 import styles from '../App.scss';
 import { connect } from 'react-redux';
+import ReactDOM from 'react-dom';
+
 
 class Knob extends React.Component {
 
   constructor(props) {
-    super(props);
+  super(props)
+  const context = this;
+  this.handleMouseMove = this.handleMouseMove.bind(this)
   }
 
   changeVolume(e) {
-  var adjustedVol = e.nativeEvent.clientX * 4;
-  var newVol = adjustedVol - 254
-   this.props.dispatch({type:'KNOB_TWIDDLE', volume: newVol});
-   this.forceUpdate()
+  var adjustedVol = e.clientX;
+  var newVol = adjustedVol%360
+  if(newVol < 15){
+    newVol =  newVol -100
   }
+   this.props.dispatch({type:'KNOB_TWIDDLE', volume: newVol});
+  }
+
+handleMouseDown() {
+  document.addEventListener ('mousemove', this.handleMouseMove);
+}
+
+handleMouseUp() {
+  document.removeEventListener ('mousemove', this.handleMouseMove)
+}
+
+handleMouseMove(e) {
+  this.changeVolume(e)
+}
 
   render() {
 
     var style = {};
-    style.fontSize = '2px'
     style.transform = 'rotate('+this.props.volume+'deg)';
+
+
     return (
-      <div onMouseDown={this.changeVolume.bind(this)} onMouseUp={this.changeVolume.bind(this)}>
+      <div onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={()=> this.handleMouseUp()} >
       {this.props.volume}
       <div className="samplerVol"> 
         <svg viewBox="-6 -6 12 12" className="dial">
@@ -43,7 +62,7 @@ class Knob extends React.Component {
       </div>
       </div>
       );
-  }
+}
 }
 
 
