@@ -5,6 +5,8 @@ let playTime = 0;
 let COLUMNS = 5;
 let SAMPLES_PER_COLUMN = 5;
 
+import {hannWindow, linearInterpolation, pitchShifter} from './audioHelpers.js';
+
 import {store} from './main.js';
 import io from 'socket.io-client';
 
@@ -73,10 +75,6 @@ export default function reduce(state, action) {
   }
 
   switch (action.type) {
-    case 'ADD_CLICK': {
-      // clone the object! the state arg must not be mutated or your app will break
-      return Object.assign({}, state, {clicks: state.clicks + 1});
-    }
     case 'STORE_USER': {
       return Object.assign({}, state, {user: action.who});
     }
@@ -123,9 +121,21 @@ export default function reduce(state, action) {
     }
     case 'CREATE_AUDIO_CONTEXT': {
       let audioCtx = new AudioContext();
+      let grainSize = 256;
+      let pitchRatio = 5;
+      let overlapRatio = 0.5;
+      let pitchShiftNode = audioCtx.createScriptProcessor(grainSize, 1, 1);
+      // new
+      pitchShiftNode.buffer = new Float32Array(grainSize * 2);
+       pitchShiftNode.grainWindow = hannWindow(grainSize);
+       pitchShiftNode.onaudioprocess = pitchShifter.bind(pitchShiftNode, 1);
+
+      // end new
       let gainNode = audioCtx.createGain();
-      gainNode.connect(audioCtx.destination);
-      return Object.assign({}, state, {audioContext: audioCtx, masterOut: gainNode});
+
+      gainNode.connect(pitchShiftNode);
+      pitchShiftNode.connect(audioCtx.destination);
+      return Object.assign({}, state, {audioContext: audioCtx, masterOut: gainNode, pitchShiftNode: pitchShiftNode});
     }
     case 'FADER_CHANGE': {
           socket.emit('my other event', { my: action });
@@ -140,6 +150,16 @@ export default function reduce(state, action) {
       let bpm = Object.assign({}, state.BPM);
       if (action.id === 'tempoFader') {
         bpm = Math.round((action.value * (state.maxTempo - state.minTempo) / 100) + state.minTempo);
+        state.pitchShiftNode.onaudioprocess = pitchShifter.bind(state.pitchShiftNode, (bpm+state.minTempo)/state.maxTempo);
+        console.log(state.samples);
+        for (var col of state.samples) {
+          for (var sample of col) {
+            if (sample.playing) {
+              console.log('setting playback rate');
+              sample.source.playbackRate.value = (bpm+state.minTempo)/state.maxTempo;
+            }
+          }
+        }
       }
       return Object.assign({}, state, {BPM: bpm, performance: temp});
     }
@@ -162,7 +182,7 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {performance: temp});
     }
     case 'PLAY_SAMPLE': {
-      let allSamples = state.samples.slice(); //clone to avoid mutation
+      let allSamples = Object.assign([], state.samples); //clone to avoid mutation
       let theSample = allSamples[action.sample.column][action.sample.index]; //find relevant sample
       theSample.playing = !theSample.playing;
       if (theSample.playing) {
