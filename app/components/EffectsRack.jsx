@@ -28,9 +28,6 @@ class EffectsRack extends React.Component {
   		fontSize: '2em',
   		height: '100%',
   		padding: '.05em .1em 0 .1em',
-  		// top: '50%',
-  		// transform: 'translateY(-50%)',
-  		// border: '1px solid darkorchid',
   	};
     return (
         // <i className="fa fa-plus-square-o" aria-hidden="true" style={style} onClick={this.generateNewEffect}></i>
