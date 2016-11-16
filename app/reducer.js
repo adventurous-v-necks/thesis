@@ -209,6 +209,13 @@ export default function reduce(state, action) {
       if (action.id == '0') {
         state.masterOut.gain.value = action.value / 100;
       }
+      if (action.id >= 1 && action.id <=4) { // one of the column volume knobs
+        console.log('you twiddled '+action.id);
+        for (var sample of state.samples[action.id-1]) {
+          console.log(sample);
+          if (sample.playing) sample.gainNode.gain.value = action.value / 100;
+        }
+      }
       return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
     case 'PLAY_SAMPLE': {
@@ -224,8 +231,9 @@ export default function reduce(state, action) {
         theSample.source.buffer = action.buffer;
 
         let gainNode = state.audioContext.createGain();
-        gainNode.gain.value = 1;
+        gainNode.gain.value = state.knobs[action.sample.column+1]/100;
         theSample.source.connect(gainNode);
+        theSample.gainNode = gainNode;
 
         gainNode.connect(state.pitchShiftNode);
         theSample.source.start();
