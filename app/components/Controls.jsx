@@ -12,21 +12,12 @@ class Controls extends React.Component {
     this.transportRecord = this.transportRecord.bind(this);
     this.transportStop = this.transportStop.bind(this);
   }
-  componentDidMount() {
+  
+  transportPlay = () => this.props.dispatch({type: 'PLAY'});
+  transportPause() { /* no functionality in MVP */}
+  transportRecord = () => this.props.dispatch({type: 'AUDIO_RECORD'});
+  transportStop = () => this.props.dispatch({type: 'AUDIO_STOP'});
 
-  }
-  transportPlay() {
-    this.props.dispatch({type: 'PLAY'});
-  }
-  transportPause() {
-    // no functionality in MVP
-  }
-  transportRecord() {
-    this.props.dispatch({type: 'AUDIO_RECORD'});
-  }
-  transportStop() {
-    this.props.dispatch({type: 'AUDIO_STOP'});
-  }
   render() {
     const containerStyle = {
       width: '25%',
