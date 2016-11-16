@@ -7,6 +7,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var StatsPlugin = require('stats-webpack-plugin');
 
 module.exports = {
+  target: 'node',
   entry: [
     path.join(__dirname, 'app/main.js')
   ],
