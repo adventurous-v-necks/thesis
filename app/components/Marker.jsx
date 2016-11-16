@@ -10,20 +10,18 @@ class Marker extends React.Component {
 
   formatTime = time => {
     // assume time comes in in seconds
-    
     const leadingSecZero = (t) => {
       const floor = Math.floor(t % 60).toString();
-      if (t >= 10) {
+      if (t % 60 >= 10) {
         return floor;
       } else {
         return '0' + floor;
       }
-
     }
-    const minutes = Math.floor(time / 60).toString();
-    const seconds = leadingSecZero(time);
-    
 
+    const seconds = leadingSecZero(time);
+    const minutes = Math.floor(time / 60).toString();
+    
     const shortTime = minutes + ':' + seconds;
 
     if (time > 3600) {
@@ -32,7 +30,6 @@ class Marker extends React.Component {
     } else {
       return shortTime;
     }
-
   }
 
   render() {
