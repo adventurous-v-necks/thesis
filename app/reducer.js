@@ -60,6 +60,8 @@ export default function reduce(state, action) {
     }
     return {
       performance: [],
+      recording: false,
+      playing: false,
       user: 'none',
       BPM: 120,
       minTempo: 60,
@@ -79,11 +81,16 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {user: action.who});
     }
     case 'AUDIO_RECORD': {
-      return Object.assign({}, state, {timeZero: state.audioContext.currentTime, performance: []}); //INCOMPLETE, override push to push and fire to socket.io
+      console.log('Start Recording');
+      return Object.assign({}, state, {
+        timeZero: state.audioContext.currentTime,
+        performance: [],
+        recording: true,
+      }); //INCOMPLETE, override push to push and fire to socket.io
     }
     case 'AUDIO_STOP': {
-      console.log('stop music');
-      return Object.assign({}, state); //INCOMPLETE
+      console.log('Stop Recording');
+      return Object.assign({}, state, {recording: false}); //INCOMPLETE
     }
     case 'TIME_ZERO': {
       return Object.assign({}, state, {timeZero: state.audioContext.currentTime, performance: []});
