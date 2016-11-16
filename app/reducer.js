@@ -215,6 +215,7 @@ export default function reduce(state, action) {
       }
       if (action.id >= 1 && action.id <=4) { // one of the column volume knobs
         for (var sample of state.samples[action.id-1]) {
+          console.log(sample);
           if (sample.playing) sample.gainNode.gain.value = action.value / 100;
         }
       }
