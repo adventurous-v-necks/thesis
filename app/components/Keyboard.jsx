@@ -60,7 +60,7 @@ class Keyboard extends React.Component {
       padding: '10px 5px 10px 5px',
       border: '3px solid purple',
       width: '482px',
-      height: '130',
+      height: '130px',
       position: 'absolute',
       bottom: '2px',
       left: 'calc(50% - 250px + 3px)' // little extra b.c. of bizarre "extra key"
