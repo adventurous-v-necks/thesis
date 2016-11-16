@@ -18,9 +18,6 @@ class Player extends React.Component {
         <Sampler />
         <div className="fxrack-placeholder" style={{border: '2px solid red', width: '100%', height:'15%', position:'relative'}}></div>
         <Synth />
-        <Fader id="globalVolume" vertical width="8em"/>
-        <button onClick={this.rec.bind(this)} style={{position:'relative',top:'30%', height:'2em',border:'1px solid black'}}>REC</button>
-        <button onClick={this.play.bind(this)} style={{position:'relative',top:'35%', height:'2em',border:'1px solid black'}}>PLAY</button>
       </div>
     );
   }

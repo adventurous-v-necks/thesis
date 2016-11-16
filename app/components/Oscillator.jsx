@@ -8,7 +8,11 @@ class Oscillator extends React.Component {
   }
 
   handleWaveChange = (e) => {
-    this.props.dispatch({type: 'OSC_WAVE_CHANGE', osc: e.target.name, wave: e.target.value})
+    this.props.dispatch({
+      type: 'OSC_WAVE_CHANGE',
+      wave: e.target.value,
+      num: this.props.number
+    })
   }
 
   render() {
@@ -23,7 +27,8 @@ class Oscillator extends React.Component {
     };
 
     const oscNum = `osc${this.props.number}`;
-    const osc = this.props.osc[oscNum];
+    const num = this.props.number;
+    const oscs = this.props.oscs;
 
     return (
       <div className={oscNum} style={h1w5}>
@@ -38,11 +43,11 @@ class Oscillator extends React.Component {
                 <div>
                   <form action="">
                     <input type="radio" name={oscNum} value="1"
-                      checked={osc.wave === '1'} onChange={this.handleWaveChange}/>Wave1
+                      checked={oscs[num] === '1'} onChange={this.handleWaveChange}/>Wave1
                     <input type="radio" name={oscNum} value="2"
-                      checked={osc.wave === '2'} onChange={this.handleWaveChange}/>Wave2
+                      checked={oscs[num] === '2'} onChange={this.handleWaveChange}/>Wave2
                     <input type="radio" name={oscNum} value="3"
-                      checked={osc.wave === '3'} onChange={this.handleWaveChange}/>Wave3
+                      checked={oscs[num] === '3'} onChange={this.handleWaveChange}/>Wave3
                   </form>
                 </div>
               </td>
@@ -57,7 +62,7 @@ class Oscillator extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    osc: state.osc,
+    oscs: state.oscs,
   };
 }
 

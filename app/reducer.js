@@ -54,7 +54,7 @@ export default function reduce(state, action) {
       numColumns: COLUMNS,
       samples: samples,
       volume: 100,
-      oscs: [0, 1, 2]
+      oscs: [0, '1', '2']
     };
   }
 
@@ -138,9 +138,9 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {samples: allSamples});
     }
     case 'OSC_WAVE_CHANGE': {
-      let newState = state;
-      newState.osc[action.osc].wave = action.wave;
-      return Object.assign({}, newState);
+      let newOscs = Array.from(state.oscs);
+      newOscs[action.num] = action.wave;
+      return Object.assign({}, state, {oscs: newOscs});
     }
     default: {
       console.error('Reducer Error: ', action);
