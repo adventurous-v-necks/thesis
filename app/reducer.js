@@ -47,14 +47,14 @@ export default function reduce(state, action) {
     for (var col = 0; col < COLUMNS; col++) {
       var column = [];
       for (var sample = 0; sample < SAMPLES_PER_COLUMN; sample++) {
-        column.push({sampleUrl: col < 3 ? '/samples/100bpm_Hamir_Kick.wav' : '/samples/100bpm_Hamir_Clap.wav',
-          index: sample,
-          column: col,
-          sampleName: 'Drum Loop '+col+sample,
-          playing: false,
-          loaded: false,
-          buffer: null
-        });
+        column.push({sampleUrl: col < 3 ? '/samples/Mix_Hamir.wav' : '/samples/100bpm_Hamir_Clap.wav',
+                    index: sample,
+                    column: col,
+                    sampleName: 'Drum Loop '+col+sample,
+                    playing: false,
+                    loaded: false,
+                    buffer: null
+                  });
       }
       samples.push(column);
     }
@@ -66,11 +66,11 @@ export default function reduce(state, action) {
       maxTempo: 180,
       numColumns: COLUMNS,
       samples: samples,
-      volume: 100,
       oscs: [0, '1', '2'],
       masterOut: null, // if you're making stuff that makes noise, connect it to this
       audioContext: null,
-      nodes: [] // notes of the keyboard which are playing
+      nodes: [], // notes of the keyboard which are playing,
+      knobs: [100,100,100,100,100,100] // array of objects for all the knobs in our app. knobs[0] is globalVolume, then the next 5 are the sampler columns
     };
   }
 
@@ -109,7 +109,8 @@ export default function reduce(state, action) {
       let oscillator = state.audioContext.createOscillator();
       oscillator.type = 'square';
       oscillator.frequency.value = action.frequency;
-      oscillator.connect(state.masterOut);
+
+      oscillator.connect(state.synthGainNode);
       oscillator.start(0);
       let temp = Object.assign([], state.nodes);
       temp.push(oscillator);
@@ -122,20 +123,22 @@ export default function reduce(state, action) {
     case 'CREATE_AUDIO_CONTEXT': {
       let audioCtx = new AudioContext();
       let grainSize = 256;
-      let pitchRatio = 5;
+      let pitchRatio = 1;
       let overlapRatio = 0.5;
       let pitchShiftNode = audioCtx.createScriptProcessor(grainSize, 1, 1);
-      // new
       pitchShiftNode.buffer = new Float32Array(grainSize * 2);
-       pitchShiftNode.grainWindow = hannWindow(grainSize);
-       pitchShiftNode.onaudioprocess = pitchShifter.bind(pitchShiftNode, 1);
+      pitchShiftNode.grainWindow = hannWindow(grainSize);
+      pitchShiftNode.onaudioprocess = pitchShifter.bind(pitchShiftNode, 1);
 
-      // end new
+      let synthGainNode = audioCtx.createGain();
+      synthGainNode.gain.value = 0.3;
+
       let gainNode = audioCtx.createGain();
-
-      gainNode.connect(pitchShiftNode);
-      pitchShiftNode.connect(audioCtx.destination);
-      return Object.assign({}, state, {audioContext: audioCtx, masterOut: gainNode, pitchShiftNode: pitchShiftNode});
+      gainNode.gain.value = 1;
+      synthGainNode.connect(gainNode);
+      pitchShiftNode.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      return Object.assign({}, state, {audioContext: audioCtx, masterOut: gainNode, pitchShiftNode: pitchShiftNode, synthGainNode: synthGainNode});
     }
     case 'FADER_CHANGE': {
           socket.emit('my other event', { my: action });
@@ -150,13 +153,12 @@ export default function reduce(state, action) {
       let bpm = Object.assign({}, state.BPM);
       if (action.id === 'tempoFader') {
         bpm = Math.round((action.value * (state.maxTempo - state.minTempo) / 100) + state.minTempo);
-        state.pitchShiftNode.onaudioprocess = pitchShifter.bind(state.pitchShiftNode, (bpm+state.minTempo)/state.maxTempo);
-        console.log(state.samples);
+        var ratio = ((bpm+state.minTempo)/state.maxTempo).toFixed(2);
+        state.pitchShiftNode.onaudioprocess = pitchShifter.bind(state.pitchShiftNode, ratio);
         for (var col of state.samples) {
           for (var sample of col) {
             if (sample.playing) {
-              console.log('setting playback rate');
-              sample.source.playbackRate.value = (bpm+state.minTempo)/state.maxTempo;
+              sample.source.playbackRate.value = ratio;
             }
           }
         }
@@ -172,14 +174,15 @@ export default function reduce(state, action) {
     case 'KNOB_TWIDDLE': {
       console.log('the', io)
       let temp = Object.assign([], state.performance);
+      let temp2 = Object.assign([], state.knobs);
+      temp2[action.id] = action.value;
       if (!action.synthetic) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
-      if (action.id === 'volume') {
+      if (action.id == '0') {
         state.masterOut.gain.value = action.value / 100;
-        return Object.assign({}, state, {volume: action.value, performance: temp});
       }
-      return Object.assign({}, state, {performance: temp});
+      return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
     case 'PLAY_SAMPLE': {
       let allSamples = Object.assign([], state.samples); //clone to avoid mutation
@@ -189,7 +192,7 @@ export default function reduce(state, action) {
         theSample.source = state.audioContext.createBufferSource();
         theSample.source.loop = true;
         theSample.source.buffer = action.buffer;
-        theSample.source.connect(state.masterOut); //audioContext.destination
+        theSample.source.connect(state.pitchShiftNode); //audioContext.destination
         theSample.source.start();
       } else {
         theSample.source.stop();

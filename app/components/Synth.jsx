@@ -3,7 +3,7 @@ import styles from '../App.scss';
 import {connect} from 'react-redux';
 import Keyboard from './Keyboard.jsx';
 import Patch from './Patch.jsx';
-import Volume from './Volume.jsx';
+import Knob from './Knob.jsx';
 import Oscillators from './Oscillators.jsx';
 
 class Synth extends React.Component {
@@ -25,11 +25,11 @@ class Synth extends React.Component {
         <Oscillators />
         {/* <Volume /> would like to be able to add eventually */}
         <div className="synth-volume-placeholder" style={{
-          border: '2px solid DarkKhaki', 
-          position: 'absolute', 
-          height: '100px', 
+          border: '2px solid DarkKhaki',
+          position: 'absolute',
+          height: '100px',
           top: '5%',
-          width: '100px', 
+          width: '100px',
           right: '30%'
         }}>
           Volume Placeholder

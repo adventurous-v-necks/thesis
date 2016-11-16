@@ -4,7 +4,7 @@ import TimeSig from './TimeSig.jsx';
 import Tempo from './Tempo.jsx';
 import Marker from './Marker.jsx';
 import Controls from './Controls.jsx';
-import Volume from './Volume.jsx';
+import Knob from './Knob.jsx';
 
 import {connect} from 'react-redux';
 
@@ -28,7 +28,7 @@ class Transport extends React.Component {
         <Marker />
         <Controls />
         <div style={volumeSizing}>
-          <Volume />
+          <Knob id="0" />
         </div>
       </div>
     );
