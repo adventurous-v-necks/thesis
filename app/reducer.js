@@ -10,14 +10,13 @@ import {hannWindow, linearInterpolation, pitchShifter} from './audioHelpers.js';
 import {store} from './main.js';
 import io from 'socket.io-client';
 
- var socket = io.connect();
-  socket.on('news', function (data) {
-    console.log('news cs 13', data);
-  });
+var socket = io.connect();
 
-  socket.on('faderChange2', function (data) {
-      console.log('data after emitted from server data', data)
-  });
+socket.on('faderChange2', function (data) {
+  console.log('data after emitted from server data', data)
+  store.dispatch(Object.assign(data.faderaction, {synthetic: true}));
+
+});
 
 const broadcast = function(action) {
   // let state = store.getState();
@@ -160,8 +159,7 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {audioContext: audioCtx, masterOut: gainNode, pitchShiftNode: pitchShiftNode, synthGainNode: synthGainNode});
     }
     case 'FADER_CHANGE': {
-          socket.emit('my other event', { my: action });
-          console.log('socket.emit called')
+      socket.emit('faderChange', { action: action });
       // TODO: do something with the data e.g. adjust volume
       // replay the UI action (it wasn't necessarily caused by a UI change - could be synthetic)
       document.getElementById(action.id).value = action.value;
