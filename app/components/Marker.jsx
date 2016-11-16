@@ -7,7 +7,31 @@ class Marker extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount() {
+
+  formatTime = time => {
+    // assume time comes in in seconds
+    
+    const leadingSecZero = (t) => {
+      const floor = Math.floor(t % 60).toString();
+      if (t >= 10) {
+        return floor;
+      } else {
+        return '0' + floor;
+      }
+
+    }
+    const minutes = Math.floor(time / 60).toString();
+    const seconds = leadingSecZero(time);
+    
+
+    const shortTime = minutes + ':' + seconds;
+
+    if (time > 3600) {
+      const hours = Math.floor(time / (60 * 60)).toString();
+      return hours + ':' + shortTime;
+    } else {
+      return shortTime;
+    }
 
   }
 
@@ -20,9 +44,11 @@ class Marker extends React.Component {
       transform: 'translateY(-50%)',
     };
 
+    console.log(this.props);
+
     return (
       <div className="marker" style={style}>
-        0000.00.00
+        {this.props.timeZero ? this.formatTime(this.props.timeZero) : '0:00'}
       </div>
     );
   }
@@ -30,7 +56,9 @@ class Marker extends React.Component {
 
 
 const mapStateToProps = function(state) {
-  return {};
+  return {
+    timeZero: state.timeZero
+  };
 }
 
 export default connect(mapStateToProps)(Marker);

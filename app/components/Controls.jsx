@@ -39,11 +39,14 @@ class Controls extends React.Component {
       width: '1.2em',
       textAlign: 'center',
     };
+
+    const recStyle = Object.assign({}, style, {color: 'red'});
+
     return (
       <div className="controls" style={containerStyle}>
         <i className="fa fa-play-circle-o" aria-hidden="true" style={style} onClick={this.transportPlay}></i>
         <i className="fa fa-pause-circle-o" aria-hidden="true" style={style} /* onClick={this.transportPause} */></i>
-        <i className="fa fa-circle" aria-hidden="true" style={style} onClick={this.transportRecord}></i>
+        <i className="fa fa-circle" aria-hidden="true" style={this.props.recording ? recStyle : style} onClick={this.transportRecord}></i>
         <i className="fa fa-stop-circle-o" aria-hidden="true" style={style} onClick={this.transportStop}></i>
       </div>
     );
@@ -52,7 +55,9 @@ class Controls extends React.Component {
 
 
 const mapStateToProps = function(state) {
-  return {};
+  return {
+    recording: state.recording
+  };
 }
 
 export default connect(mapStateToProps)(Controls);
