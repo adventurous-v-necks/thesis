@@ -14,7 +14,7 @@ class EffectsDropDown extends React.Component {
     this.props.dispatch({type: 'EFFECT_MENU_TOGGLE'});
   }
 
-  addEffectToRack(e) { 
+  addEffectToRack(e) {
     this.props.dispatch({type: 'EFFECT_TO_RACK', effect: e.target.value});
   }
 
