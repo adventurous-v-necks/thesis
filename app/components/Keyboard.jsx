@@ -18,39 +18,14 @@ class Keyboard extends React.Component {
        startNote: 'C3',
        whiteNotesColour: 'white',
        blackNotesColour: 'black',
-       hoverColour: '#f3e939'
+       hoverColour: '#9a9a9a'
     });
 
-    let masterGain = this.props.audioContext.createGain();
-    let nodes = [];
-
-    masterGain.gain.value = 0.3;
-    masterGain.connect(this.props.audioContext.destination);
-
     keyboard.keyDown = (note, frequency) => {
-        let oscillator = this.props.audioContext.createOscillator();
-        oscillator.type = 'square';
-        oscillator.frequency.value = frequency;
-        oscillator.connect(masterGain);
-        oscillator.start(0);
-
-      nodes.push(oscillator);
       this.props.dispatch({type: 'KEY_DOWN', note, frequency});
     };
 
     keyboard.keyUp = (note, frequency) => {
-      let new_nodes = [];
-
-      for (let i = 0; i < nodes.length; i++) {
-        if (Math.round(nodes[i].frequency.value) === Math.round(frequency)) {
-          nodes[i].stop(0);
-          nodes[i].disconnect();
-        } else {
-          new_nodes.push(nodes[i]);
-        }
-      }
-
-      nodes = new_nodes;
       this.props.dispatch({type: 'KEY_UP', note, frequency});
     };
   }
@@ -59,11 +34,11 @@ class Keyboard extends React.Component {
     const style = {
       padding: '10px 5px 10px 5px',
       border: '3px solid purple',
-      width: '482px',
-      height: '130',
+      width: 'auto',
+      height: '130px',
       position: 'absolute',
       bottom: '2px',
-      left: 'calc(50% - 250px + 3px)' // little extra b.c. of bizarre "extra key"
+      left: 'calc(50% - 250px)'
     }
 
     return (

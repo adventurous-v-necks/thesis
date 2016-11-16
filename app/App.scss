@@ -218,6 +218,12 @@ and (orientation : landscape) {
     max-width: 1024px;
   }
 }
+#keyboard {
+  width: auto !important;
+}
+#keyboard > ul {
+  width: auto !important;
+}
 
 .team-info {
   width: 100%;
