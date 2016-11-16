@@ -11,14 +11,13 @@ class EffectsRack extends React.Component {
     super(props);
     // this.generateNewEffect = this.generateNewEffect.bind(this);
   }
-  componentDidMount() {
 
-  }
   // generateNewEffect() {
   //   this.props.dispatch({type: 'NEW_EFFECT'}); <---- DELETE FROM DISPATCH IF NOT TO BE USED
   // }
+  
   render() {
-    console.log('props: ', this.props.activeEffects);
+
   	const effectsContainerStyle = {
   		border: '2px solid red',
   		width: '100%',
@@ -26,17 +25,12 @@ class EffectsRack extends React.Component {
   		position:'relative',
   		textAlign: 'right',
   	};
-    // let EffectsUnits;
+
     let activeEffects = this.props.activeEffects;
-    // if (activeEffects.length) {
     let EffectsUnits = activeEffects.map((effect) => {
         return <EffectsUnit id={effect} key={effect}/>
       });
-    // } else {
-      // EffectsUnits = "";
-    // }
-    console.log('units: ', EffectsUnits);
-          // {EffectsUnits}
+
     return (
       <div className="effectsContainer" style={effectsContainerStyle}>
         <div style={{width: '90%', float: 'left'}}>
