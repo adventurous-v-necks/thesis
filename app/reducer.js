@@ -75,6 +75,7 @@ export default function reduce(state, action) {
       knobs: [100,100,100,100,100,100] // array of objects for all the knobs in our app. knobs[0] is globalVolume, then the next 5 are the sampler columns
       timeZero: 0,
       recordTimeZero: false,
+      recordTimesStopped: [],
     };
   }
 
@@ -92,9 +93,11 @@ export default function reduce(state, action) {
       }); // INCOMPLETE, override push to push and fire to socket.io
     }
     case 'PAUSE_RECORD': {
+      const newStopped = state.recordTimesStopped.push(state.recordTimeZero);
       return Object.assign({}, state, {
         performance: [],
         recording: false,
+        recordTimesStopped: newStopped,
       }); // INCOMPLETE, override push to push and fire to socket.io
     }
     case 'AUDIO_STOP': {
