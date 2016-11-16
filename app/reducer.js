@@ -17,9 +17,9 @@ import io from 'socket.io-client';
       console.log('data after emitted from server data', data)
   });
 
-const broadcast = function(action) { 
+const broadcast = function(action) {
   // let state = store.getState();
-  console.log('action', action)  
+  console.log('action', action)
   timeNow()
 // let nextEvent = state.performance[events];
   // store.dispatch(Object.assign(nextEvent.action, {synthetic: true}));
@@ -66,8 +66,9 @@ export default function reduce(state, action) {
       samples: samples,
       volume: 100,
       oscs: [0, '1', '2'],
-      masterOut: null,
-      audioContext: null
+      masterOut: null, // if you're making stuff that makes noise, connect it to this
+      audioContext: null,
+      nodes: [] // notes of the keyboard which are playing
     };
   }
 
@@ -90,16 +91,35 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {timeZero: state.audioContext.currentTime, performance: []});
     }
     case 'KEY_UP': {
-      console.log('key up', action);
-      return Object.assign({}, state,
-        // {performance: state.performance.push({action, timestamp: Date.now() - state.timeZero})}
-        );
+      // TODO: optimize this -- use a hash table instead of an array
+      let new_nodes = [];
+      for (let i = 0; i < state.nodes.length; i++) {
+        if (Math.round(state.nodes[i].frequency.value) === Math.round(action.frequency)) {
+          state.nodes[i].stop(0);
+          state.nodes[i].disconnect();
+        } else {
+          new_nodes.push(nodes[i]);
+        }
+      }
+      let temp = Object.assign([], state.performance);
+      if (!action.synthetic) {
+        temp.push({action: action, timestamp: state.audioContext.currentTime});
+      }
+      return Object.assign({}, state, {nodes: new_nodes, performance: temp});
     }
     case 'KEY_DOWN': {
-      console.log('key down', action);
-      return Object.assign({}, state,
-        // {performance: state.performance.push({action, timestamp: Date.now() - state.timeZero})}
-        );
+      let oscillator = state.audioContext.createOscillator();
+      oscillator.type = 'square';
+      oscillator.frequency.value = action.frequency;
+      oscillator.connect(state.masterOut);
+      oscillator.start(0);
+      let temp = Object.assign([], state.nodes);
+      temp.push(oscillator);
+      let temp2 = Object.assign([], state.performance);
+      if (!action.synthetic) {
+        temp2.push({action: action, timestamp: state.audioContext.currentTime});
+      }
+      return Object.assign({}, state, {nodes: temp, performance: temp2});
     }
     case 'CREATE_AUDIO_CONTEXT': {
       let audioCtx = new AudioContext();
@@ -147,7 +167,6 @@ export default function reduce(state, action) {
       theSample.playing = !theSample.playing;
       if (theSample.playing) {
         theSample.source = state.audioContext.createBufferSource();
-        //var g = audioContext.createGain();
         theSample.source.loop = true;
         theSample.source.buffer = action.buffer;
         theSample.source.connect(state.masterOut); //audioContext.destination
