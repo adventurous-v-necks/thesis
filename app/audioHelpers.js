@@ -6,43 +6,41 @@ export var hannWindow = function (length) {
   return window;
 };
 
-export var linearInterpolation = function (a, b, t) {
-  return a + (b - a) * t;
+export var interpolator = function (a, b, t) {
+  // return a + (b - a) * t; // Linear interpolation - clickier but quicker
+  var t2 = (1-Math.cos(t*Math.PI))/2;
+  return (a*(1-t2)+b*t2);
 };
 
 export var pitchShifter = function (pr, event) {
 
     let grainSize = 256;
     let overlapRatio = 0.5;
-    let pitchRatio = pr;
+    let pitchRatio = Number(pr);
     var inputData = event.inputBuffer.getChannelData(0);
     var outputData = event.outputBuffer.getChannelData(0);
 
-    for (i = 0; i < inputData.length; i++) {
-
-        // Apply the window to the input buffer
-        inputData[i] *= this.grainWindow[i];
-
-        // Shift half of the buffer
-        this.buffer[i] = this.buffer[i + grainSize];
-
-        // Empty the buffer tail
-        this.buffer[i + grainSize] = 0.0;
+    if (pitchRatio === 1) {
+      for (i = 0; i < inputData.length; i++) {
+        outputData[i] = inputData[i];//this.buffer[i];
+      }
+      return;
     }
 
-    // Calculate the pitch shifted grain re-sampling and looping the input
-    var grainData = new Float32Array(grainSize * 2);
-    for (var i = 0, j = 0.0;
-         i < grainSize;
-         i++, j += pitchRatio) {
+    for (i = 0; i < inputData.length; i++) {
+        inputData[i] *= this.grainWindow[i];
+        this.buffer[i] = this.buffer[i + grainSize];
+        this.buffer[i + grainSize] = 0;
+    }
 
+    var grainData = new Float32Array(grainSize * 2);
+    for (var i = 0, j = 0; i < grainSize; i++, j += pitchRatio) {
         var index = Math.floor(j) % grainSize;
         var a = inputData[index];
         var b = inputData[(index + 1) % grainSize];
-        grainData[i] += linearInterpolation(a, b, j % 1.0) * this.grainWindow[i];
+        grainData[i] += interpolator(a, b, j % 1.0) * this.grainWindow[i];
     }
 
-    // Copy the grain multiple times overlapping it
     for (i = 0; i < grainSize; i += Math.round(grainSize * (1 - overlapRatio))) {
         for (j = 0; j <= grainSize; j++) {
             this.buffer[i + j] += grainData[j];
