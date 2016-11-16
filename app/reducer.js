@@ -69,7 +69,8 @@ export default function reduce(state, action) {
       recordStartTime: false,
       effectsMenuActive: false,
       customEffects: ['lorem', 'fx', 'sfx', 'ipsum'],
-      activeEffects: []
+      activeEffects: [],
+      suspended: false
     };
   }
 
@@ -261,7 +262,7 @@ export default function reduce(state, action) {
 
       if (state.activeEffects.indexOf(effect) === -1) {
         allActiveEffects.push(effect);
-      } 
+      }
       return Object.assign({}, state, {activeEffects: allActiveEffects});
     }
     case 'EFFECT_FROM_RACK': {
