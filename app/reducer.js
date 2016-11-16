@@ -68,8 +68,8 @@ export default function reduce(state, action) {
       suspended: false,
       markerTime: 0
       effectsMenuActive: true,
-      customEffects: ['placeholder effect', 'another', 'fx', 'sfx'],
-      activeEffects: ['1', '2']
+      customEffects: ['placeholder effect', 'another', 'fx', 'sfx']
+      // activeEffects: ['1', '2']
     };
   }
 
