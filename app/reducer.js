@@ -174,7 +174,7 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {audioContext: audioCtx, masterOut: gainNode, pitchShiftNode: pitchShiftNode, synthGainNode: synthGainNode});
     }
     case 'FADER_CHANGE': {
-      socket.emit('my other event', { my: action });
+      socket.emit('event', { my: action });
       // TODO: do something with the data e.g. adjust volume
       // replay the UI action (it wasn't necessarily caused by a UI change - could be synthetic)
       document.getElementById(action.id).value = action.value;
@@ -213,6 +213,13 @@ export default function reduce(state, action) {
       if (action.id == '0') {
         state.masterOut.gain.value = action.value / 100;
       }
+      if (action.id >= 1 && action.id <=4) { // one of the column volume knobs
+        console.log('you twiddled '+action.id);
+        for (var sample of state.samples[action.id-1]) {
+          console.log(sample);
+          if (sample.playing) sample.gainNode.gain.value = action.value / 100;
+        }
+      }
       return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
     case 'PLAY_SAMPLE': {
@@ -225,8 +232,9 @@ export default function reduce(state, action) {
         theSample.source.buffer = action.buffer;
 
         let gainNode = state.audioContext.createGain();
-        gainNode.gain.value = 1;
+        gainNode.gain.value = state.knobs[action.sample.column+1]/100;
         theSample.source.connect(gainNode);
+        theSample.gainNode = gainNode;
 
         gainNode.connect(state.pitchShiftNode);
         theSample.source.start();
