@@ -68,6 +68,7 @@ export default function reduce(state, action) {
       knobs: [100,100,100,100,100,100], // array of objects for all the knobs in our app. knobs[0] is globalVolume, then the next 5 are the sampler columns
       timeZero: 0.045,
       recordTimeZero: false,
+      suspended: false
     };
   }
 
@@ -91,11 +92,13 @@ export default function reduce(state, action) {
       }); // INCOMPLETE, override push to push and fire to socket.io
     }
     case 'AUDIO_STOP': {
-      // Should stop recording audio and playing audio - perhaps prompt to share?
-      // Current does the same as pausing the recording until we have a better use for it
-      return Object.assign({}, state, {
-        recording: false,
-      }); //INCOMPLETE
+      if (!state.suspended) {
+        state.audioContext.suspend();
+        return Object.assign({}, state, {suspended: true, recording: false});
+      } else {
+        state.audioContext.resume();
+        return Object.assign({}, state, {suspended: false, recording: false});
+      }
     }
     case 'TIME_ZERO': {
       return Object.assign({}, state, {timeZero: state.audioContext.currentTime, performance: []});
@@ -151,6 +154,17 @@ export default function reduce(state, action) {
       gainNode.gain.value = 1;
       synthGainNode.connect(gainNode);
       pitchShiftNode.connect(gainNode);
+
+      // var compressor = audioCtx.createDynamicsCompressor();
+      // compressor.threshold.value = -3;
+      // compressor.knee.value = 35;
+      // compressor.ratio.value = 0.9;
+      // //compressor.reduction.value = -20;
+      // compressor.attack.value = 0;
+      // compressor.release.value = 0;
+      // gainNode.connect(compressor);
+      // compressor.connect(audioCtx.destination);
+
       gainNode.connect(audioCtx.destination);
       return Object.assign({}, state, {audioContext: audioCtx, masterOut: gainNode, pitchShiftNode: pitchShiftNode, synthGainNode: synthGainNode});
     }
@@ -208,7 +222,12 @@ export default function reduce(state, action) {
         theSample.source = state.audioContext.createBufferSource();
         theSample.source.loop = true;
         theSample.source.buffer = action.buffer;
-        theSample.source.connect(state.pitchShiftNode); //audioContext.destination
+
+        let gainNode = state.audioContext.createGain();
+        gainNode.gain.value = 1;
+        theSample.source.connect(gainNode);
+
+        gainNode.connect(state.pitchShiftNode);
         theSample.source.start();
       } else {
         theSample.source.stop();
