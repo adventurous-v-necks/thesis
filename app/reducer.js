@@ -8,11 +8,14 @@ let SAMPLES_PER_COLUMN = 5;
 import {store} from './main.js';
 import io from 'socket.io-client';
 
-let socket = io();
+ var socket = io.connect();
+  socket.on('news', function (data) {
+    console.log('news cs 13', data);
+  });
 
-socket.on('new_peer', (peer) => {
- console.log(peer);
-});
+  socket.on('faderChange2', function (data) {
+      console.log('data after emitted from server data', data)
+  });
 
 const sched = function() {
   let state = store.getState();
@@ -35,13 +38,13 @@ export default function reduce(state, action) {
       var column = [];
       for (var sample = 0; sample < SAMPLES_PER_COLUMN; sample++) {
         column.push({sampleUrl: col < 3 ? '/samples/100bpm_Hamir_Kick.wav' : '/samples/100bpm_Hamir_Clap.wav',
-                    index: sample,
-                    column: col,
-                    sampleName: 'Drum Loop '+col+sample,
-                    playing: false,
-                    loaded: false,
-                    buffer: null
-                  });
+          index: sample,
+          column: col,
+          sampleName: 'Drum Loop '+col+sample,
+          playing: false,
+          loaded: false,
+          buffer: null
+        });
       }
       samples.push(column);
     }
@@ -80,18 +83,20 @@ export default function reduce(state, action) {
       console.log('key up', action);
       return Object.assign({}, state,
         // {performance: state.performance.push({action, timestamp: Date.now() - state.timeZero})}
-      );
+        );
     }
     case 'KEY_DOWN': {
       console.log('key down', action);
       return Object.assign({}, state,
         // {performance: state.performance.push({action, timestamp: Date.now() - state.timeZero})}
-      );
+        );
     }
     case 'CREATE_AUDIO_CONTEXT': {
       return Object.assign({}, state, {audioContext: new AudioContext()});
     }
     case 'FADER_CHANGE': {
+          socket.emit('my other event', { my: action });
+          console.log('socket.emit called')
       // TODO: do something with the data e.g. adjust volume
       // replay the UI action (it wasn't necessarily caused by a UI change - could be synthetic)
       document.getElementById(action.id).value = action.value;
@@ -112,8 +117,8 @@ export default function reduce(state, action) {
       return Object.assign({}, state);
     }
     case 'KNOB_TWIDDLE': {
+      console.log('the', io)
       let temp = Object.assign([], state.performance);
-      console.log(action);
       if (!action.synthetic) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }

@@ -39,11 +39,15 @@ const app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-io.on('connection', function(socket) {
-  console.log('connection')
- console.log('a user connected', socket.conn.remoteAddress);
- io.emit('new_peer', socket.conn.remoteAddress);
+var counter = 0
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log('data ss46' , data);
+    socket.broadcast.emit('faderChange2', {faderChange2 : data} )
+  });
 });
+
 
 app.use(express.static('public'));
 
