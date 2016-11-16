@@ -43,8 +43,7 @@ var counter = 0
 io.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
   socket.on('my other event', function (data) {
-    console.log('data ss46' , data);
-    socket.broadcast.emit('faderChange2', {faderChange2 : data} )
+    socket.broadcast.emit('faderChange2', {faderSetting : data} )
   });
 });
 

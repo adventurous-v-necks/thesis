@@ -17,6 +17,14 @@ import io from 'socket.io-client';
       console.log('data after emitted from server data', data)
   });
 
+const broadcast = function(action) { 
+  // let state = store.getState();
+  console.log('action', action)  
+  timeNow()
+// let nextEvent = state.performance[events];
+  // store.dispatch(Object.assign(nextEvent.action, {synthetic: true}));
+}
+
 const sched = function() {
   let state = store.getState();
   let nextEvent = state.performance[events];
