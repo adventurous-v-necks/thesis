@@ -85,20 +85,17 @@ export default function reduce(state, action) {
     case 'MARKER_UPDATE': {
       return Object.assign({}, state, {timeZero: state.audioContext.currentTime});
     }
-    case 'AUDIO_RECORD': {
-      // Click 1: Start Recording Audio. Click 2: Pause Recording Audio. Click 3: Continue Recording Audio
-      console.log('Start Recording');
-      if (state.recording) {
-        return Object.assign({}, state, {
-          performance: [],
-          recording: false,
-        }); // INCOMPLETE, override push to push and fire to socket.io
-      } else {
-        return Object.assign({}, state, {
-          recording: true,
-          recordTimeZero: state.audioContext.currentTime,
-        }); // INCOMPLETE, override push to push and fire to socket.io
-      }
+    case 'AUDIO_RECORD': { // should start and restart (from pause) recording
+      return Object.assign({}, state, {
+        recording: true,
+        recordTimeZero: state.audioContext.currentTime,
+      }); // INCOMPLETE, override push to push and fire to socket.io
+    }
+    case 'PAUSE_RECORD': {
+      return Object.assign({}, state, {
+        performance: [],
+        recording: false,
+      }); // INCOMPLETE, override push to push and fire to socket.io
     }
     case 'AUDIO_STOP': {
       // Should stop recording audio and playing audio - perhaps prompt to share?
