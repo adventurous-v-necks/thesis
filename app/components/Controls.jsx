@@ -15,7 +15,13 @@ class Controls extends React.Component {
   
   transportPlay = () => this.props.dispatch({type: 'PLAY'});
   transportPause() { /* no functionality in MVP */}
-  transportRecord = () => this.props.dispatch({type: 'AUDIO_RECORD'});
+  transportRecord = () => {
+    if (this.props.recording) {
+      this.props.dispatch({type: 'PAUSE_RECORD'});
+    } else {
+      this.props.dispatch({type: 'AUDIO_RECORD'});
+    }
+  }
   transportStop = () => this.props.dispatch({type: 'AUDIO_STOP'});
 
   render() {
