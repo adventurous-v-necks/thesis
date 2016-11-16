@@ -22,7 +22,7 @@ class Oscillator extends React.Component {
     }
 
     const h5w1 = {
-      width: "100%", 
+      width: "100%",
       height: "50%"
     };
 
@@ -39,7 +39,7 @@ class Oscillator extends React.Component {
               <td style={{width: "50%"}}>Detuner Here</td>
             </tr>
             <tr style={h5w1}>
-              <td colspan="2">
+              <td colSpan="2">
                 <div>
                   <form action="">
                     <input type="radio" name={oscNum} value="1"
@@ -67,4 +67,3 @@ const mapStateToProps = function(state) {
 }
 
 export default connect(mapStateToProps)(Oscillator);
-

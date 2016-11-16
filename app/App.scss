@@ -12,6 +12,7 @@
   height: 100%;
   list-style: none;
   font-family: 'Exo', sans-serif;
+  user-select: none;
 }
 head {
   display: none;
@@ -217,6 +218,12 @@ and (orientation : landscape) {
   nav {
     max-width: 1024px;
   }
+}
+#keyboard {
+  width: auto !important;
+}
+#keyboard > ul {
+  width: auto !important;
 }
 
 .team-info {

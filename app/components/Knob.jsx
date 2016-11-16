@@ -12,34 +12,36 @@ class Knob extends React.Component {
   }
 
   changeVolume(e) {
-    let newVol = this.props.volume + Number(e.movementX);
+    let newVol = this.props.allKnobs[this.props.id] + Number(e.movementX);
+    console.log(this.props.id, this.props.allKnobs[this.props.id]);
     newVol = Math.max(0,newVol);
     newVol = Math.min(newVol,255);
-    this.props.dispatch({type:'KNOB_TWIDDLE', id: this.props.id, volume: newVol});
+    this.props.dispatch({type:'KNOB_TWIDDLE', id: this.props.id, value: newVol});
   }
 
-handleMouseDown() {
-  document.addEventListener ('mousemove', this.handleMouseMove);
-  document.addEventListener('mouseup', () => document.removeEventListener ('mousemove', this.handleMouseMove));
-}
+  handleMouseDown() {
+    document.addEventListener ('mousemove', this.handleMouseMove);
+    document.addEventListener('mouseup', () => document.removeEventListener ('mousemove', this.handleMouseMove));
+  }
 
-handleMouseMove(e) {
-  this.changeVolume(e);
-}
+  handleMouseMove(e) {
+    this.changeVolume(e);
+  }
 
   render() {
 
+    let myValue = this.props.allKnobs[this.props.id];
     let style = {};
-    let transform = (this.props.volume - 100);
+    let transform = (myValue - 100);
     transform = Math.max(-100, transform);
     transform = Math.min(100, transform);
     style.transform = 'rotate('+transform+'deg)';
 
     return (
-      <div onMouseDown={this.handleMouseDown.bind(this)}>
+      <div onMouseDown={this.handleMouseDown.bind(this)} style={{cursor: 'crosshair', userSelect:'none'}}>
 
       <div className="samplerVol">
-        <span className="knob-text">{this.props.volume}</span>
+        <span className="knob-text">{myValue}</span>
         <svg viewBox="-6 -6 12 12" className="dial">
           <defs>
           </defs>
@@ -60,7 +62,7 @@ handleMouseMove(e) {
 
 function mapStateToProps(state) {
   return {
-    volume: state.volume
+    allKnobs: state.knobs
   };
 }
 
