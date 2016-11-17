@@ -29,7 +29,7 @@ class Transport extends React.Component {
           <Marker />
           <Controls />
           <div style={volumeSizing}>
-            <Knob id="0" />
+            <Knob id="0" title="Adjust Volume"/>
           </div>
         </div>
         <span style={{backgroundColor:'#efefef', marginTop: '-0.5em', position:'absolute', left:'1em', height:'1em', paddingLeft:'0.5em', paddingRight:'0.5em'}}>Transport Controls</span>

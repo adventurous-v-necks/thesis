@@ -26,7 +26,7 @@ class Tempo extends React.Component {
       transform: 'translateY(15%)',
     };
     return (
-      <div className="tempo" style={containerStyle}>
+      <div className="tempo" style={containerStyle} title="Adjust Global Tempo">
         <span className="tempoDisplay" id="tempoDisplay" style={style}>{this.props.BPM}</span>
         <div style={faderStyle}>
           <Fader id='tempoFader' />

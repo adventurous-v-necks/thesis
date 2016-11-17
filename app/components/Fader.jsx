@@ -10,7 +10,9 @@ class Fader extends React.Component {
     this.props.dispatch({type:'FADER_CHANGE', id: this.props.id, value: e.nativeEvent.target.value});
   }
   render() {
-    var style = {};
+    var style = {
+      cursor: 'crosshair',
+    };
     var labelStyle = {fontSize:'0.8em'};
     if (this.props.width) style.width = this.props.width;
     if (this.props.vertical) {
@@ -24,7 +26,7 @@ class Fader extends React.Component {
     }
 
     return (
-      <div className="fader" style={{height:'auto',position:'relative',top:'50%'}}>
+      <div className="fader" style={{height:'auto',position:'relative',top:'50%', cursor:'crosshair'}}>
         <input type="range" id={this.props.id} style={style} onChange={this.report.bind(this)}></input>
         <span style={labelStyle}>{this.props.id}</span>
       </div>

@@ -33,16 +33,17 @@ class Controls extends React.Component {
       height: 'auto',
       width: '1.2em',
       textAlign: 'center',
+      cursor: 'pointer',
     };
 
     const recStyle = Object.assign({}, style, {color: 'red'});
 
     return (
       <div className="controls" style={containerStyle}>
-        <i className="fa fa-play-circle-o" aria-hidden="true" style={style} onClick={this.transportPlay}></i>
-        <i className="fa fa-pause-circle-o" aria-hidden="true" style={style} /* onClick={this.transportPause} */></i>
-        <i className="fa fa-circle" aria-hidden="true" style={this.props.recording ? recStyle : style} onClick={this.transportRecord}></i>
-        <i className="fa fa-stop-circle-o" aria-hidden="true" style={style} onClick={this.transportStop}></i>
+        <i title="Play back" className="fa fa-play-circle-o" aria-hidden="true" style={style} onClick={this.transportPlay}></i>
+        <i title="Pause audio" className="fa fa-pause-circle-o" aria-hidden="true" style={style} /* onClick={this.transportPause} */></i>
+        <i title="Start/stop recording" className="fa fa-circle" aria-hidden="true" style={this.props.recording ? recStyle : style} onClick={this.transportRecord}></i>
+        <i title="Stop audio" className="fa fa-stop-circle-o" aria-hidden="true" style={style} onClick={this.transportStop}></i>
       </div>
     );
   }

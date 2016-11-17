@@ -8,6 +8,7 @@ let SAMPLES_PER_COLUMN = 5;
 import {hannWindow, linearInterpolation, pitchShifter} from './audioHelpers.js';
 
 import {store} from './main.js';
+
 import io from 'socket.io-client';
 
 var socket = io.connect();
@@ -72,7 +73,7 @@ export default function reduce(state, action) {
       knobs[20+] are reserved for effects
       */
       knobs: [100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100], // length === 20
-      timeZero: 0, 
+      timeZero: 0,
       suspended: false,
       markerTime: 0,
       recordStartTime: false,
@@ -203,6 +204,13 @@ export default function reduce(state, action) {
       }
       return Object.assign({}, state, {BPM: bpm, performance: temp});
     }
+    case 'STORE_REF_TO_SAMPLE': {
+      // so the actual buffer itself is being stored locally on the Sample component,
+      // turns out we'll need to grab a reference to it in this reducer, so keep an array of them.
+      let temp = Object.assign([], state.sampleBuffers || []);
+      temp.push([action.col, action.idx, action.buffer]);
+      return Object.assign({}, state, {sampleBuffers: temp});
+    }
     case 'PLAY': {
       events = 0;
       playTime = state.audioContext.currentTime;
@@ -245,10 +253,19 @@ export default function reduce(state, action) {
       let allSamples = Object.assign([], state.samples); //clone to avoid mutation
       let theSample = allSamples[action.sample.column][action.sample.index]; //find relevant sample
       theSample.playing = !theSample.playing;
+
       if (theSample.playing) {
         theSample.source = state.audioContext.createBufferSource();
         theSample.source.loop = true;
-        theSample.source.buffer = action.buffer;
+        if (action.buffer.duration) {
+          theSample.source.buffer = action.buffer;
+        } else {
+          for (var i = 0; i < COLUMNS * SAMPLES_PER_COLUMN; i++) {
+            if ((state.sampleBuffers[i][0] === action.sample.column) && (state.sampleBuffers[i][1] === action.sample.index)) {
+              theSample.source.buffer = state.sampleBuffers[i][2];
+            }
+          }
+        }
 
         let gainNode = state.audioContext.createGain();
         gainNode.gain.value = state.knobs[action.sample.column+1]/100;
