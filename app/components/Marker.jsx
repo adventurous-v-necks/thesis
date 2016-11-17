@@ -41,12 +41,7 @@ class Marker extends React.Component {
   }
 
   render() {
-    const getTime = () => {
-      let time;
-      return this.formatTime(this.props.timeZero);
-    };
-
-    const currentTime = getTime();
+    const formattedTime = this.formatTime(this.props.markerTime);
 
     const style = {
       height: 'auto',
@@ -60,7 +55,7 @@ class Marker extends React.Component {
 
     return (
       <div className="marker" style={style}>
-        {this.props.markerTime.toFixed(1)}
+        {formattedTime}
       </div>
     );
   }
