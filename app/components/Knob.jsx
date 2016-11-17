@@ -37,7 +37,7 @@ class Knob extends React.Component {
     style.transform = 'rotate('+transform+'deg)';
 
     return (
-      <div onMouseDown={this.handleMouseDown.bind(this)} style={{cursor: 'crosshair', userSelect:'none', height:'auto'}}>
+      <div title={this.props.title} onMouseDown={this.handleMouseDown.bind(this)} style={{cursor: 'crosshair', userSelect:'none', height:'auto'}}>
 
       <div className="samplerVol">
         <span className="knob-text">{myValue}</span>
