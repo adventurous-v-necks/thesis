@@ -12,12 +12,25 @@ class Tempo extends React.Component {
   componentDidMount() {
 
   }
-
   render() {
+    const containerStyle = {
+      height: 'auto',
+      width: '30%',
+    };
+    const style = {
+      height: 'auto',
+      transform: 'translateY(25%)',
+    };
+    const faderStyle = {
+      height: 'auto',
+      transform: 'translateY(15%)',
+    };
     return (
-      <div className="tempo">
-        <div className="tempoDisplay">{Math.round((this.props.bpmFactor * (this.props.maxTempo - this.props.minTempo) / 100 ) + this.props.minTempo)} BPM</div>
-        <Fader id='tempoFader'/>
+      <div className="tempo" style={containerStyle}>
+        <span className="tempoDisplay" id="tempoDisplay" style={style}>{this.props.BPM}</span>
+        <div style={faderStyle}>
+          <Fader id='tempoFader' />
+        </div>
       </div>
     );
   }
@@ -26,9 +39,7 @@ class Tempo extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    bpmFactor: state.bpmFactor,
-    maxTempo: state.maxTempo,
-    minTempo: state.minTempo
+    BPM: state.BPM,
   };
 }
 

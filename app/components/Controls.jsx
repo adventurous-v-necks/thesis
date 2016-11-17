@@ -12,28 +12,37 @@ class Controls extends React.Component {
     this.transportRecord = this.transportRecord.bind(this);
     this.transportStop = this.transportStop.bind(this);
   }
-  componentDidMount() {
-
-  }
   transportPlay() {
-    this.props.dispatch({type: 'PRESS_PLAY'}); //SINGLE DISPATCH
+    this.props.dispatch({type: 'PLAY'});
   }
-  transportPause() {
-    // no functionality in MVP
+  transportPause() { /* no functionality in MVP */}
+  transportRecord = () => {
+      this.props.dispatch({type: 'AUDIO_RECORD'});
   }
-  transportRecord() {
-    this.props.dispatch({type: 'AUDIO_RECORD'});
-  }
-  transportStop() {
-    this.props.dispatch({type: 'AUDIO_STOP'});
-  }
+  transportStop = () => this.props.dispatch({type: 'AUDIO_STOP'});
+
   render() {
+    const containerStyle = {
+      width: '25%',
+      top: '50%',
+      transform: 'translateY(-40%)',
+      height: 'auto'
+    };
+    const style = {
+      fontSize: '2em',
+      height: 'auto',
+      width: '1.2em',
+      textAlign: 'center',
+    };
+
+    const recStyle = Object.assign({}, style, {color: 'red'});
+
     return (
-      <div className="controls">
-        <i className="fa fa-play" aria-hidden="true" style={{width: '2em', height: '2em'}} onClick={this.transportPlay}></i>
-        <i className="fa fa-pause" aria-hidden="true" style={{width: '2em', height: '2em'}} /* onClick={this.transportPause} */></i>
-        <i className="fa fa-circle" aria-hidden="true" style={{width: '2em', height: '2em'}} onClick={this.transportRecord}></i>
-        <i className="fa fa-stop" aria-hidden="true" style={{width: '2em', height: '2em'}} onClick={this.transportStop}></i>
+      <div className="controls" style={containerStyle}>
+        <i className="fa fa-play-circle-o" aria-hidden="true" style={style} onClick={this.transportPlay}></i>
+        <i className="fa fa-pause-circle-o" aria-hidden="true" style={style} /* onClick={this.transportPause} */></i>
+        <i className="fa fa-circle" aria-hidden="true" style={this.props.recording ? recStyle : style} onClick={this.transportRecord}></i>
+        <i className="fa fa-stop-circle-o" aria-hidden="true" style={style} onClick={this.transportStop}></i>
       </div>
     );
   }
@@ -41,7 +50,9 @@ class Controls extends React.Component {
 
 
 const mapStateToProps = function(state) {
-  return {};
+  return {
+    recording: state.recording
+  };
 }
 
 export default connect(mapStateToProps)(Controls);
