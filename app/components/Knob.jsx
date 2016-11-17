@@ -13,7 +13,6 @@ class Knob extends React.Component {
 
   changeVolume(e) {
     let newVol = this.props.allKnobs[this.props.id] + Number(e.movementX);
-    console.log(this.props.id, this.props.allKnobs[this.props.id]);
     newVol = Math.max(0,newVol);
     newVol = Math.min(newVol,255);
     this.props.dispatch({type:'KNOB_TWIDDLE', id: this.props.id, value: newVol});
@@ -38,7 +37,7 @@ class Knob extends React.Component {
     style.transform = 'rotate('+transform+'deg)';
 
     return (
-      <div onMouseDown={this.handleMouseDown.bind(this)} style={{cursor: 'crosshair', userSelect:'none'}}>
+      <div onMouseDown={this.handleMouseDown.bind(this)} style={{cursor: 'crosshair', userSelect:'none', height:'auto'}}>
 
       <div className="samplerVol">
         <span className="knob-text">{myValue}</span>
