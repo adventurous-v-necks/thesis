@@ -27,6 +27,7 @@ html {
 }
 body {
   width: 100%;
+  background-color: #f5f5f5;
 }
 nav {
   width: 100%;
@@ -444,12 +445,13 @@ section {
 .transportContainer {
   display: inline-block;
   overflow: hidden;
-  border: 1px solid black;
   width: 100%;
   overflow: hidden;
-  border: 2px solid green;
+  border: 2px solid #383838;
+  border-radius: 2px;
   height: auto;
   position: relative;
+  background-color: #efefef;
 }
 
 .transport {

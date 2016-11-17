@@ -13,11 +13,13 @@ class Synth extends React.Component {
 
   render() {
     const style = {
-      border: '3px solid red',
-      border: '2px solid blue',
+      border: '3px solid #383838',
+      borderRadius: '2px',
+      backgroundColor: '#efefef',
       width: '100%',
       height: '35%',
       position: 'relative',
+      top: '2px',
     }
 
     return (

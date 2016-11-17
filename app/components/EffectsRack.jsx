@@ -13,7 +13,9 @@ class EffectsRack extends React.Component {
   render() {
 
   	const effectsContainerStyle = {
-  		border: '2px solid red',
+  		border: '2px solid #383838',
+      borderRadius: '2px',
+      backgroundColor: '#efefef',
   		width: '100%',
   		height:'15%',
   		position:'relative',

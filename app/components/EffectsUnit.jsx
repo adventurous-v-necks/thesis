@@ -21,7 +21,8 @@ class EffectsDropDown extends React.Component {
       fontSize: '1.2em',
       height: '100%',
       width: '25%',
-      border: '1px solid black',
+      border: '1px solid #383838',
+      backgroundColor: '#efefef',
       float: 'left',
     };
     const effectNameStyle = {

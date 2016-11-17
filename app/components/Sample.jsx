@@ -28,7 +28,7 @@ class Sample extends React.Component {
   render() {
     return (
       <div key={this.props.sample.sampleName} id={`sample${this.props.sample.column}-${this.props.sample.index}`} style={{
-          backgroundColor: `hsl(${(((this.props.sample.column+1)*8)*8)%500},${100-(this.props.sample.index*10)}%,50%)`,
+          backgroundColor: `hsl(${(((this.props.sample.column+1)*8)*8)%500},${60-(this.props.sample.index*10)}%,80%)`,
           cursor: 'pointer',
           height:'calc(20% - 0.6em)',
           borderBottom: '2px solid white',
