@@ -22,7 +22,7 @@ class Transport extends React.Component {
     };
 
     return (
-      <span style={{display:'inline-block', height:'auto', width:'100%'}}>
+      <span style={{display:'inline-block', height:'auto', width:'100%', marginTop:'0.2em'}}>
         <div className="transportContainer">
           <TimeSig />
           <Tempo />
@@ -32,7 +32,7 @@ class Transport extends React.Component {
             <Knob id="0" />
           </div>
         </div>
-        <span style={{backgroundColor:'#efefef', marginTop: '-0.5em', position:'absolute', left:'0.5em', height:'1em', paddingLeft:'0.5em', paddingRight:'0.5em'}}>Transport Controls</span>
+        <span style={{backgroundColor:'#efefef', marginTop: '-0.5em', position:'absolute', left:'1em', height:'1em', paddingLeft:'0.5em', paddingRight:'0.5em'}}>Transport Controls</span>
       </span>
     );
   }
