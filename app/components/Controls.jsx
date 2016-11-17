@@ -29,6 +29,7 @@ j  }
       width: '25%',
       top: '50%',
       transform: 'translateY(-40%)',
+      height: 'auto'
     };
     const style = {
       fontSize: '2em',

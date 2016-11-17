@@ -449,7 +449,6 @@ section {
   overflow: hidden;
   border: 2px solid green;
   height: auto;
-  height: 10%;
   position: relative;
 }
 
@@ -591,7 +590,7 @@ input[type=range]:focus::-ms-fill-upper {
   height: 256px;
   position: relative;
   display: inline-block;
-  height: 100px;
+  height: auto;
   width: 100px;
   pointer-events: none;
   user-select: none;
