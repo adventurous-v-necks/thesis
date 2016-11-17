@@ -64,7 +64,6 @@ class Marker extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    timeZero: state.timeZero,
     recording: state.recording,
     markerTime: state.markerTime
   };
