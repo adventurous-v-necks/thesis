@@ -41,7 +41,7 @@ var io = require('socket.io')(server);
 
 var counter = 0
 io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
+  // socket.emit('news', { hello: 'world' });
   socket.on('my other event', function (data) {
     socket.broadcast.emit('faderChange2', {faderSetting : data} )
   });
