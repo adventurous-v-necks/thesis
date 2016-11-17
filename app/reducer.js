@@ -13,21 +13,18 @@ import io from 'socket.io-client';
 var socket = io.connect();
 
 socket.on('event', function (data) {
-  //UNCOMMENT HERE IF YOU WANT TO SEE WHAT IS BEING PROCESSED
-  //console.log('data.data', data.data.action)
   store.dispatch(Object.assign(data.data.action, {synthetic: true}));
 });
 
-  // store.dispatch(Object.assign(nextEvent.action, {synthetic: true}));
-
-  const sched = function() {
-    let state = store.getState();
-    let nextEvent = state.performance[events];
-    if (!nextEvent) return;
-    window.requestAnimationFrame(sched);
-    var when = Math.abs(nextEvent.timestamp - state.timeZero);
-    var delta = playTime + when;
-    if (state.audioContext.currentTime - delta >= 0) {
+const sched = function() {
+  let state = store.getState();
+  let nextEvent = state.performance[events];
+  if (!nextEvent) return;
+  window.requestAnimationFrame(sched);
+  var when = Math.abs(nextEvent.timestamp - state.timeZero);
+  var delta = playTime + when;
+  store.dispatch({type:'MARKER_UPDATE'});
+  if (state.audioContext.currentTime - delta >= 0) {
     // trigger the event
     store.dispatch(Object.assign(nextEvent.action, {synthetic: true}));
     events++;
@@ -66,9 +63,10 @@ export default function reduce(state, action) {
       audioContext: null,
       nodes: [], // notes of the keyboard which are playing,
       knobs: [100,100,100,100,100,100], // array of objects for all the knobs in our app. knobs[0] is globalVolume, then the next 5 are the sampler columns
-      timeZero: 0.045,
+      timeZero: 0,
       recordTimeZero: false,
-      suspended: false
+      suspended: false,
+      markerTime: 0
     };
   }
 
@@ -77,19 +75,21 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {user: action.who});
     }
     case 'MARKER_UPDATE': {
-      return Object.assign({}, state, {timeZero: state.audioContext.currentTime});
+      return Object.assign({}, state, {markerTime: state.audioContext.currentTime-playTime});
     }
     case 'AUDIO_RECORD': { // should start and restart (from pause) recording
-      return Object.assign({}, state, {
-        recording: true,
-        recordTimeZero: state.audioContext.currentTime,
-      }); // INCOMPLETE, override push to push and fire to socket.io
-    }
-    case 'PAUSE_RECORD': {
-      return Object.assign({}, state, {
-        performance: [],
-        recording: false,
-      }); // INCOMPLETE, override push to push and fire to socket.io
+      if (!state.recording) {
+        return Object.assign({}, state, {
+          recording: true,
+          recordTimeZero: state.audioContext.currentTime,
+          timeZero: state.audioContext.currentTime,
+          performance: []
+        });
+      } else {
+        return Object.assign({}, state, {
+          recording: false,
+        });
+      }
     }
     case 'AUDIO_STOP': {
       if (!state.suspended) {
@@ -99,9 +99,6 @@ export default function reduce(state, action) {
         state.audioContext.resume();
         return Object.assign({}, state, {suspended: false, recording: false});
       }
-    }
-    case 'TIME_ZERO': {
-      return Object.assign({}, state, {timeZero: state.audioContext.currentTime, performance: []});
     }
     case 'KEY_UP': {
       // TODO: optimize this -- use a hash table instead of an array
@@ -196,7 +193,7 @@ export default function reduce(state, action) {
       events = 0;
       playTime = state.audioContext.currentTime;
       window.requestAnimationFrame(sched);
-      return Object.assign({}, state);
+      return Object.assign({}, state, {recording: false});
     }
     case 'KNOB_TWIDDLE': {
       let temp = Object.assign([], state.performance);
