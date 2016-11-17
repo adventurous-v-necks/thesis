@@ -11,7 +11,7 @@ import {store} from './main.js';
 
 import io from 'socket.io-client';
 
-var socket = io.connect();
+let socket = io.connect();
 
 socket.on('event', function (data) {
   store.dispatch(Object.assign(data.data.action, {synthetic: true}));
@@ -22,8 +22,8 @@ const sched = function() {
   let nextEvent = state.performance[events];
   if (!nextEvent) return;
   window.requestAnimationFrame(sched);
-  var when = Math.abs(nextEvent.timestamp - state.recordStartTime);
-  var delta = playTime + when;
+  let when = Math.abs(nextEvent.timestamp - state.recordStartTime);
+  let delta = playTime + when;
   store.dispatch({type:'MARKER_UPDATE'});
   if (state.audioContext.currentTime - delta >= 0) {
     // trigger the event
@@ -35,7 +35,7 @@ const sched = function() {
 export default function reduce(state, action) {
   if (state === undefined) {
     let samples = [];
-    for (var col = 0; col < COLUMNS; col++) {
+    for (let col = 0; col < COLUMNS; col++) {
       var column = [];
       for (var sample = 0; sample < SAMPLES_PER_COLUMN; sample++) {
         column.push({sampleUrl: col < 3 ? '/samples/Mix_Hamir.wav' : '/samples/100bpm_Hamir_Clap.wav',
@@ -191,10 +191,10 @@ export default function reduce(state, action) {
       let bpm = Object.assign({}, state.BPM);
       if (action.id === 'tempoFader') {
         bpm = Math.round((action.value * (state.maxTempo - state.minTempo) / 100) + state.minTempo);
-        var ratio = ((bpm+state.minTempo)/state.maxTempo).toFixed(2);
+        const ratio = ((bpm+state.minTempo)/state.maxTempo).toFixed(2);
         state.pitchShiftNode.onaudioprocess = pitchShifter.bind(state.pitchShiftNode, ratio);
-        for (var col of state.samples) {
-          for (var sample of col) {
+        for (let col of state.samples) {
+          for (let sample of col) {
             if (sample.playing) {
               sample.source.playbackRate.value = ratio;
             }
@@ -231,7 +231,7 @@ export default function reduce(state, action) {
         state.masterOut.gain.value = action.value / 100;
       }
       if (action.id >= 1 && action.id <= 5) { // one of the sampler column volume knobs
-        for (var sample of state.samples[action.id-1]) {
+        for (let sample of state.samples[action.id-1]) {
           if (sample.playing) sample.gainNode.gain.value = action.value / 100;
         }
       }
