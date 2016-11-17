@@ -9,7 +9,7 @@ import FourOhFour from './components/FourOhFour.jsx';
 import LoginForm from './components/LoginForm.jsx';
 import Landing from './components/Landing.jsx';
 import SignIn from './components/SignIn.jsx';
-import reducer from './reducer.js';
+import reducer from './reducer/index.js';
 import Sampler from './components/Sampler.jsx';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
