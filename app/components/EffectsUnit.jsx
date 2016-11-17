@@ -49,10 +49,10 @@ class EffectsDropDown extends React.Component {
         </div>
         <div className="knobContainer" style={knobContainerStyle}>
           <div style={knobStyle}>
-            <Knob />
+            <Knob key={'knob'+this.props.id+'1'} id={100}/>
           </div>
           <div style={knobStyle}>
-            <Knob />
+            <Knob key={'knob'+this.props.id+'2'} id={101}/>
           </div>
         </div>
       </div>

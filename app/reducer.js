@@ -62,15 +62,25 @@ export default function reduce(state, action) {
       masterOut: null, // if you're making stuff that makes noise, connect it to this
       audioContext: null, // first set when page loads
       nodes: [], // notes of the keyboard which are playing,
-      knobs: [100,100,100,100,100,100], // array of objects for all the knobs in our app. knobs[0] is globalVolume, then the next 5 are the sampler columns
+      /*
+      array of values for all knobs in our app.
+      knobs[0] is reserved for globalVolume
+      knobs[1-5] are reserved for individual sampler columns
+      knobs[6] is reserved for synthVolume
+      knobs[7-12] are reserved for oscillator volumes and detuners
+      knobs[13-20] are reserved for additional features
+      knobs[20+] are reserved for effects
+      */
+      knobs: [100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100], // length === 20
       timeZero: 0, 
       suspended: false,
       markerTime: 0,
       recordStartTime: false,
       effectsMenuActive: false,
+      suspended: false,
+      recordTimeZero: false,
       customEffects: ['lorem', 'fx', 'sfx', 'ipsum'],
       activeEffects: [],
-      suspended: false
     };
   }
 
@@ -210,13 +220,22 @@ export default function reduce(state, action) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
         socket.emit('event2server', { action: action });
       }
-      if (action.id == '0') {
+      if (action.id == '0') { //globalVolume
         state.masterOut.gain.value = action.value / 100;
       }
-      if (action.id >= 1 && action.id <=4) { // one of the column volume knobs
+      if (action.id >= 1 && action.id <= 5) { // one of the sampler column volume knobs
         for (var sample of state.samples[action.id-1]) {
           if (sample.playing) sample.gainNode.gain.value = action.value / 100;
         }
+      }
+      if (action.id == '6') { //synthVolum
+      }
+      if (action.id >= 7 && action.id <= 12) { // one of the oscillator knobs
+      }
+      if (action.id >=13 && action.id <= 20) { // reserved for additional features
+      }
+      if (action.id > 20) { // one of the effect knobs
+        console.log('YOU DID IT!!');
       }
       return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
@@ -259,6 +278,7 @@ export default function reduce(state, action) {
     case 'EFFECT_TO_RACK': {
       let effect = action.effect;
       let allActiveEffects = state.activeEffects.slice();
+      let allKnobs = state.knobs.slice();
 
       if (state.activeEffects.indexOf(effect) === -1) {
         allActiveEffects.push(effect);
