@@ -66,7 +66,7 @@ export default function reduce(state, action) {
       timeZero: 0,
       recordTimeZero: false,
       suspended: false,
-      markerTime: 0
+      markerTime: 0,
       effectsMenuActive: false,
       customEffects: ['lorem', 'fx', 'sfx', 'ipsum'],
       activeEffects: []
