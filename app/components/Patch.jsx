@@ -18,11 +18,31 @@ class Patch extends React.Component {
       right: '3%',
     }
 
+    const selectStyle = {
+      fontSize: '111%',
+    }
+
+    const labelStyle = {
+      backgroundColor:'#efefef',
+      marginTop: '-0.5em',
+      position:'absolute',
+      left:'1em',
+      height:'1em',
+      paddingLeft:'0.5em',
+      paddingRight:'0.5em',
+    }
+
     return (
       <div className="patch">
         <div style={style}>
-          <p>Here is the patch box</p>
+          <select size={1} style={selectStyle}>
+            <option value="1">CrazyTime Piano</option>
+            <option value="2">Pirate-y Tones</option>
+            <option value="3">Dungeon Synth</option>
+            <option value="4">HR Happytime</option>
+          </select>
         </div>
+        {/* <span style={labelStyle}>Patch</span> */}
       </div>
     );
   }
