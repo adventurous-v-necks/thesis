@@ -12,28 +12,22 @@ import io from 'socket.io-client';
 
 var socket = io.connect();
 
-socket.on('faderChange2', function (data) {
-  console.log('data after emitted from server data', data)
-  store.dispatch(Object.assign(data.faderaction, {synthetic: true}));
-
+socket.on('event', function (data) {
+  //UNCOMMENT HERE IF YOU WANT TO SEE WHAT IS BEING PROCESSED
+  //console.log('data.data', data.data.action)
+  store.dispatch(Object.assign(data.data.action, {synthetic: true}));
 });
 
-const broadcast = function(action) {
-  // let state = store.getState();
-  console.log('action', action)
-  timeNow()
-// let nextEvent = state.performance[events];
   // store.dispatch(Object.assign(nextEvent.action, {synthetic: true}));
-}
 
-const sched = function() {
-  let state = store.getState();
-  let nextEvent = state.performance[events];
-  if (!nextEvent) return;
-  window.requestAnimationFrame(sched);
-  var when = Math.abs(nextEvent.timestamp - state.timeZero);
-  var delta = playTime + when;
-  if (state.audioContext.currentTime - delta >= 0) {
+  const sched = function() {
+    let state = store.getState();
+    let nextEvent = state.performance[events];
+    if (!nextEvent) return;
+    window.requestAnimationFrame(sched);
+    var when = Math.abs(nextEvent.timestamp - state.timeZero);
+    var delta = playTime + when;
+    if (state.audioContext.currentTime - delta >= 0) {
     // trigger the event
     store.dispatch(Object.assign(nextEvent.action, {synthetic: true}));
     events++;
@@ -47,13 +41,13 @@ export default function reduce(state, action) {
       var column = [];
       for (var sample = 0; sample < SAMPLES_PER_COLUMN; sample++) {
         column.push({sampleUrl: col < 3 ? '/samples/Mix_Hamir.wav' : '/samples/100bpm_Hamir_Clap.wav',
-                    index: sample,
-                    column: col,
-                    sampleName: 'Drum Loop '+col+sample,
-                    playing: false,
-                    loaded: false,
-                    buffer: null
-                  });
+          index: sample,
+          column: col,
+          sampleName: 'Drum Loop '+col+sample,
+          playing: false,
+          loaded: false,
+          buffer: null
+        });
       }
       samples.push(column);
     }
@@ -119,6 +113,7 @@ export default function reduce(state, action) {
       }
       let temp = Object.assign([], state.performance);
       if (!action.synthetic) {
+        socket.emit('event2server', { action: action });
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
       return Object.assign({}, state, {nodes: new_nodes, performance: temp});
@@ -134,6 +129,7 @@ export default function reduce(state, action) {
       temp.push(oscillator);
       let temp2 = Object.assign([], state.performance);
       if (!action.synthetic) {
+        socket.emit('event2server', { action: action });
         temp2.push({action: action, timestamp: state.audioContext.currentTime});
       }
       return Object.assign({}, state, {nodes: temp, performance: temp2});
@@ -159,12 +155,12 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {audioContext: audioCtx, masterOut: gainNode, pitchShiftNode: pitchShiftNode, synthGainNode: synthGainNode});
     }
     case 'FADER_CHANGE': {
-      socket.emit('faderChange', { action: action });
       // TODO: do something with the data e.g. adjust volume
       // replay the UI action (it wasn't necessarily caused by a UI change - could be synthetic)
       document.getElementById(action.id).value = action.value;
       let temp = Object.assign([], state.performance);
       if (!action.synthetic) {
+        socket.emit('event2server', { action: action });
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
       let bpm = Object.assign({}, state.BPM);
@@ -189,12 +185,12 @@ export default function reduce(state, action) {
       return Object.assign({}, state);
     }
     case 'KNOB_TWIDDLE': {
-      console.log('the', io)
       let temp = Object.assign([], state.performance);
       let temp2 = Object.assign([], state.knobs);
       temp2[action.id] = action.value;
       if (!action.synthetic) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
+        socket.emit('event2server', { action: action });
       }
       if (action.id == '0') {
         state.masterOut.gain.value = action.value / 100;
@@ -202,6 +198,9 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
     case 'PLAY_SAMPLE': {
+      if (!action.synthetic) {
+        socket.emit('event2server', { action: action });
+      }
       let allSamples = Object.assign([], state.samples); //clone to avoid mutation
       let theSample = allSamples[action.sample.column][action.sample.index]; //find relevant sample
       theSample.playing = !theSample.playing;
@@ -218,6 +217,9 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {samples: allSamples});
     }
     case 'OSC_WAVE_CHANGE': {
+      if (!action.synthetic) {
+        socket.emit('event2server', { action: action });
+      }
       let newOscs = Array.from(state.oscs);
       newOscs[action.num] = action.wave;
       return Object.assign({}, state, {oscs: newOscs});
