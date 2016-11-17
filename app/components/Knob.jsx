@@ -13,7 +13,7 @@ class Knob extends React.Component {
 
   changeVolume(e) {
     let newVol = this.props.allKnobs[this.props.id] + Number(e.movementX);
-    console.log(this.props.id, this.props.allKnobs[this.props.id]);
+    //console.log(this.props.id, this.props.allKnobs[this.props.id]);
     newVol = Math.max(0,newVol);
     newVol = Math.min(newVol,255);
     this.props.dispatch({type:'KNOB_TWIDDLE', id: this.props.id, value: newVol});
