@@ -12,7 +12,7 @@ class Controls extends React.Component {
     this.transportRecord = this.transportRecord.bind(this);
     this.transportStop = this.transportStop.bind(this);
   }
-  
+
   transportPlay = () => this.props.dispatch({type: 'PLAY'});
   transportPause() { /* no functionality in MVP */}
   transportRecord = () => {
@@ -21,7 +21,7 @@ class Controls extends React.Component {
     } else {
       this.props.dispatch({type: 'AUDIO_RECORD'});
     }
-  }
+j  }
   transportStop = () => this.props.dispatch({type: 'AUDIO_STOP'});
 
   render() {

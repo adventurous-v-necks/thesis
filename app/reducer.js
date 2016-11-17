@@ -68,14 +68,13 @@ export default function reduce(state, action) {
       maxTempo: 180,
       numColumns: COLUMNS,
       samples: samples,
-      oscs: [0, '1', '2'],
+      oscs: [0, '1', '1'],
       masterOut: null, // if you're making stuff that makes noise, connect it to this
       audioContext: null,
       nodes: [], // notes of the keyboard which are playing,
-      knobs: [100,100,100,100,100,100] // array of objects for all the knobs in our app. knobs[0] is globalVolume, then the next 5 are the sampler columns
-      timeZero: 0,
+      knobs: [100,100,100,100,100,100], // array of objects for all the knobs in our app. knobs[0] is globalVolume, then the next 5 are the sampler columns
+      timeZero: 0.045,
       recordTimeZero: false,
-      recordTimesStopped: [],
     };
   }
 
@@ -93,16 +92,14 @@ export default function reduce(state, action) {
       }); // INCOMPLETE, override push to push and fire to socket.io
     }
     case 'PAUSE_RECORD': {
-      const newStopped = state.recordTimesStopped.push(state.recordTimeZero);
       return Object.assign({}, state, {
         performance: [],
         recording: false,
-        recordTimesStopped: newStopped,
       }); // INCOMPLETE, override push to push and fire to socket.io
     }
     case 'AUDIO_STOP': {
       // Should stop recording audio and playing audio - perhaps prompt to share?
-      console.log('Stop Recording');
+      // Current does the same as pausing the recording until we have a better use for it
       return Object.assign({}, state, {
         recording: false,
       }); //INCOMPLETE
