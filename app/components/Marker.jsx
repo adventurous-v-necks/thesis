@@ -10,7 +10,8 @@ class Marker extends React.Component {
   formatTime = (time) => {
     // assume time comes in in seconds
     const leadingZero = (t, seconds) => {
-      const floor = Math.floor(seconds ? t % 60 : t / 60).toString();
+      let floor = Math.floor(seconds ? t % 60 : t / 60).toString();
+      if (floor < 0) { floor *= -1 }
       if (seconds ? t % 60 >= 10 : t / 60 >= 10) {
         return floor;
       } else {
@@ -23,20 +24,15 @@ class Marker extends React.Component {
     // const minutes = Math.floor(time / 60).toString();
     const minutes = leadingZero(time, false);
     const tenths = Math.round(time * 10).toString().slice(-1);
-    
+
     const shortTime = minutes + ':' + seconds + '.' + tenths;
 
-    if (time > 3600) {
-      const hours = Math.floor(time / (60 * 60)).toString();
-      return hours + ':' + shortTime;
-    } else {
-      return shortTime;
-    }
+    return shortTime;
   }
 
   componentDidMount() {
     this.timeMarker = setInterval( () => {
-      this.props.dispatch({type: 'MARKER_UPDATE'});
+      !this.props.recording ? null : this.props.dispatch({type: 'MARKER_UPDATE'});
     }, 50);
   }
 
@@ -54,6 +50,11 @@ class Marker extends React.Component {
       }
       return this.formatTime(time);
     };
+
+    const currentTime = getTime();
+
+    console.log(currentTime);
+
     const style = {
       height: '100%',
       width: '20%',
@@ -66,7 +67,7 @@ class Marker extends React.Component {
 
     return (
       <div className="marker" style={style}>
-        {getTime()}
+        {currentTime}
       </div>
     );
   }
@@ -77,6 +78,7 @@ const mapStateToProps = function(state) {
   return {
     timeZero: state.timeZero,
     recordTimeZero: state.recordTimeZero,
+    recording: state.recording,
   };
 }
 
