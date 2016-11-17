@@ -54,7 +54,7 @@ class Marker extends React.Component {
     const currentTime = getTime();
 
     const style = {
-      height: '100%',
+      height: 'auto',
       width: '20%',
       textAlign: 'center',
       top: '50%',
