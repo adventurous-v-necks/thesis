@@ -53,8 +53,6 @@ class Marker extends React.Component {
 
     const currentTime = getTime();
 
-    console.log(currentTime);
-
     const style = {
       height: '100%',
       width: '20%',
