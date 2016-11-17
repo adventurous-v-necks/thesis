@@ -7,7 +7,7 @@ class Sampler extends React.Component {
   constructor(props) {
     super(props);
   }
-  
+
   componentWillMount() {
 
   }
@@ -18,8 +18,11 @@ class Sampler extends React.Component {
       return columns;
     }
     return (
-      <div style={{border: '2px solid black', width: '100%', height: '30%', position:'relative'}}>
-      {columns()}
+      <div style={{display:'inline-block', height:'auto', width:'100%', marginTop:'0.2em'}}>
+        <div style={{border: '2px solid #383838', width: '100%', height: '30%', position:'relative', borderRadius:'2px', backgroundColor: '#efefef'}}>
+          {columns()}
+        </div>
+        <span style={{backgroundColor:'white', transform:'rotate(-3deg)', marginTop: '-0.5em', position:'absolute', left:'0.4em', height:'1em', paddingLeft:'0.5em', paddingRight:'0.5em'}}>Sampler</span>
       </div>
     );
   }
