@@ -287,7 +287,7 @@ export default function reduce(state, action) {
       }
 
       let newOscs = Array.from(state.oscs);
-      newOscs[action.num] = action.wave;
+      newOscs[action.oscnum] = action.wave;
 
       return Object.assign({}, state, {
         oscs: newOscs,

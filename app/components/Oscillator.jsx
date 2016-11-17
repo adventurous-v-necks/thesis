@@ -11,7 +11,7 @@ class Oscillator extends React.Component {
     this.props.dispatch({
       type: 'OSC_WAVE_CHANGE',
       wave: e.target.value,
-      num: this.props.number
+      oscnum: this.props.number
     })
   }
 
