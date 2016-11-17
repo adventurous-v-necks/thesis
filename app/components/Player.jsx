@@ -13,7 +13,7 @@ class Player extends React.Component {
   }
   render() {
     return (
-      <div className="player">
+      <div className="player" style={{paddingLeft:'1%', paddingRight:'1%'}}>
         <div style={{width: '100%', height: '4em'}}></div>
         <Transport />
         <Sampler />
