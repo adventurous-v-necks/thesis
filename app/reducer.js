@@ -63,13 +63,14 @@ export default function reduce(state, action) {
       audioContext: null,
       nodes: [], // notes of the keyboard which are playing,
       knobs: [100,100,100,100,100,100], // array of objects for all the knobs in our app. knobs[0] is globalVolume, then the next 5 are the sampler columns
+
       timeZero: 0,
       recordTimeZero: false,
       suspended: false,
       markerTime: 0
-      effectsMenuActive: true,
-      customEffects: ['placeholder effect', 'another', 'fx', 'sfx']
-      // activeEffects: ['1', '2']
+      effectsMenuActive: false,
+      customEffects: ['lorem', 'fx', 'sfx', 'ipsum'],
+      activeEffects: []
     };
   }
 
@@ -249,16 +250,23 @@ export default function reduce(state, action) {
       newOscs[action.num] = action.wave;
       return Object.assign({}, state, {oscs: newOscs});
     }
-    case 'NEW_EFFECT': {
-      console.log('new effect');
-      let allCustomEffects = state.customEffects.slice();
-      console.log('customEffects: ', state.customEffects);
-      allCustomEffects.push({effect: 'new effect'}); //INCOMPLETE, create new empty custom effect
-      return Object.assign({}, state, {customEffects: allCustomEffects});
-    }
     case 'EFFECT_MENU_TOGGLE': {
-      console.log('menu toggle');
       return Object.assign({}, state, {effectsMenuActive: !state.effectsMenuActive});
+    }
+    case 'EFFECT_TO_RACK': {
+      let effect = action.effect;
+      let allActiveEffects = state.activeEffects.slice();
+
+      if (state.activeEffects.indexOf(effect) === -1) {
+        allActiveEffects.push(effect);
+      } 
+      return Object.assign({}, state, {activeEffects: allActiveEffects});
+    }
+    case 'EFFECT_FROM_RACK': {
+      let allActiveEffects = state.activeEffects.slice();
+      allActiveEffects = allActiveEffects.filter((effect) => effect !== action.effect.id);
+
+      return Object.assign({}, state, {activeEffects: allActiveEffects});
     }
     default: {
       console.error('Reducer Error: ', action);

@@ -5,17 +5,11 @@ import EffectsDropDown from './EffectsDropDown.jsx';
 
 import {connect} from 'react-redux';
 
-
 class EffectsRack extends React.Component {
   constructor(props) {
     super(props);
-    // this.generateNewEffect = this.generateNewEffect.bind(this);
   }
 
-  // generateNewEffect() {
-  //   this.props.dispatch({type: 'NEW_EFFECT'}); <---- DELETE FROM DISPATCH IF NOT TO BE USED
-  // }
-  
   render() {
 
   	const effectsContainerStyle = {
@@ -41,7 +35,6 @@ class EffectsRack extends React.Component {
     );
   }
 }
-
 
 const mapStateToProps = function(state) {
   return {
