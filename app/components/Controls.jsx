@@ -12,16 +12,13 @@ class Controls extends React.Component {
     this.transportRecord = this.transportRecord.bind(this);
     this.transportStop = this.transportStop.bind(this);
   }
-
-  transportPlay = () => this.props.dispatch({type: 'PLAY'});
+  transportPlay() {
+    this.props.dispatch({type: 'PLAY'});
+  }
   transportPause() { /* no functionality in MVP */}
   transportRecord = () => {
-    if (this.props.recording) {
-      this.props.dispatch({type: 'PAUSE_RECORD'});
-    } else {
       this.props.dispatch({type: 'AUDIO_RECORD'});
-    }
-j  }
+  }
   transportStop = () => this.props.dispatch({type: 'AUDIO_STOP'});
 
   render() {
@@ -29,6 +26,7 @@ j  }
       width: '25%',
       top: '50%',
       transform: 'translateY(-40%)',
+      height: 'auto'
     };
     const style = {
       fontSize: '2em',

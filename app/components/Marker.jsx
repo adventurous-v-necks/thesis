@@ -54,7 +54,7 @@ class Marker extends React.Component {
     const currentTime = getTime();
 
     const style = {
-      height: '100%',
+      height: 'auto',
       width: '20%',
       textAlign: 'center',
       top: '50%',
@@ -65,7 +65,7 @@ class Marker extends React.Component {
 
     return (
       <div className="marker" style={style}>
-        {currentTime}
+        {this.props.markerTime.toFixed(2)}
       </div>
     );
   }
@@ -77,6 +77,7 @@ const mapStateToProps = function(state) {
     timeZero: state.timeZero,
     recordTimeZero: state.recordTimeZero,
     recording: state.recording,
+    markerTime: state.markerTime
   };
 }
 
