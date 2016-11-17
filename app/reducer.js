@@ -71,7 +71,7 @@ export default function reduce(state, action) {
       knobs[13-20] are reserved for additional features
       knobs[20+] are reserved for effects
       */
-      knobs: [100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100], // length === 20
+      knobs: [100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100], // length === 20
       timeZero: 0, 
       suspended: false,
       markerTime: 0,
@@ -235,7 +235,6 @@ export default function reduce(state, action) {
       if (action.id >=13 && action.id <= 20) { // reserved for additional features
       }
       if (action.id > 20) { // one of the effect knobs
-        console.log('YOU DID IT!!');
       }
       return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
@@ -282,8 +281,10 @@ export default function reduce(state, action) {
 
       if (state.activeEffects.indexOf(effect) === -1) {
         allActiveEffects.push(effect);
+        allKnobs.push(100);
+        allKnobs.push(100); // purposely repeated to account for two knob additions
       }
-      return Object.assign({}, state, {activeEffects: allActiveEffects});
+      return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
     }
     case 'EFFECT_FROM_RACK': {
       let allActiveEffects = state.activeEffects.slice();

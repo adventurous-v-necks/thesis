@@ -5,12 +5,18 @@ import Knob from './Knob.jsx';
 import {connect} from 'react-redux';
 
 class EffectsDropDown extends React.Component {
+  // We should avoid local component state, except where we don't
+  state = {};
+
   constructor(props) {
     super(props);
     this.removeEffect = this.removeEffect.bind(this);
   }
   componentDidMount() {
-
+    this.setState({
+      knob1: this.props.knobs.length - 2,
+      knob2: this.props.knobs.length - 1,
+    });
   }
   removeEffect(e) {
     this.props.dispatch({type: 'EFFECT_FROM_RACK', effect: this.props});
@@ -49,10 +55,10 @@ class EffectsDropDown extends React.Component {
         </div>
         <div className="knobContainer" style={knobContainerStyle}>
           <div style={knobStyle}>
-            <Knob key={'knob'+this.props.id+'1'} id={100}/>
+            <Knob key={this.props.knobs.length - 2} id={this.state.knob1}/>
           </div>
           <div style={knobStyle}>
-            <Knob key={'knob'+this.props.id+'2'} id={101}/>
+            <Knob key={this.props.knobs.length - 1} id={this.state.knob2}/>
           </div>
         </div>
       </div>
@@ -61,7 +67,9 @@ class EffectsDropDown extends React.Component {
 }
 
 const mapStateToProps = function(state) {
-  return {};
+  return {
+    knobs: state.knobs,
+  };
 }
 
 export default connect(mapStateToProps)(EffectsDropDown);

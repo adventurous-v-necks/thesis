@@ -12,15 +12,15 @@ class EffectsRack extends React.Component {
 
   render() {
 
-  	const effectsContainerStyle = {
-  		border: '2px solid #383838',
+    const effectsContainerStyle = {
+      border: '2px solid #383838',
       borderRadius: '2px',
       backgroundColor: '#efefef',
-  		width: '100%',
-  		height:'100%',
-  		position:'relative',
-  		textAlign: 'right',
-  	};
+      width: '100%',
+      height:'100%',
+      position:'relative',
+      textAlign: 'right',
+    };
 
     let activeEffects = this.props.activeEffects;
     let EffectsUnits = activeEffects.map((effect) => {
@@ -34,7 +34,7 @@ class EffectsRack extends React.Component {
          {EffectsUnits}
         </div>
         <EffectsDropDown />
-    	</div>
+      </div>
       <span style={{backgroundColor:'#efefef', marginTop: '-0.5em', position:'absolute', left:'1em', height:'1em', paddingLeft:'0.5em', paddingRight:'0.5em'}}>Effects Rack</span>
     </div>
     );
