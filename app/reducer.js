@@ -63,7 +63,6 @@ export default function reduce(state, action) {
       audioContext: null,
       nodes: [], // notes of the keyboard which are playing,
       knobs: [100,100,100,100,100,100], // array of objects for all the knobs in our app. knobs[0] is globalVolume, then the next 5 are the sampler columns
-
       timeZero: 0,
       recordTimeZero: false,
       suspended: false,
