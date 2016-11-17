@@ -32,6 +32,7 @@ class EffectsDropDown extends React.Component {
       border: '1px solid green',
     };
     const listBorder = {
+      height: 'auto',
       border: '1px solid orange',
     }
     const listItemStyle = {
