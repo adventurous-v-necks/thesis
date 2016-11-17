@@ -13,31 +13,35 @@ class Synth extends React.Component {
 
   render() {
     const style = {
-      border: '3px solid #383838',
+      border: '2px solid #383838',
       borderRadius: '2px',
       backgroundColor: '#efefef',
       width: '100%',
-      height: '35%',
+      height: '100%',
       position: 'relative',
+      paddingTop: '0.1em',
       top: '2px',
     }
 
     return (
-      <div className="synth" style={style}>
-        <Oscillators />
-        {/* <Volume /> would like to be able to add eventually */}
-        <div className="synth-volume-placeholder" style={{
-          border: '2px solid DarkKhaki',
-          position: 'absolute',
-          height: '100px',
-          top: '5%',
-          width: '100px',
-          right: '30%'
-        }}>
-          Volume Placeholder
+      <div style={{display:'inline-block', height:'36%', width:'100%', marginTop:'0.5em'}}>
+        <div className="synth" style={style}>
+          <Oscillators />
+          {/* <Volume /> would like to be able to add eventually */}
+          <div className="synth-volume-placeholder" style={{
+            border: '2px solid DarkKhaki',
+            position: 'absolute',
+            height: '100px',
+            top: '5%',
+            width: '100px',
+            right: '30%'
+          }}>
+            Volume Placeholder
+          </div>
+          <Patch />
+          <Keyboard />
         </div>
-        <Patch />
-        <Keyboard />
+        <span style={{backgroundColor:'#efefef', marginTop: '-0.5em', position:'absolute', left:'1em', height:'1em', paddingLeft:'0.5em', paddingRight:'0.5em'}}>Synthesizer</span>
       </div>
     );
   }

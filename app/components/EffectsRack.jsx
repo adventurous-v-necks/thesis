@@ -17,7 +17,7 @@ class EffectsRack extends React.Component {
       borderRadius: '2px',
       backgroundColor: '#efefef',
   		width: '100%',
-  		height:'15%',
+  		height:'100%',
   		position:'relative',
   		textAlign: 'right',
   	};
@@ -28,12 +28,15 @@ class EffectsRack extends React.Component {
       });
 
     return (
+    <div style={{display:'inline-block', height:'15%', width:'100%', marginTop:'0.5em'}}>
       <div className="effectsContainer" style={effectsContainerStyle}>
         <div style={{width: '90%', float: 'left'}}>
          {EffectsUnits}
         </div>
         <EffectsDropDown />
     	</div>
+      <span style={{backgroundColor:'#efefef', marginTop: '-0.5em', position:'absolute', left:'1em', height:'1em', paddingLeft:'0.5em', paddingRight:'0.5em'}}>Effects Rack</span>
+    </div>
     );
   }
 }

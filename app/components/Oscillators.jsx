@@ -13,7 +13,7 @@ class Oscillators extends React.Component {
     const style = {
       height: '45%',
       width: '50%',
-      top: '2%',
+      top: '3%',
       border: '3px solid pink',
       position: 'absolute',
       left: '2%',
@@ -37,4 +37,3 @@ const mapStateToProps = function(state) {
 }
 
 export default connect(mapStateToProps)(Oscillators);
-
