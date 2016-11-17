@@ -17,7 +17,7 @@ class Tempo extends React.Component {
       height: 'auto',
       width: '30%',
     };
-    const style = {
+    const tempoNumStyle = {
       height: 'auto',
       transform: 'translateY(25%)',
     };
@@ -27,7 +27,7 @@ class Tempo extends React.Component {
     };
     return (
       <div className="tempo" style={containerStyle} title="Adjust Global Tempo">
-        <span className="tempoDisplay" id="tempoDisplay" style={style}>{this.props.BPM}</span>
+        <span className="tempoDisplay" id="tempoDisplay" style={tempoNumStyle}>{this.props.BPM}</span>
         <div style={faderStyle}>
           <Fader id='tempoFader' />
         </div>
