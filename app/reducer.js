@@ -36,8 +36,8 @@ export default function reduce(state, action) {
   if (state === undefined) {
     let samples = [];
     for (let col = 0; col < COLUMNS; col++) {
-      var column = [];
-      for (var sample = 0; sample < SAMPLES_PER_COLUMN; sample++) {
+      let column = [];
+      for (let sample = 0; sample < SAMPLES_PER_COLUMN; sample++) {
         column.push({sampleUrl: col < 3 ? '/samples/Mix_Hamir.wav' : '/samples/100bpm_Hamir_Clap.wav',
           index: sample,
           column: col,
@@ -166,7 +166,7 @@ export default function reduce(state, action) {
       synthGainNode.connect(gainNode);
       pitchShiftNode.connect(gainNode);
 
-      // var compressor = audioCtx.createDynamicsCompressor();
+      // let compressor = audioCtx.createDynamicsCompressor();
       // compressor.threshold.value = -3;
       // compressor.knee.value = 35;
       // compressor.ratio.value = 0.9;
@@ -280,12 +280,19 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {samples: allSamples});
     }
     case 'OSC_WAVE_CHANGE': {
+      let temp = Object.assign([], state.performance);
       if (!action.synthetic) {
         socket.emit('event2server', { action: action });
+        temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
+
       let newOscs = Array.from(state.oscs);
       newOscs[action.num] = action.wave;
-      return Object.assign({}, state, {oscs: newOscs});
+
+      return Object.assign({}, state, {
+        oscs: newOscs,
+        performance: temp,
+      });
     }
     case 'EFFECT_MENU_TOGGLE': {
       return Object.assign({}, state, {effectsMenuActive: !state.effectsMenuActive});
