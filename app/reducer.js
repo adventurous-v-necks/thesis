@@ -22,7 +22,7 @@ const sched = function() {
   let nextEvent = state.performance[events];
   if (!nextEvent) return;
   window.requestAnimationFrame(sched);
-  var when = Math.abs(nextEvent.timestamp - state.timeZero);
+  var when = Math.abs(nextEvent.timestamp - state.recordStartTime);
   var delta = playTime + when;
   store.dispatch({type:'MARKER_UPDATE'});
   if (state.audioContext.currentTime - delta >= 0) {
@@ -76,7 +76,7 @@ export default function reduce(state, action) {
       timeZero: 0,
       suspended: false,
       markerTime: 0,
-      recordStartTime: false,
+      recordStartTime: 0,
       effectsMenuActive: false,
       suspended: false,
       recordTimeZero: false,
@@ -96,7 +96,6 @@ export default function reduce(state, action) {
       if (!state.recording) {
         return Object.assign({}, state, {
           recording: true,
-          timeZero: state.audioContext.currentTime,
           recordStartTime: state.audioContext.currentTime,
           performance: [],
         });
