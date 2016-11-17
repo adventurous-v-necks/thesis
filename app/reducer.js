@@ -60,13 +60,13 @@ export default function reduce(state, action) {
       samples: samples,
       oscs: [0, '1', '1'],
       masterOut: null, // if you're making stuff that makes noise, connect it to this
-      audioContext: null,
+      audioContext: null, // first set when page loads
       nodes: [], // notes of the keyboard which are playing,
       knobs: [100,100,100,100,100,100], // array of objects for all the knobs in our app. knobs[0] is globalVolume, then the next 5 are the sampler columns
-      timeZero: 0,
-      recordTimeZero: false,
+      timeZero: 0, 
       suspended: false,
       markerTime: 0,
+      recordStartTime: false,
       effectsMenuActive: false,
       customEffects: ['lorem', 'fx', 'sfx', 'ipsum'],
       activeEffects: []
@@ -78,15 +78,15 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {user: action.who});
     }
     case 'MARKER_UPDATE': {
-      return Object.assign({}, state, {markerTime: state.audioContext.currentTime-playTime});
+      return Object.assign({}, state, {markerTime: state.audioContext.currentTime - state.recordStartTime});
     }
     case 'AUDIO_RECORD': { // should start and restart (from pause) recording
       if (!state.recording) {
         return Object.assign({}, state, {
           recording: true,
-          recordTimeZero: state.audioContext.currentTime,
           timeZero: state.audioContext.currentTime,
-          performance: []
+          recordStartTime: state.audioContext.currentTime,
+          performance: [],
         });
       } else {
         return Object.assign({}, state, {
@@ -196,7 +196,10 @@ export default function reduce(state, action) {
       events = 0;
       playTime = state.audioContext.currentTime;
       window.requestAnimationFrame(sched);
-      return Object.assign({}, state, {recording: false});
+      return Object.assign({}, state, {
+        recording: false,
+        recordStartTime: state.audioContext.currentTime,
+      });
     }
     case 'KNOB_TWIDDLE': {
       let temp = Object.assign([], state.performance);

@@ -43,12 +43,7 @@ class Marker extends React.Component {
   render() {
     const getTime = () => {
       let time;
-      if (this.props.recordTimeZero) {
-        time = this.props.timeZero - this.props.recordTimeZero;
-      } else {
-        time = 0
-      }
-      return this.formatTime(time);
+      return this.formatTime(this.props.timeZero);
     };
 
     const currentTime = getTime();
@@ -65,7 +60,7 @@ class Marker extends React.Component {
 
     return (
       <div className="marker" style={style}>
-        {this.props.markerTime.toFixed(2)}
+        {this.props.markerTime.toFixed(1)}
       </div>
     );
   }
@@ -75,7 +70,6 @@ class Marker extends React.Component {
 const mapStateToProps = function(state) {
   return {
     timeZero: state.timeZero,
-    recordTimeZero: state.recordTimeZero,
     recording: state.recording,
     markerTime: state.markerTime
   };
