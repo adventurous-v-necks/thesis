@@ -26,31 +26,40 @@ class EffectsDropDown extends React.Component {
       padding: '.05em .1em 0 .1em',
       display: 'block',
       height: 'auto',
+      marginTop: '-0.35em',
     };
-    const listDropDownStyle = {
-      height: 'auto',
+    let listDropDownStyle = {
+      maxHeight: '0px',
+      paddingRight: '0.5em',
+      paddingLeft: '0.5em',
+      backgroundColor: '#333',
+      borderRadius: '2px',
+      transition: 'all 0.3s ease',
     }
     const listItemStyle = {
       display: 'block',
       height: 'auto',
+      color: '#efefef',
+      cursor: 'pointer',
     }
 
-    let DropDownItems;
+    let DropDownItems = this.props.customEffects.map((effect) => {
+      let effectName = effect.name;
+      return <li key={this.props.customEffects.indexOf(effect)} value={effectName} style={listItemStyle} onClick={this.addEffectToRack}>{effectName}</li>
+    });;
     let ButtonDisplay;
-    let customEffects = this.props.customEffects;
+    //let customEffects = this.props.customEffects;
     if (this.props.effectsMenuActive) {
       ButtonDisplay = 'fa fa-minus-square-o';
-      DropDownItems = customEffects.map((effect) => {
-        let effectName = effect.name;
-        return <li key={customEffects.indexOf(effect)} value={effectName} style={listItemStyle} onClick={this.addEffectToRack}>{effectName}</li>
-      });
+      // DropDownItems =
+      listDropDownStyle.maxHeight = '8em';
     } else {
       ButtonDisplay = 'fa fa-plus-square-o';
-      DropDownItems = '';
+      listDropDownStyle.maxHeight = '0px';
     }
 
     return (
-      <div className="effectsDropDown">
+      <div className="effectsDropDown" style={{position: 'absolute', right: '0'}}>
           <i className={ButtonDisplay} aria-hidden="true" style={style} onClick={this.toggleMenu}></i>
           <ul style={listDropDownStyle}>{DropDownItems}</ul>
       </div>

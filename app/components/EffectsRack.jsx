@@ -20,6 +20,7 @@ class EffectsRack extends React.Component {
       height:'100%',
       position:'relative',
       textAlign: 'right',
+      paddingTop: '0.6em',
     };
 
     let activeEffects = this.props.activeEffects;
