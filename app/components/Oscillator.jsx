@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../App.scss';
+import Knob from './Knob.jsx';
 import {connect} from 'react-redux';
 
 class Oscillator extends React.Component {
@@ -23,7 +24,12 @@ class Oscillator extends React.Component {
 
     const h5w1 = {
       width: "100%",
-      height: "50%"
+      height: "50%",
+    };
+    const knobStyle = {
+      width: '100%',
+      height: 'auto',
+      textAlign: 'center',
     };
 
     const oscNum = `osc${this.props.number}`;
@@ -35,8 +41,17 @@ class Oscillator extends React.Component {
         <table style={{width: "100%"}}>
           <tbody style={{width: "100%"}}>
             <tr style={h5w1}>
-              <td style={{width: "50%"}}>Volume Here</td>
-              <td style={{width: "50%"}}>Detuner Here</td>
+              <td style={{width: "50%"}}>
+                <div style={knobStyle}>
+                  <Knob id={num === 1 ? 7 : 8}/>
+                </div>
+              </td>
+
+              <td style={{width: "50%"}}>
+                <div style={knobStyle}>
+                  <Knob id={num === 1 ? 9 : 10}/>
+                </div>
+              </td>
             </tr>
             <tr style={h5w1}>
               <td colSpan="2">
