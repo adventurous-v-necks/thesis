@@ -9,6 +9,8 @@ let SAMPLES_PER_COLUMN = 5;
 
 import {hannWindow, linearInterpolation, pitchShifter} from './audioHelpers.js';
 
+import {BiquadFilter} from './effects.js';
+
 import {store} from './main.js';
 
 import io from 'socket.io-client';
@@ -136,7 +138,7 @@ export default function reduce(state, action) {
     }
     case 'KEY_DOWN': {
       let oscillator = state.audioContext.createOscillator();
-      oscillator.type = 'square';
+      oscillator.type = 'sawtooth';
       oscillator.frequency.value = action.frequency;
 
       oscillator.connect(state.synthGainNode);
@@ -177,9 +179,27 @@ export default function reduce(state, action) {
       // compressor.release.value = 0;
       // gainNode.connect(compressor);
       // compressor.connect(audioCtx.destination);
+      console.log(BiquadFilter);
+      let biquadFilter = BiquadFilter(audioCtx);
 
-      gainNode.connect(audioCtx.destination);
-      return Object.assign({}, state, {audioContext: audioCtx, masterOut: gainNode, pitchShiftNode: pitchShiftNode, synthGainNode: synthGainNode});
+      gainNode.connect(biquadFilter);
+      biquadFilter.connect(audioCtx.destination);
+
+
+      // case 'EFFECT_DELETED': {
+      //   for (var effect in state.activeEffects) {
+      //     state.activeEffects[effect].connect(state.activeEffects[effect+1]);
+      //   }
+      //   state.activeEffects[state.activeEffects.length-1].connect(state.audioCtx.masterOut);
+      // }
+
+      return Object.assign({}, state, {
+        audioContext: audioCtx,
+        masterOut: gainNode,
+        pitchShiftNode: pitchShiftNode,
+        synthGainNode: synthGainNode,
+        filterNode: biquadFilter,
+      });
     }
     case 'FADER_CHANGE': {
       // TODO: do something with the data e.g. adjust volume
@@ -244,6 +264,12 @@ export default function reduce(state, action) {
       if (action.id >=13 && action.id <= 20) { // reserved for additional features
       }
       if (action.id > 20) { // one of the effect knobs
+        if (action.id === 21) {
+          state.filterNode.frequency.value = action.value * 15;
+        }
+        if (action.id === 22) {
+          state.filterNode.gain.value = action.value / 5;
+        }
       }
       return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
