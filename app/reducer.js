@@ -9,7 +9,7 @@ let SAMPLES_PER_COLUMN = 5;
 
 import {hannWindow, linearInterpolation, pitchShifter} from './audioHelpers.js';
 
-import {BiquadFilterLo , BiquadFilterMid ,BiquadFilterHi } from './effects.js';
+import {BiquadFilter, BiquadFilterLo, BiquadFilterMid, BiquadFilterHi, Distortion, makeDistortionCurve} from './effects.js';
 
 import {store} from './main.js';
 
@@ -89,22 +89,22 @@ export default function reduce(state, action) {
       suspended: false,
       recordTimeZero: false,
       customEffects: [
-      {
-        name: 'BiquadFilterLo',
-        node: BiquadFilterLo,
-      },
-      {
-        name: 'lorem',
-        node: 'placeholder',
-      },
-      {
-        name: 'fx',
-        node: 'placeholder',
-      },
-      {
-        name: 'ipsum',
-        node: 'placeholder',
-      }],
+        {
+          name: 'biquadFilter',
+          node: BiquadFilter,
+        },
+        {
+          name: 'BiquadFilterLo',
+          node: BiquadFilterLo,
+        },
+          {
+            name: 'distortion',
+            node: Distortion,
+          },
+        {
+          name: 'ipsum',
+          node: 'placeholder',
+        }],
       activeEffects: [],
       syncOn: true,
     };
@@ -222,6 +222,18 @@ export default function reduce(state, action) {
       // compressor.connect(audioCtx.destination);
       gainNode.connect(audioCtx.destination);
 
+      let biquadFilter = BiquadFilter(audioCtx);
+      let distortion = Distortion(audioCtx);
+
+      // gainNode.connect(biquadFilter);
+      // biquadFilter.connect(audioCtx.destination);
+
+      gainNode.connect(distortion);
+      distortion.connect(audioCtx.destination);
+
+      // gainNode.connect(audioCtx.destination);
+
+
       // case 'EFFECT_DELETED': {
       //   for (var effect in state.activeEffects) {
       //     state.activeEffects[effect].connect(state.activeEffects[effect+1]);
@@ -235,6 +247,7 @@ export default function reduce(state, action) {
         pitchShiftNode: pitchShiftNode,
         synthGainNode: synthGainNode,
         socket: socket,
+        distortion: distortion,
       });
     }
     case 'SYNC_TOGGLE': {
@@ -328,11 +341,27 @@ export default function reduce(state, action) {
           // inside that effect component, which knob was tweaked?
           let whichKnob = effect.knobs.indexOf(action.id);
           // the effects of each knob tweak will need to be custom defined for each effect (currently; we can do better)
-          if (whichKnob === 0) effect.node.frequency.value = action.value * 15;
+          if (whichKnob === 0) {
+            effect.node.frequency.value = action.value * 15;
+          }
+
+          // if (action.id === 21) {
+          //   state.filterNode.frequency.value = action.value * 15;
+          // }
+          // if (action.id === 22) {
+          //   state.filterNode.gain.value = action.value / 5;
+          // }
+          if (action.id === 21) {
+            state.filterNode.curve = makeDistortionCurve(3 * action.value);
+          }
+          if (action.id === 22) {
+            // let oversampleString = 
+            // state.filterNode.oversample = 
+
+          }
         }
-      }
       return Object.assign({}, state, {performance: temp, knobs: temp2});
-    }
+    }}
     case 'PLAY_SAMPLE': {
       if (!action.synthetic) {
         state.socket.emit('event2server', { action: action });
