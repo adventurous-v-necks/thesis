@@ -24,7 +24,9 @@ class EffectsRack extends React.Component {
 
     let activeEffects = this.props.activeEffects;
     let EffectsUnits = activeEffects.map((effect) => {
-        return <EffectsUnit id={effect} key={effect}/>
+        // name of the effects unit is now its name plus its first knob, to allow multiple instances of
+        // the same unit e.g. biquadFilter21, biquadFilter23 ...
+        return <EffectsUnit id={effect.name + effect.knobs[0]} key={effect.name + effect.knobs[0]}/>
       });
 
     return (

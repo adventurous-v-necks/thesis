@@ -195,12 +195,7 @@ export default function reduce(state, action) {
       // compressor.release.value = 0;
       // gainNode.connect(compressor);
       // compressor.connect(audioCtx.destination);
-      console.log(BiquadFilter);
-      let biquadFilter = BiquadFilter(audioCtx);
-
-      gainNode.connect(biquadFilter);
-      biquadFilter.connect(audioCtx.destination);
-
+      gainNode.connect(audioCtx.destination);
 
       // case 'EFFECT_DELETED': {
       //   for (var effect in state.activeEffects) {
@@ -214,7 +209,6 @@ export default function reduce(state, action) {
         masterOut: gainNode,
         pitchShiftNode: pitchShiftNode,
         synthGainNode: synthGainNode,
-        filterNode: biquadFilter,
       });
     }
     case 'FADER_CHANGE': {
@@ -280,11 +274,13 @@ export default function reduce(state, action) {
       if (action.id >=13 && action.id <= 20) { // reserved for additional features
       }
       if (action.id > 20) { // one of the effect knobs
-        if (action.id === 21) {
-          state.filterNode.frequency.value = action.value * 15;
-        }
-        if (action.id === 22) {
-          state.filterNode.gain.value = action.value / 5;
+        // find which effect it is in our array of active effects
+        var effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1)[0];
+        if (effect.name === 'biquadFilter') {
+          // inside that effect component, which knob was tweaked?
+          let whichKnob = effect.knobs.indexOf(action.id);
+          // the effects of each knob tweak will need to be custom defined for each effect (currently; we can do better)
+          if (whichKnob === 0) effect.node.frequency.value = action.value * 15;
         }
       }
       return Object.assign({}, state, {performance: temp, knobs: temp2});
@@ -346,17 +342,50 @@ export default function reduce(state, action) {
       let allActiveEffects = state.activeEffects.slice();
       let allKnobs = state.knobs.slice();
 
-      if (state.activeEffects.indexOf(effect) === -1) {
-        allActiveEffects.push(effect);
-        allKnobs.push(100);
-        allKnobs.push(100); // purposely repeated to account for two knob additions
+      let newEffectNode = state.customEffects.filter(fx => fx.name === action.effect)[0].node(state.audioContext);
+      if (allActiveEffects.length === 0) { // this is the first effect unit we're adding
+        state.masterOut.disconnect();
+        state.masterOut.connect(newEffectNode);
+        newEffectNode.connect(state.audioContext.destination);
+      } else {
+        allActiveEffects[allActiveEffects.length - 1].node.disconnect();
+        allActiveEffects[allActiveEffects.length - 1].node.connect(newEffectNode);
+        newEffectNode.connect(state.audioContext.destination);
       }
+
+      // add new effect to list of active effects, including refs to its knobs
+      allActiveEffects.push({name:effect, node:newEffectNode, knobs:[allKnobs.length,allKnobs+1], faders:[]});
+      allKnobs.push(100);
+      allKnobs.push(100); // different effects will need different numbers of knobs.
+
       return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
     }
     case 'EFFECT_FROM_RACK': {
       let allActiveEffects = state.activeEffects.slice();
-      allActiveEffects = allActiveEffects.filter((effect) => effect !== action.effect.id);
-
+      let knobPos = action.id.search(/[0-9]/g);
+      let textId = action.id.slice(0,knobPos);
+      let firstKnob = Number(action.id.slice(knobPos));
+      for (var i in allActiveEffects) {
+        i = Number(i);
+        if (allActiveEffects[i].name === textId & allActiveEffects[i].knobs[0] === firstKnob) {
+          allActiveEffects[i].name = 'to be deleted';
+          allActiveEffects[i].node.disconnect();
+          if (allActiveEffects[i-1]) { // there is an effect before this one
+            if (allActiveEffects[i+1]) { // and there's one after it
+              allActiveEffects[i-1].node.connect(allActiveEffects[i+1].node);
+            } else { // there's an effect before it, but not after it
+              allActiveEffects[i-1].node.connect(state.audioContext.destination);
+            }
+          } else { // there's no effect before it
+            if (allActiveEffects[i+1]) {
+              state.masterOut.connect(allActiveEffects[i+1].node);
+            } else { // there are no effects left once it's been removed
+              state.masterOut.connect(state.audioContext.destination);
+            }
+          }
+        }
+      }
+      allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
       return Object.assign({}, state, {activeEffects: allActiveEffects});
     }
     default: {
