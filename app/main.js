@@ -23,7 +23,7 @@ render(
     <Router history={browserHistory}>
       <Route component={App} title="[Path]">
           <Route path="/" component={Landing} />
-          <Route path="/player" component={Player} /> {/* haven't changed anything in server.js yet */}
+          <Route path="/player" component={Player} /> 
           <Route path="/sampler" component={Sampler} />
           <Route path="/signin" component={SignIn} />
           <Route path="tryLogin(/:failed)" component={LoginForm} />
