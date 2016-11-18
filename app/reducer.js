@@ -196,6 +196,21 @@ export default function reduce(state, action) {
       // compressor.connect(audioCtx.destination);
       gainNode.connect(audioCtx.destination);
 
+      // source = audioCtx.createMediaStreamSource(stream);
+      // source.connect(analyser);
+      // analyser.connect(distortion);
+      // distortion.connect(biquadFilter);
+      // biquadFilter.connect(convolver);
+      // convolver.connect(gainNode);
+      // gainNode.connect(audioCtx.destination);
+
+      // console.log(BiquadFilter);
+      let BFMR = BiquadFilterMidRange(audioCtx)
+      BiquadFilterHiRange.connect(BFMR)
+      BiquadFilterLoRange.connect(BiquadFilterHiRange)
+      gainNode.connect(biquadFilter);
+      biquadFilter.connect(audioCtx.destination);
+
       // case 'EFFECT_DELETED': {
       //   for (var effect in state.activeEffects) {
       //     state.activeEffects[effect].connect(state.activeEffects[effect+1]);
