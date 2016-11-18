@@ -48,7 +48,6 @@ class Patch extends React.Component {
             <option value="4">HR Happytime</option>
           </select>
         </div>
-        {/* <span style={labelStyle}>Patch</span> */}
       </div>
     );
   }
