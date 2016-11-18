@@ -1,9 +1,9 @@
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
-let socket = io();
+// let socket = io();
 
-socket.on('new_peer', (peer) => {
- console.log(peer);
-});
+// socket.on('new_peer', (peer) => {
+//  console.log(peer);
+// });
 
-export default socketConnection
+// export default socketConnection

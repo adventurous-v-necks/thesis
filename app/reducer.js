@@ -117,7 +117,6 @@ export default function reduce(state, action) {
       }
     }
     case 'KEY_UP': {
-      // TODO: optimize this -- use a hash table instead of an array
       let new_nodes = [];
       for (let i = 0; i < state.nodes.length; i++) {
         if (Math.round(state.nodes[i].frequency.value) === Math.round(action.frequency)) {
