@@ -6,13 +6,10 @@ let COLUMNS = 5;
 let SAMPLES_PER_COLUMN = 5;
 
 import {hannWindow, linearInterpolation, pitchShifter} from '../audioHelpers.js';
-
+import reducers from './combined.js'
 import {store} from '../main.js';
-
 import io from 'socket.io-client';
-import reducers from './combined.js';
-
-let socket = io.connect();
+var socket = io.connect();
 
 socket.on('event', function (data) {
   store.dispatch(Object.assign(data.data.action, {synthetic: true}));
@@ -23,8 +20,8 @@ const sched = function() {
   let nextEvent = state.performance[events];
   if (!nextEvent) return;
   window.requestAnimationFrame(sched);
-  let when = Math.abs(nextEvent.timestamp - state.recordStartTime);
-  let delta = playTime + when;
+  var when = Math.abs(nextEvent.timestamp - state.timeZero);
+  var delta = playTime + when;
   store.dispatch({type:'MARKER_UPDATE'});
   if (state.audioContext.currentTime - delta >= 0) {
     // trigger the event
@@ -36,9 +33,9 @@ const sched = function() {
 export default function reduce(state, action) {
   if (state === undefined) {
     let samples = [];
-    for (let col = 0; col < COLUMNS; col++) {
-      let column = [];
-      for (let sample = 0; sample < SAMPLES_PER_COLUMN; sample++) {
+    for (var col = 0; col < COLUMNS; col++) {
+      var column = [];
+      for (var sample = 0; sample < SAMPLES_PER_COLUMN; sample++) {
         column.push({sampleUrl: col < 3 ? '/samples/Mix_Hamir.wav' : '/samples/100bpm_Hamir_Clap.wav',
           index: sample,
           column: col,
@@ -64,25 +61,15 @@ export default function reduce(state, action) {
       masterOut: null, // if you're making stuff that makes noise, connect it to this
       audioContext: null, // first set when page loads
       nodes: [], // notes of the keyboard which are playing,
-      /*
-      array of values for all knobs in our app.
-      knobs[0] is reserved for globalVolume
-      knobs[1-5] are reserved for individual sampler columns
-      knobs[6] is reserved for synthVolume
-      knobs[7-12] are reserved for oscillator volumes and detuners
-      knobs[13-20] are reserved for additional features
-      knobs[20+] are reserved for effects
-      */
-      knobs: [100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100], // length === 20
-      timeZero: 0,
+      knobs: [100,100,100,100,100,100], // array of objects for all the knobs in our app. knobs[0] is globalVolume, then the next 5 are the sampler columns
+      timeZero: 0, 
       suspended: false,
       markerTime: 0,
-      recordStartTime: 0,
+      recordStartTime: false,
       effectsMenuActive: false,
-      suspended: false,
-      recordTimeZero: false,
       customEffects: ['lorem', 'fx', 'sfx', 'ipsum'],
       activeEffects: [],
+      suspended: false
     };
   }
 
@@ -107,7 +94,7 @@ export default function reduce(state, action) {
       return reducers.keyDown(state, action)
     }
     case 'CREATE_AUDIO_CONTEXT': {
-      return reducers.createAudioCxt(state, action)      
+        return reducers.createAudioCxt(state, action)      
     }
     case 'FADER_CHANGE': {
       return reducers.faderChange(state, action)
@@ -131,19 +118,10 @@ export default function reduce(state, action) {
       let allSamples = Object.assign([], state.samples); //clone to avoid mutation
       let theSample = allSamples[action.sample.column][action.sample.index]; //find relevant sample
       theSample.playing = !theSample.playing;
-
       if (theSample.playing) {
         theSample.source = state.audioContext.createBufferSource();
         theSample.source.loop = true;
-        if (action.buffer.duration) {
-          theSample.source.buffer = action.buffer;
-        } else {
-          for (var i = 0; i < COLUMNS * SAMPLES_PER_COLUMN; i++) {
-            if ((state.sampleBuffers[i][0] === action.sample.column) && (state.sampleBuffers[i][1] === action.sample.index)) {
-              theSample.source.buffer = state.sampleBuffers[i][2];
-            }
-          }
-        }
+        theSample.source.buffer = action.buffer;
 
         let gainNode = state.audioContext.createGain();
         gainNode.gain.value = state.knobs[action.sample.column+1]/100;
@@ -169,9 +147,6 @@ export default function reduce(state, action) {
     }
     case 'EFFECT_FROM_RACK': {
       return reducers.effectFromRack(sate, action);
-    }
-    case 'STORE_REF_TO_SAMPLE': {
-      return reducers.storeRefToSample(state, action)
     }
     default: {
       console.error('Reducer Error: ', action);

@@ -5,7 +5,7 @@ var socket = io.connect();
 
 export default function(state, action) {
   switch (action.type) {
-    case 'KEY_UP': {
+   case 'KEY_UP': {
       // TODO: optimize this -- use a hash table instead of an array
       let new_nodes = [];
       for (let i = 0; i < state.nodes.length; i++) {
