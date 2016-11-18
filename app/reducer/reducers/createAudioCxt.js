@@ -23,7 +23,7 @@ export default function(state, action) {
     synthGainNode.connect(gainNode);
     pitchShiftNode.connect(gainNode);
 
-      // var compressor = audioCtx.createDynamicsCompressor();
+      // let compressor = audioCtx.createDynamicsCompressor();
       // compressor.threshold.value = -3;
       // compressor.knee.value = 35;
       // compressor.ratio.value = 0.9;

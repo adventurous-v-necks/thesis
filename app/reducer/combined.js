@@ -11,6 +11,7 @@ import oscWaveChange from './reducers/oscWaveChange.js';
 import effectMenuToggle from './reducers/effectMenuToggle.js';
 import effectToRack from './reducers/effectToRack.js';
 import effectFromRack from './reducers/effectFromRack.js'
+import storeRefToSample from './reducers/storeRefToSample.js';
 
 const combined = {
   storeUser: storeUser,
@@ -25,7 +26,8 @@ const combined = {
   oscWaveChange: oscWaveChange,
   effectMenuToggle: effectMenuToggle,
   effectToRack: effectToRack,
-  effectFromRack: effectFromRack
+  effectFromRack: effectFromRack,
+  storeRefToSample: storeRefToSample
 };
 
 export default combined;

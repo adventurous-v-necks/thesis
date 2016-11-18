@@ -1,10 +1,9 @@
 export default function(state, action) {
   switch (action.type) {
-    case 'AUDIO_RECORD': { // should start and restart (from pause) recording
+     case 'AUDIO_RECORD': { // should start and restart (from pause) recording
       if (!state.recording) {
         return Object.assign({}, state, {
           recording: true,
-          timeZero: state.audioContext.currentTime,
           recordStartTime: state.audioContext.currentTime,
           performance: [],
         });
