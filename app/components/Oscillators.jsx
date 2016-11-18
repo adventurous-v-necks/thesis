@@ -11,10 +11,9 @@ class Oscillators extends React.Component {
 
   render() {
     const style = {
-      height: '45%',
+      height: '43%',
       width: '50%',
-      top: '3%',
-      border: '3px solid pink',
+      top: '4%',
       position: 'absolute',
       left: '2%',
     }

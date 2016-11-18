@@ -18,8 +18,10 @@ class Oscillator extends React.Component {
 
   render() {
     const h1w5 = {
-      width: '50%',
+      width: '48%',
       height: '100%',
+      border: '2px solid #383838',
+      marginRight: '1%'
     }
 
     const h5w1 = {
@@ -31,6 +33,11 @@ class Oscillator extends React.Component {
       height: 'auto',
       textAlign: 'center',
     };
+
+    const radioLabelStyle = {
+      position: 'relative',
+      left: '15%'
+    }
 
     const oscNum = `osc${this.props.number}`;
     const num = this.props.number;
@@ -56,13 +63,16 @@ class Oscillator extends React.Component {
             <tr style={h5w1}>
               <td colSpan="2">
                 <div>
-                  <form action="">
-                    <input type="radio" name={oscNum} value="1"
-                      checked={oscs[num] === '1'} onChange={this.handleWaveChange}/>Wave1
-                    <input type="radio" name={oscNum} value="2"
-                      checked={oscs[num] === '2'} onChange={this.handleWaveChange}/>Wave2
-                    <input type="radio" name={oscNum} value="3"
-                      checked={oscs[num] === '3'} onChange={this.handleWaveChange}/>Wave3
+                  <form action="" style={{position: 'relative', top: '-15%'}}>
+                    <input type="radio" style={radioLabelStyle} name={oscNum} value="sine"
+                      checked={oscs[num] === 'sine'} onChange={this.handleWaveChange}/>Sine
+                    <input type="radio" style={radioLabelStyle} name={oscNum} value="square"
+                      checked={oscs[num] === 'square'} onChange={this.handleWaveChange}/>Square
+                    <input type="radio" style={radioLabelStyle} name={oscNum} value="sawtooth"
+                      checked={oscs[num] === 'sawtooth'} onChange={this.handleWaveChange}/>Sawtooth
+                    {/* Triangle basically sounds the same as sine, so I'm leaving it out for now */}
+                    {/* <input type="radio" name={oscNum} value="triangle"
+                      checked={oscs[num] === 'triangle'} onChange={this.handleWaveChange}/>Triangle */}
                   </form>
                 </div>
               </td>
