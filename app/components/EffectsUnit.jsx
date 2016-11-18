@@ -34,7 +34,6 @@ class EffectsDropDown extends React.Component {
     const effectNameStyle = {
       height: 'auto',
       width: '100%',
-      border: '1px solid blue',
     };
     const knobContainerStyle = {
       heigth: 'auto',
