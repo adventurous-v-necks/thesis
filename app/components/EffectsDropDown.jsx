@@ -24,16 +24,11 @@ class EffectsDropDown extends React.Component {
       fontSize: '2em',
       height: '100%',
       padding: '.05em .1em 0 .1em',
-      border: '1px solid blue',
       display: 'block',
       height: 'auto',
     };
-    const dropDownBorder = {
-      border: '1px solid green',
-    };
-    const listBorder = {
+    const listDropDownStyle = {
       height: 'auto',
-      border: '1px solid orange',
     }
     const listItemStyle = {
       display: 'block',
@@ -55,9 +50,9 @@ class EffectsDropDown extends React.Component {
     }
 
     return (
-      <div className="effectsDropDown" style={dropDownBorder}>
+      <div className="effectsDropDown">
           <i className={ButtonDisplay} aria-hidden="true" style={style} onClick={this.toggleMenu}></i>
-          <ul style={listBorder}>{DropDownItems}</ul>
+          <ul style={listDropDownStyle}>{DropDownItems}</ul>
       </div>
     );
   }
