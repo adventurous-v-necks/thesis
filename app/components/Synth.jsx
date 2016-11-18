@@ -22,21 +22,23 @@ class Synth extends React.Component {
       paddingTop: '0.1em',
       top: '2px',
     }
+    const synthVolume = {
+      border: '2px solid DarkKhaki',
+      position: 'absolute',
+      height: '100px',
+      top: '5%',
+      width: '100px',
+      right: '30%',
+      textAlign: 'center',
+    }
 
     return (
       <div style={{display:'inline-block', height:'36%', width:'100%', marginTop:'0.5em'}}>
         <div className="synth" style={style}>
           <Oscillators />
           {/* <Volume /> would like to be able to add eventually */}
-          <div className="synth-volume-placeholder" style={{
-            border: '2px solid DarkKhaki',
-            position: 'absolute',
-            height: '100px',
-            top: '5%',
-            width: '100px',
-            right: '30%'
-          }}>
-            Volume Placeholder
+          <div className="synth-volume" style={synthVolume}>
+            <Knob id={6}/>
           </div>
           <Patch />
           <Keyboard />
