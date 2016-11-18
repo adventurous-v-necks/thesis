@@ -9,7 +9,7 @@ let SAMPLES_PER_COLUMN = 5;
 
 import {hannWindow, linearInterpolation, pitchShifter} from './audioHelpers.js';
 
-import {BiquadFilter} from './effects.js';
+import {BiquadFilterMidRange, BiquadFilterHiRange, BiquadFilterLowRange} from './effects.js';
 
 import {store} from './main.js';
 
@@ -196,17 +196,9 @@ export default function reduce(state, action) {
       // compressor.connect(audioCtx.destination);
       gainNode.connect(audioCtx.destination);
 
-      // source = audioCtx.createMediaStreamSource(stream);
-      // source.connect(analyser);
-      // analyser.connect(distortion);
-      // distortion.connect(biquadFilter);
-      // biquadFilter.connect(convolver);
-      // convolver.connect(gainNode);
-      // gainNode.connect(audioCtx.destination);
-
       // console.log(BiquadFilter);
-      let BFMR = BiquadFilterMidRange(audioCtx)
-      BiquadFilterHiRange.connect(BFMR)
+      BiquadFilterMidRange(audioCtx)
+      BiquadFilterHiRange.connect(BiquadFilterMidRange)
       BiquadFilterLoRange.connect(BiquadFilterHiRange)
       gainNode.connect(biquadFilter);
       biquadFilter.connect(audioCtx.destination);
