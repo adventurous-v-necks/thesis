@@ -63,7 +63,7 @@ export default function reduce(state, action) {
       maxTempo: 180,
       numColumns: COLUMNS,
       samples: samples,
-      oscs: [0, '1', '1'],
+      oscs: [null, 'sine', 'sine'],
       masterOut: null, // if you're making stuff that makes noise, connect it to this
       audioContext: null, // first set when page loads
       nodes: [], // notes of the keyboard which are playing,
@@ -154,7 +154,7 @@ export default function reduce(state, action) {
     }
     case 'KEY_DOWN': {
       let oscillator = state.audioContext.createOscillator();
-      oscillator.type = 'sawtooth';
+      oscillator.type = state.oscs[1]; //TODO: only works for one synth sound right now
       oscillator.frequency.value = action.frequency;
 
       oscillator.connect(state.synthGainNode);
