@@ -1,5 +1,5 @@
 import React from 'react';
-
+
 import styles from '../App.scss';
 import {connect} from 'react-redux';
 import Oscillator from './Oscillator.jsx'
