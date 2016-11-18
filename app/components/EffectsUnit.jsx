@@ -19,7 +19,7 @@ class EffectsDropDown extends React.Component {
     });
   }
   removeEffect(e) {
-    this.props.dispatch({type: 'EFFECT_FROM_RACK', effect: this.props});
+    this.props.dispatch({type: 'EFFECT_FROM_RACK', id: this.props.id});
   }
   render() {
 
