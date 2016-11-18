@@ -45,8 +45,9 @@ class EffectsDropDown extends React.Component {
     let customEffects = this.props.customEffects;
     if (this.props.effectsMenuActive) {
       ButtonDisplay = 'fa fa-minus-square-o';
-      DropDownItems = customEffects.map((customEffect) => {
-        return <li key={customEffects.indexOf(customEffect)} value={customEffect} style={listItemStyle} onClick={this.addEffectToRack}>{customEffect}</li>
+      DropDownItems = customEffects.map((effect) => {
+        let effectName = effect.name;
+        return <li key={customEffects.indexOf(effect)} value={effectName} style={listItemStyle} onClick={this.addEffectToRack}>{effectName}</li>
       });
     } else {
       ButtonDisplay = 'fa fa-plus-square-o';

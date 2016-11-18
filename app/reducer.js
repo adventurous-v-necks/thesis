@@ -84,7 +84,23 @@ export default function reduce(state, action) {
       effectsMenuActive: false,
       suspended: false,
       recordTimeZero: false,
-      customEffects: ['lorem', 'fx', 'sfx', 'ipsum'],
+      customEffects: [
+        {
+          name: 'biquadFilter',
+          node: BiquadFilter,
+        },
+        {
+          name: 'lorem',
+          node: 'placeholder',
+        },
+        {
+          name: 'fx',
+          node: 'placeholder',
+        },
+        {
+          name: 'ipsum',
+          node: 'placeholder',
+        }],
       activeEffects: [],
     };
   }
