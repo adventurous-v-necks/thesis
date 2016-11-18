@@ -33,7 +33,6 @@ class Keyboard extends React.Component {
   render() {
     const style = {
       padding: '10px 5px 10px 5px',
-      border: '3px solid purple',
       width: 'auto',
       height: '130px',
       position: 'absolute',

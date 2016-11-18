@@ -12,7 +12,7 @@ class Synth extends React.Component {
   }
 
   render() {
-    const style = {
+    const synthStyle = {
       border: '2px solid #383838',
       borderRadius: '2px',
       backgroundColor: '#efefef',
@@ -22,28 +22,38 @@ class Synth extends React.Component {
       paddingTop: '0.1em',
       top: '2px',
     }
-    const synthVolume = {
-      border: '2px solid DarkKhaki',
+    const synthVolumeStyle = {
+      border: '2px solid #383838',
       position: 'absolute',
-      height: '100px',
+      height: '32%',
       top: '5%',
       width: '100px',
       right: '30%',
       textAlign: 'center',
     }
 
+    const labelStyle = {
+      backgroundColor:'#efefef',
+      marginTop: '-0.5em',
+      position:'absolute',
+      left:'1em',
+      height:'1em',
+      paddingLeft:'0.5em',
+      paddingRight:'0.5em',
+    }
+
     return (
       <div style={{display:'inline-block', height:'36%', width:'100%', marginTop:'0.5em'}}>
-        <div className="synth" style={style}>
+        <div className="synth" style={synthStyle}>
           <Oscillators />
-          {/* <Volume /> would like to be able to add eventually */}
-          <div className="synth-volume" style={synthVolume}>
-            <Knob id={6}/>
+          <div className="synthVolume" style={synthVolumeStyle}>
+            <Knob style={{position: 'relative', top: '20%'}} id={6}/>
+            <span style={{position: 'relative', top: '15%', backgroundColor: '#efefef', width: '4em'}}>Volume</span>
           </div>
           <Patch />
           <Keyboard />
         </div>
-        <span style={{backgroundColor:'#efefef', marginTop: '-0.5em', position:'absolute', left:'1em', height:'1em', paddingLeft:'0.5em', paddingRight:'0.5em'}}>Synthesizer</span>
+        <span style={labelStyle}>Synthesizer</span>
       </div>
     );
   }
