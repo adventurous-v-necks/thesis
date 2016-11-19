@@ -1,12 +1,12 @@
- let BiquadFilterLowRange = (audioCtx) => {
-  let filter = audioCtx.createBiquadFilter();
-  filter.type = "lowshelf";
+export let BiquadFilterLo = (audioCtx) => {
+  let filter =   audioCtx.createBiquadFilter();
+  filter.type = "lowpass";
   filter.frequency.value = 750;
-  filter.gain.value = 20;
+  filter.gain.value = 25;  
   return filter;
 }
 
- let BiquadFilterMidRange = (audioCtx) => {
+export let BiquadFilterMid = (audioCtx) => {
   let filter = audioCtx.createBiquadFilter();
   filter.type = "bandpass";
   filter.frequency.value = 1750;
@@ -14,16 +14,10 @@
   return filter;
 }
 
- let BiquadFilterHiRange = (audioCtx) => {
+export let BiquadFilterHi = (audioCtx) => {
   let filter = audioCtx.createBiquadFilter();
-  filter.type = "highshelf";
+  filter.type = "highpass";
   filter.frequency.value = 2750;
-  filter.gain.value = 20;
+  filter.gain.value = 50;
   return filter;
 }
-
-var BQFM = BiquadFilterMidRange(audioCtx)
-BiquadFilterHiRange.connect(BiquadFilterMidRange)
-BiquadFilterLoRange.connect(BiquadFilterHiRange)
-
-export BQFM
