@@ -70,9 +70,6 @@ class Oscillator extends React.Component {
                       checked={oscs[num] === 'square'} onChange={this.handleWaveChange}/>Square
                     <input type="radio" style={radioLabelStyle} name={oscNum} value="sawtooth"
                       checked={oscs[num] === 'sawtooth'} onChange={this.handleWaveChange}/>Sawtooth
-                    {/* Triangle basically sounds the same as sine, so I'm leaving it out for now */}
-                    {/* <input type="radio" name={oscNum} value="triangle"
-                      checked={oscs[num] === 'triangle'} onChange={this.handleWaveChange}/>Triangle */}
                   </form>
                 </div>
               </td>
