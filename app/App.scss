@@ -613,10 +613,14 @@ input[type=range]:focus::-ms-fill-upper {
 .knob-text {
   float: left;
   position: absolute;
-  top: 18%;
-  left: 18%;
+  top: 24%;
+  left: 28%;
   user-select: none;
-  color: rgba(0,0,0,0.4);
+  color: rgba(0,0,0,0.3);
+  float: none;
+  text-align: center;
+  font-size: 1.4em;
+  width:2em;
   height: auto;
 }
 .samplerSpan {
@@ -636,7 +640,7 @@ svg.dial {
 }
 .dial .knob line {
   stroke: black;
-  stroke-width: 0.5px;
+  stroke-width: 0.6px;
   stroke-linecap: round;
 }
 .dial .knob_number {

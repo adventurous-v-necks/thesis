@@ -19,6 +19,8 @@ class Transport extends React.Component {
     const volumeSizing = {
       width: 'auto',
       float: 'right',
+      height: 'auto',
+      textAlign: 'center',
     };
 
     return (
@@ -28,9 +30,9 @@ class Transport extends React.Component {
           <Tempo />
           <Marker />
           <Controls />
-          <div style={volumeSizing}>
+          <span style={volumeSizing}>
             <Knob id="0" title="Adjust Volume" label='Master'/>
-          </div>
+          </span>
         </div>
         <span style={{backgroundColor:'#efefef', marginTop: '-0.5em', position:'absolute', left:'1em', height:'1em', paddingLeft:'0.5em', paddingRight:'0.5em'}}>Transport Controls</span>
       </span>
