@@ -80,7 +80,7 @@ export default function reduce(state, action) {
       knobs[13-20] are reserved for additional features
       knobs[20+] are reserved for effects
       */
-      knobs: [100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100], // length === 20
+      knobs: Array(21).fill(100),
       timeZero: 0,
       suspended: false,
       markerTime: 0,
