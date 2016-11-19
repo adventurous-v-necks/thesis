@@ -36,15 +36,19 @@ class Knob extends React.Component {
     transform = Math.min(100, transform);
     style.transform = 'rotate('+transform+'deg)';
 
-    
+
     const labelFunc = (label) => {
       const spanStyle = {
         position: 'relative',
         height: '50%',
         fontSize: '90%',
-        bottom: '2.0em',
+        bottom: '1.5em',
         textAlign: 'center',
         backgroundColor: '#efefef',
+        textTransform: 'uppercase',
+        left: '0em',
+        paddingLeft: '0.5em',
+        paddingRight: '0.5em',
         marginRight: 'auto',
         marginLeft: 'auto',
       }
@@ -58,7 +62,7 @@ class Knob extends React.Component {
     }
 
     return (
-      <div title={this.props.title} onMouseDown={this.handleMouseDown.bind(this)} 
+      <div title={this.props.title} onMouseDown={this.handleMouseDown.bind(this)}
         style={{cursor: 'crosshair', userSelect:'none', height:'auto'}}>
         <div className="samplerVol">
           <span className="knob-text">{myValue}</span>
@@ -67,7 +71,7 @@ class Knob extends React.Component {
               <g  style={style}  className="knob">
                 <g className="knob_gfx" >
                   <circle cx="0" cy="0" r="5"/>
-                    <line x1="0" y1="-1.5" x2="0" y2="-4.4"/>
+                    <line x1="0" y1="-0.6" x2="0" y2="-4.4"/>
                 </g>
               <text className="knob_number"/>
               </g>
