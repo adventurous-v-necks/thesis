@@ -158,19 +158,23 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {nodes: new_nodes, performance: temp});
     }
     case 'KEY_DOWN': {
-      let oscillator = state.audioContext.createOscillator();
-      oscillator.type = state.oscs[1]; //TODO: only works for one synth sound right now
-      oscillator.frequency.value = action.frequency;
-
-      oscillator.connect(state.synthGainNode);
-      oscillator.start(0);
       let temp = Object.assign([], state.nodes);
-      temp.push(oscillator);
       let temp2 = Object.assign([], state.performance);
-      if (!action.synthetic) {
-        state.socket.emit('event2server', { action: action });
-        temp2.push({action: action, timestamp: state.audioContext.currentTime});
+
+      for (let i = 0; i < 2; i++) {
+        let oscillator = state.audioContext.createOscillator();
+        oscillator.type = state.oscs[i + 1]; //TODO: only works for one synth sound right now
+        oscillator.frequency.value = action.frequency;
+
+        oscillator.connect(state.synthGainNode);
+        oscillator.start(0);
+        temp.push(oscillator);
+        if (!action.synthetic) {
+          state.socket.emit('event2server', { action: action });
+          temp2.push({action: action, timestamp: state.audioContext.currentTime});
+        }
       }
+
       return Object.assign({}, state, {nodes: temp, performance: temp2});
     }
     case 'CREATE_AUDIO_CONTEXT': {
