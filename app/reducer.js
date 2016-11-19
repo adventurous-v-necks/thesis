@@ -16,8 +16,6 @@ import {store} from './main.js';
 // DEPLOY: comment the following line out to deploy
 import IO from 'socket.io-client';
 
-
-
 const sched = function() {
   let state = store.getState();
   let nextEvent = state.performance[events];
@@ -33,16 +31,25 @@ const sched = function() {
   }
 };
 
+const sampleUrls = ['/samples/100bpm_Hamir_Bass_1.wav.mp3', '/samples/100bpm_Hamir_Bass_2.wav.mp3',
+'/samples/100bpm_Hamir_Clap.mp3', '/samples/100bpm_Hamir_Drop_1.wav.mp3',
+'/samples/100bpm_Hamir_Drop_2.wav.mp3', '/samples/100bpm_Hamir_DrumLoop_01.wav.mp3',
+'/samples/100bpm_Hamir_DrumLoop_02.wav.mp3', '/samples/100bpm_Hamir_DrumLoop_(No_kick)_01.wav.mp3',
+'/samples/100bpm_Hamir_Fx_Noise.wav.mp3', '/samples/100bpm_Hamir_Fx_Riseup.wav.mp3',
+'/samples/100bpm_Hamir_Hithat.wav.mp3', '/samples/100bpm_Hamir_Perc.wav.mp3', '/samples/100bpm_Hamir_Ride_1.wav.mp3',
+'/samples/100bpm_Hamir_Ride_2.wav.mp3', '/samples/100bpm_Hamir_Snare.wav.mp3', '/samples/100bpm_Hamir_Kick.mp3',
+'/samples/100bpm_Hamir_Sub.wav.mp3', '/samples/100bpm_Hamir_Synth_1.wav.mp3', '/samples/100bpm_Hamir_Synth_2.wav.mp3'];
+
 export default function reduce(state, action) {
   if (state === undefined) {
     let samples = [];
     for (let col = 0; col < COLUMNS; col++) {
       let column = [];
       for (let sample = 0; sample < SAMPLES_PER_COLUMN; sample++) {
-        column.push({sampleUrl: col < 3 ? '/samples/Mix_Hamir.wav' : '/samples/100bpm_Hamir_Clap.wav',
+        column.push({sampleUrl: sampleUrls[(col*5+sample)%18],
           index: sample,
           column: col,
-          sampleName: 'Drum Loop '+col+sample,
+          sampleName: sampleUrls[(col*5+sample)%18].split('/')[2].split('_')[2].split('.')[0],
           playing: false,
           loaded: false,
           buffer: null
