@@ -355,6 +355,8 @@ export default function reduce(state, action) {
         theSample.source.loop = true;
         if (action.buffer.duration) {
           theSample.source.buffer = action.buffer;
+          const ratio = ((state.BPM+state.minTempo)/state.maxTempo).toFixed(2);
+          theSample.source.playbackRate.value = ratio;
         } else {
           for (var i = 0; i < COLUMNS * SAMPLES_PER_COLUMN; i++) {
             if ((state.sampleBuffers[i][0] === action.sample.column) && (state.sampleBuffers[i][1] === action.sample.index)) {
