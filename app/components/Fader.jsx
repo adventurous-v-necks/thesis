@@ -8,8 +8,8 @@ class Fader extends React.Component {
   }
   report(e) {
     this.props.dispatch({
-      type: 'FADER_CHANGE', 
-      id: this.props.id, 
+      type: 'FADER_CHANGE',
+      id: this.props.id,
       value: e.nativeEvent.target.value,
     });
   }

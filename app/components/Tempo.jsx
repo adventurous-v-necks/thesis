@@ -15,7 +15,8 @@ class Tempo extends React.Component {
   render() {
     const containerStyle = {
       height: 'auto',
-      width: '30%',
+      width: 'auto',
+      marginRight: '1em',
     };
     const tempoNumStyle = {
       height: 'auto',

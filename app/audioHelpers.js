@@ -15,7 +15,7 @@ export var interpolator = function (a, b, t) {
 export var pitchShifter = function (pr, event) {
 
     let grainSize = 256;
-    let overlapRatio = 0.5;
+    let overlapRatio = 0.4;
     let pitchRatio = Number(pr);
     var inputData = event.inputBuffer.getChannelData(0);
     var outputData = event.outputBuffer.getChannelData(0);
