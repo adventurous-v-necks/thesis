@@ -1,10 +1,11 @@
+//-----------------------
 import React from 'react';
 import styles from '../App.scss';
 import Knob from './Knob.jsx';
 
 import {connect} from 'react-redux';
 
-class EffectsUnit extends React.Component {
+class EffectUnit_Distortion extends React.Component {
   // We should avoid local component state, except where we don't
   state = {};
 
@@ -13,9 +14,9 @@ class EffectsUnit extends React.Component {
     this.removeEffect = this.removeEffect.bind(this);
   }
   componentDidMount() {
+    console.log('distortion props: ', this.props);
     this.setState({
-      knob1: this.props.knobs.length - 2,
-      knob2: this.props.knobs.length - 1,
+      knob: this.props.knobs.length - 1,
     });
   }
   removeEffect(e) {
@@ -37,11 +38,12 @@ class EffectsUnit extends React.Component {
     };
     const knobContainerStyle = {
       heigth: 'auto',
-      width: 'auto',
+      width: '100%',
+      transform: 'translateY(15%)',
     };
     const knobStyle = {
       height: 'auto',
-      width: '50%',
+      width: '100%',
       textAlign: 'center',
     };
 
@@ -53,10 +55,7 @@ class EffectsUnit extends React.Component {
         </div>
         <div className="knobContainer" style={knobContainerStyle}>
           <div style={knobStyle}>
-            <Knob key={this.props.knobs.length - 2} id={this.state.knob1}/>
-          </div>
-          <div style={knobStyle}>
-            <Knob key={this.props.knobs.length - 1} id={this.state.knob2}/>
+            <Knob key={this.props.knobs.length - 1} id={this.state.knob}/>
           </div>
         </div>
       </div>
@@ -70,4 +69,4 @@ const mapStateToProps = function(state) {
   };
 }
 
-export default connect(mapStateToProps)(EffectsUnit);
+export default connect(mapStateToProps)(EffectUnit_Distortion);
