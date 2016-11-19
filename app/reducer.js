@@ -9,7 +9,7 @@ let SAMPLES_PER_COLUMN = 5;
 
 import {hannWindow, linearInterpolation, pitchShifter} from './audioHelpers.js';
 
-import {BiquadFilterMidRange, BiquadFilterHiRange, BiquadFilterLowRange} from './effects.js';
+import {BiquadFilterLo , BiquadFilterMid ,BiquadFilterHi } from './effects.js';
 
 import {store} from './main.js';
 
@@ -85,22 +85,22 @@ export default function reduce(state, action) {
       suspended: false,
       recordTimeZero: false,
       customEffects: [
-        {
-          name: 'biquadFilter',
-          node: BiquadFilter,
-        },
-        {
-          name: 'lorem',
-          node: 'placeholder',
-        },
-        {
-          name: 'fx',
-          node: 'placeholder',
-        },
-        {
-          name: 'ipsum',
-          node: 'placeholder',
-        }],
+      {
+        name: 'BiquadFilterLo',
+        node: BiquadFilterLo,
+      },
+      {
+        name: 'lorem',
+        node: 'placeholder',
+      },
+      {
+        name: 'fx',
+        node: 'placeholder',
+      },
+      {
+        name: 'ipsum',
+        node: 'placeholder',
+      }],
       activeEffects: [],
     };
   }
@@ -135,6 +135,7 @@ export default function reduce(state, action) {
       }
     }
     case 'KEY_UP': {
+      // TODO: optimize this -- use a hash table instead of an array
       let new_nodes = [];
       for (let i = 0; i < state.nodes.length; i++) {
         if (Math.round(state.nodes[i].frequency.value) === Math.round(action.frequency)) {
@@ -176,15 +177,20 @@ export default function reduce(state, action) {
       pitchShiftNode.buffer = new Float32Array(grainSize * 2);
       pitchShiftNode.grainWindow = hannWindow(grainSize);
       pitchShiftNode.onaudioprocess = pitchShifter.bind(pitchShiftNode, 1);
-
+      let BFLo = BiquadFilterLo(audioCtx); 
+      let BFMid = BiquadFilterMid(audioCtx);
+      let BFHi = BiquadFilterHi(audioCtx);
       let synthGainNode = audioCtx.createGain();
       synthGainNode.gain.value = 0.3;
-
+      let convolver = audioCtx.createConvolver();
       let gainNode = audioCtx.createGain();
       gainNode.gain.value = 1;
       synthGainNode.connect(gainNode);
       pitchShiftNode.connect(gainNode);
-
+      // let distortion = audioCtx.createWaveShaper();
+      // distortion.connect(BFLo)
+      // BFLo.connect(convolver);
+      // convolver.connect(gainNode);
       // let compressor = audioCtx.createDynamicsCompressor();
       // compressor.threshold.value = -3;
       // compressor.knee.value = 35;
@@ -195,13 +201,6 @@ export default function reduce(state, action) {
       // gainNode.connect(compressor);
       // compressor.connect(audioCtx.destination);
       gainNode.connect(audioCtx.destination);
-
-      // console.log(BiquadFilter);
-      BiquadFilterMidRange(audioCtx)
-      BiquadFilterHiRange.connect(BiquadFilterMidRange)
-      BiquadFilterLoRange.connect(BiquadFilterHiRange)
-      gainNode.connect(biquadFilter);
-      biquadFilter.connect(audioCtx.destination);
 
       // case 'EFFECT_DELETED': {
       //   for (var effect in state.activeEffects) {
@@ -283,6 +282,7 @@ export default function reduce(state, action) {
         // find which effect it is in our array of active effects
         var effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1)[0];
         if (effect.name === 'biquadFilter') {
+          console.log('biquadFilter')
           // inside that effect component, which knob was tweaked?
           let whichKnob = effect.knobs.indexOf(action.id);
           // the effects of each knob tweak will need to be custom defined for each effect (currently; we can do better)
@@ -351,13 +351,13 @@ export default function reduce(state, action) {
       let newEffectNode = state.customEffects.filter(fx => fx.name === action.effect)[0].node(state.audioContext);
       if (allActiveEffects.length === 0) { // this is the first effect unit we're adding
         state.masterOut.disconnect();
-        state.masterOut.connect(newEffectNode);
-        newEffectNode.connect(state.audioContext.destination);
-      } else {
-        allActiveEffects[allActiveEffects.length - 1].node.disconnect();
-        allActiveEffects[allActiveEffects.length - 1].node.connect(newEffectNode);
-        newEffectNode.connect(state.audioContext.destination);
-      }
+      state.masterOut.connect(newEffectNode);
+      newEffectNode.connect(state.audioContext.destination);
+    } else {
+      allActiveEffects[allActiveEffects.length - 1].node.disconnect();
+      allActiveEffects[allActiveEffects.length - 1].node.connect(newEffectNode);
+      newEffectNode.connect(state.audioContext.destination);
+    }
 
       // add new effect to list of active effects, including refs to its knobs
       allActiveEffects.push({name:effect, node:newEffectNode, knobs:[allKnobs.length,allKnobs+1], faders:[]});
@@ -380,23 +380,23 @@ export default function reduce(state, action) {
             if (allActiveEffects[i+1]) { // and there's one after it
               allActiveEffects[i-1].node.connect(allActiveEffects[i+1].node);
             } else { // there's an effect before it, but not after it
-              allActiveEffects[i-1].node.connect(state.audioContext.destination);
-            }
+            allActiveEffects[i-1].node.connect(state.audioContext.destination);
+          }
           } else { // there's no effect before it
-            if (allActiveEffects[i+1]) {
-              state.masterOut.connect(allActiveEffects[i+1].node);
+          if (allActiveEffects[i+1]) {
+            state.masterOut.connect(allActiveEffects[i+1].node);
             } else { // there are no effects left once it's been removed
-              state.masterOut.connect(state.audioContext.destination);
-            }
+            state.masterOut.connect(state.audioContext.destination);
           }
         }
       }
-      allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
-      return Object.assign({}, state, {activeEffects: allActiveEffects});
     }
-    default: {
-      console.error('Reducer Error: ', action);
-      return Object.assign({}, state);
-    }
+    allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
+    return Object.assign({}, state, {activeEffects: allActiveEffects});
   }
+  default: {
+    console.error('Reducer Error: ', action);
+    return Object.assign({}, state);
+  }
+}
 };
