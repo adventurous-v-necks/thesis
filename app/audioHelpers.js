@@ -7,15 +7,15 @@ export var hannWindow = function (length) {
 };
 
 export var interpolator = function (a, b, t) {
-  // return a + (b - a) * t; // Linear interpolation - clickier but quicker
-  var t2 = (1-Math.cos(t*Math.PI))/2;
-  return (a*(1-t2)+b*t2);
+   return a + (b - a) * t; // Linear interpolation - clickier but quicker
+  //var t2 = (1-Math.cos(t*Math.PI))/2;
+  //return (a*(1-t2)+b*t2);
 };
 
 export var pitchShifter = function (pr, event) {
 
-    let grainSize = 256;
-    let overlapRatio = 0.4;
+    let grainSize = 512;
+    let overlapRatio = 0.2;
     let pitchRatio = Number(pr);
     var inputData = event.inputBuffer.getChannelData(0);
     var outputData = event.outputBuffer.getChannelData(0);

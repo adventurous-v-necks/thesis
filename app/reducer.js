@@ -190,9 +190,8 @@ export default function reduce(state, action) {
 
 
       let audioCtx = new AudioContext();
-      let grainSize = 256;
+      let grainSize = 512;
       let pitchRatio = 1;
-      let overlapRatio = 0.5;
       let pitchShiftNode = audioCtx.createScriptProcessor(grainSize, 1, 1);
       pitchShiftNode.buffer = new Float32Array(grainSize * 2);
       pitchShiftNode.grainWindow = hannWindow(grainSize);
@@ -360,6 +359,8 @@ export default function reduce(state, action) {
           for (var i = 0; i < COLUMNS * SAMPLES_PER_COLUMN; i++) {
             if ((state.sampleBuffers[i][0] === action.sample.column) && (state.sampleBuffers[i][1] === action.sample.index)) {
               theSample.source.buffer = state.sampleBuffers[i][2];
+              const ratio = ((state.BPM+state.minTempo)/state.maxTempo).toFixed(2);
+              theSample.source.playbackRate.value = ratio;
             }
           }
         }
