@@ -344,22 +344,19 @@ export default function reduce(state, action) {
           if (whichKnob === 0) {
             effect.node.frequency.value = action.value * 15;
           }
+        }
 
-          // if (action.id === 21) {
-          //   state.filterNode.frequency.value = action.value * 15;
-          // }
-          // if (action.id === 22) {
-          //   state.filterNode.gain.value = action.value / 5;
-          // }
-          if (action.id === 21) {
-            state.filterNode.curve = makeDistortionCurve(3 * action.value);
-          }
-          if (action.id === 22) {
-            // let oversampleString = 
-            // state.filterNode.oversample = 
-
+        if (effect.name === 'distortion') {
+          console.log('action value: ', action.value);
+          let whichKnob = effect.knobs.indexOf(action.id);
+          if (whichKnob === 0) {
+            state.filterNode.curve = makeDistortionCurve(3000 * action.value);
+            let allKnobs = Object.assign([], state.knobs);
+            allKnobs[action.id] = action.value;
+            return Object.assign({}, state, {performance: temp, knobs: allKnobs});
           }
         }
+
       return Object.assign({}, state, {performance: temp, knobs: temp2});
     }}
     case 'PLAY_SAMPLE': {
