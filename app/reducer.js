@@ -432,16 +432,16 @@ export default function reduce(state, action) {
             state.masterOut.connect(allActiveEffects[i+1].node);
             } else { // there are no effects left once it's been removed
             state.masterOut.connect(state.audioContext.destination);
+            }
           }
         }
       }
+      allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
+      return Object.assign({}, state, {activeEffects: allActiveEffects});
     }
-    allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
-    return Object.assign({}, state, {activeEffects: allActiveEffects});
+    default: {
+      console.error('Reducer Error: ', action);
+      return Object.assign({}, state);
+    }
   }
-  default: {
-    console.error('Reducer Error: ', action);
-    return Object.assign({}, state);
-  }
-}
 };
