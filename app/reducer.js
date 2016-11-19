@@ -200,6 +200,7 @@ export default function reduce(state, action) {
       let BFLo = BiquadFilterLo(audioCtx);
       let BFMid = BiquadFilterMid(audioCtx);
       let BFHi = BiquadFilterHi(audioCtx);
+      let DistortionFilt = Distortion(audioCtx);
       let synthGainNode = audioCtx.createGain();
       synthGainNode.gain.value = 0.3;
       let convolver = audioCtx.createConvolver();
@@ -222,17 +223,6 @@ export default function reduce(state, action) {
       // compressor.connect(audioCtx.destination);
       gainNode.connect(audioCtx.destination);
 
-      let biquadFilter = BiquadFilter(audioCtx);
-      let distortion = Distortion(audioCtx);
-
-      // gainNode.connect(biquadFilter);
-      // biquadFilter.connect(audioCtx.destination);
-
-      gainNode.connect(distortion);
-      distortion.connect(audioCtx.destination);
-
-      // gainNode.connect(audioCtx.destination);
-
 
       // case 'EFFECT_DELETED': {
       //   for (var effect in state.activeEffects) {
@@ -247,7 +237,7 @@ export default function reduce(state, action) {
         pitchShiftNode: pitchShiftNode,
         synthGainNode: synthGainNode,
         socket: socket,
-        distortion: distortion,
+        distortion: DistortionFilt,
       });
     }
     case 'SYNC_TOGGLE': {
@@ -350,7 +340,7 @@ export default function reduce(state, action) {
           console.log('action value: ', action.value);
           let whichKnob = effect.knobs.indexOf(action.id);
           if (whichKnob === 0) {
-            state.filterNode.curve = makeDistortionCurve(30 * action.value);
+            state.distortion.curve = makeDistortionCurve(30 * Number(action.value));
           }
         }
 

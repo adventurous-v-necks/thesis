@@ -24,7 +24,6 @@ export let BiquadFilterHi = (audioCtx) => {
 
 export let Distortion = (audioCtx) => {
 	let filter = audioCtx.createWaveShaper();
-
 	filter.curve = makeDistortionCurve(400);
 	filter.oversample = '4x';
 	return filter;
