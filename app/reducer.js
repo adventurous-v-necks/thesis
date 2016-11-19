@@ -350,10 +350,7 @@ export default function reduce(state, action) {
           console.log('action value: ', action.value);
           let whichKnob = effect.knobs.indexOf(action.id);
           if (whichKnob === 0) {
-            state.filterNode.curve = makeDistortionCurve(3000 * action.value);
-            let allKnobs = Object.assign([], state.knobs);
-            allKnobs[action.id] = action.value;
-            return Object.assign({}, state, {performance: temp, knobs: allKnobs});
+            state.filterNode.curve = makeDistortionCurve(30 * action.value);
           }
         }
 
