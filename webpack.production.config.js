@@ -16,6 +16,11 @@ module.exports = {
     filename: '[name]-[hash].min.js',
     publicPath: '/'
   },
+  resolve: {
+    alias: {
+      'socket.io-client': path.join(__dirname, 'node_modules', 'socket.io-client', 'socket.io.js')
+    }
+  },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new HtmlWebpackPlugin({
@@ -40,6 +45,7 @@ module.exports = {
     new ExtractTextPlugin('[name]-[hash].min.css'),
   ],
   module: {
+    noParse: [ /socket.io-client/ ],
     loaders: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
@@ -56,8 +62,10 @@ module.exports = {
     }, {
       test: /\.scss$/,
       loader: ExtractTextPlugin.extract('css!sass!postcss')
-    }]
+    }],
+      noParse: ['ws']
   },
+  externals: ['ws'],
   postcss: [
     require('autoprefixer')
   ]

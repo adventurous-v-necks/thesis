@@ -13,13 +13,10 @@ import {BiquadFilterLo , BiquadFilterMid ,BiquadFilterHi } from './effects.js';
 
 import {store} from './main.js';
 
-import io from 'socket.io-client';
+// DEPLOY: comment the following line out to deploy
+import IO from 'socket.io-client';
 
-let socket = io.connect();
 
-socket.on('event', function (data) {
-  store.dispatch(Object.assign(data.data.action, {synthetic: true}));
-});
 
 const sched = function() {
   let state = store.getState();
@@ -147,7 +144,7 @@ export default function reduce(state, action) {
       }
       let temp = Object.assign([], state.performance);
       if (!action.synthetic) {
-        socket.emit('event2server', { action: action });
+        state.socket.emit('event2server', { action: action });
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
       return Object.assign({}, state, {nodes: new_nodes, performance: temp});
@@ -163,12 +160,23 @@ export default function reduce(state, action) {
       temp.push(oscillator);
       let temp2 = Object.assign([], state.performance);
       if (!action.synthetic) {
-        socket.emit('event2server', { action: action });
+        state.socket.emit('event2server', { action: action });
         temp2.push({action: action, timestamp: state.audioContext.currentTime});
       }
       return Object.assign({}, state, {nodes: temp, performance: temp2});
     }
     case 'CREATE_AUDIO_CONTEXT': {
+
+      // DEVEL:
+      let socket = IO.connect();
+      // DEPLOY:
+      // let socket = io.connect('http://rejuicy.com:8092'); (or should it be ws://rejuicy.com:8092???? - TO TEST)
+
+      socket.on('event', function (data) {
+        store.dispatch(Object.assign(data.data.action, {synthetic: true}));
+      });
+
+
       let audioCtx = new AudioContext();
       let grainSize = 256;
       let pitchRatio = 1;
@@ -214,6 +222,7 @@ export default function reduce(state, action) {
         masterOut: gainNode,
         pitchShiftNode: pitchShiftNode,
         synthGainNode: synthGainNode,
+        socket: socket,
       });
     }
     case 'FADER_CHANGE': {
@@ -222,7 +231,7 @@ export default function reduce(state, action) {
       document.getElementById(action.id).value = action.value;
       let temp = Object.assign([], state.performance);
       if (!action.synthetic) {
-        socket.emit('event2server', { action: action });
+        state.socket.emit('event2server', { action: action });
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
       let bpm = Object.assign({}, state.BPM);
@@ -262,7 +271,7 @@ export default function reduce(state, action) {
       temp2[action.id] = action.value;
       if (!action.synthetic) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
-        socket.emit('event2server', { action: action });
+        state.socket.emit('event2server', { action: action });
       }
       if (action.id == '0') { //globalVolume
         state.masterOut.gain.value = action.value / 100;
@@ -293,7 +302,7 @@ export default function reduce(state, action) {
     }
     case 'PLAY_SAMPLE': {
       if (!action.synthetic) {
-        socket.emit('event2server', { action: action });
+        state.socket.emit('event2server', { action: action });
       }
       let allSamples = Object.assign([], state.samples); //clone to avoid mutation
       let theSample = allSamples[action.sample.column][action.sample.index]; //find relevant sample
@@ -328,7 +337,7 @@ export default function reduce(state, action) {
     case 'OSC_WAVE_CHANGE': {
       let temp = Object.assign([], state.performance);
       if (!action.synthetic) {
-        socket.emit('event2server', { action: action });
+        state.socket.emit('event2server', { action: action });
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
 
