@@ -14,6 +14,9 @@ class Transport extends React.Component {
   }
   componentDidMount() {
   }
+  syncToggle() {
+    this.props.dispatch({type:'SYNC_TOGGLE'});
+  }
 
   render() {
     const volumeSizing = {
@@ -22,12 +25,23 @@ class Transport extends React.Component {
       height: 'auto',
       textAlign: 'center',
     };
+    let syncStyle = {
+      width:'auto',
+      height:'auto',
+      backgroundColor: this.props.syncOn ? 'red' : '#efefef',
+      border: '1px solid black',
+      cursor: 'pointer',
+      padding: '0.3em 0.6em',
+      position: 'relative',
+      top: '-0.72em',
+    };
 
     return (
       <span style={{display:'inline-block', height:'auto', width:'100%', marginTop:'0.2em'}}>
         <div className="transportContainer">
           <TimeSig />
           <Tempo />
+          <span style={syncStyle} onClick={this.syncToggle.bind(this)}>SYNC</span>
           <Marker />
           <Controls />
           <span style={volumeSizing}>
@@ -42,7 +56,9 @@ class Transport extends React.Component {
 
 
 const mapStateToProps = function(state) {
-  return {};
+  return {
+    syncOn : state.syncOn
+  };
 }
 
 export default connect(mapStateToProps)(Transport);

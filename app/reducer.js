@@ -106,6 +106,7 @@ export default function reduce(state, action) {
         node: 'placeholder',
       }],
       activeEffects: [],
+      syncOn: true,
     };
   }
 
@@ -192,7 +193,7 @@ export default function reduce(state, action) {
       pitchShiftNode.buffer = new Float32Array(grainSize * 2);
       pitchShiftNode.grainWindow = hannWindow(grainSize);
       pitchShiftNode.onaudioprocess = pitchShifter.bind(pitchShiftNode, 1);
-      let BFLo = BiquadFilterLo(audioCtx); 
+      let BFLo = BiquadFilterLo(audioCtx);
       let BFMid = BiquadFilterMid(audioCtx);
       let BFHi = BiquadFilterHi(audioCtx);
       let synthGainNode = audioCtx.createGain();
@@ -231,6 +232,27 @@ export default function reduce(state, action) {
         synthGainNode: synthGainNode,
         socket: socket,
       });
+    }
+    case 'SYNC_TOGGLE': {
+      if (state.syncOn) {
+        state.pitchShiftNode.disconnect();
+        let allSamples = Object.assign([], state.samples);
+        for (var sampleColumn of allSamples) {
+          for (var sample of sampleColumn) {
+              if (sample.playing) sample.gainNode.connect(state.masterOut);
+          }
+        }
+        return Object.assign({}, state, {syncOn: false});
+      } else {
+        state.pitchShiftNode.connect(state.masterOut);
+        let allSamples = Object.assign([], state.samples);
+        for (var sampleColumn of allSamples) {
+          for (var sample of sampleColumn) {
+              if (sample.playing) sample.gainNode.connect(state.pitchShiftNode);
+          }
+        }
+        return Object.assign({}, state, {syncOn: true});
+      }
     }
     case 'FADER_CHANGE': {
       // TODO: do something with the data e.g. adjust volume
@@ -332,8 +354,11 @@ export default function reduce(state, action) {
         gainNode.gain.value = state.knobs[action.sample.column+1]/100;
         theSample.source.connect(gainNode);
         theSample.gainNode = gainNode;
-
-        gainNode.connect(state.pitchShiftNode);
+        if (state.syncOn) {
+          gainNode.connect(state.pitchShiftNode);
+        } else {
+          gainNode.connect(state.masterOut);
+        }
         theSample.source.start();
       } else {
         theSample.source.stop();
