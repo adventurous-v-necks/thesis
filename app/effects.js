@@ -31,7 +31,7 @@ export let Distortion = (audioCtx) => {
 
 // Helper function for Distortion effect
 export let makeDistortionCurve = (amount) => {
-	let k = typeof amount === 'number' ? amount : 50;
+	let k = typeof amount === 'number' ? amount : 400;
 	let n_samples = 44100;
 	let curve = new Float32Array(n_samples);
 	let deg = Math.PI / 180;
