@@ -405,7 +405,12 @@ export default function reduce(state, action) {
       });
     }
     case 'PATCH_CHANGE': {
-      return Object.assign({}, state, {patch: action.patch});
+      const newOscs = [null, action.patch, action.patch];
+
+      return Object.assign({}, state, {
+        patch: action.patch,
+        oscs: newOscs,
+      });
     }
     case 'EFFECT_MENU_TOGGLE': {
       return Object.assign({}, state, {effectsMenuActive: !state.effectsMenuActive});
