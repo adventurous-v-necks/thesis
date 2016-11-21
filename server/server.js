@@ -39,7 +39,7 @@ const app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-var counter = 0
+var counter = 0;
 io.on('connection', function (socket) {
   socket.on('event2server', function (data) {
     socket.broadcast.emit('event', {data : data} )
@@ -84,11 +84,24 @@ app.get('/getLoggedInUsername', function response(req, res) {
   res.write(req.user ? req.user.username : 'Not Logged In');
   res.end();
 });
-app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/tryLogin/failed' }),
-  function(req, res) {
-    res.redirect('/');
+
+app.all('/login',
+  passport.authenticate('local', { failWithError: true }),
+  function(req, res, next) {
+    res.json({status: 'ok', username: req.user.username});
+  },
+  function(err, req, res, next) {
+    res.json({status: 'bad', message: 'Login failed, incorrect username or password'});
+  }
+);
+
+app.post('/signup', function (req, res) {
+  var newuser = new User({username:req.body.username});
+  newuser.password = newuser.generateHash(req.body.password);
+  newuser.save(function(err,data) {
+    res.json({status: 'ok', message: 'Successfully created user', username: req.body.username});
   });
+});
 
 const reactRoutes = [{path: '/abc', auth: true}, {path: '/tryLogin', auth: false}];
 
@@ -145,4 +158,3 @@ server.listen(port, '0.0.0.0', function onStart(err) {
   }
   console.info('Listening on port %s.', port);
 });
-
