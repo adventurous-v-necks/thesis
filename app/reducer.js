@@ -335,10 +335,9 @@ export default function reduce(state, action) {
         }
 
         if (effect.name === 'distortion') {
-          console.log('action value: ', action.value);
           let whichKnob = effect.knobs.indexOf(action.id);
           if (whichKnob === 0) {
-            effect.node.curve = makeDistortionCurve(30 * action.value);
+            effect.node.curve = makeDistortionCurve(.5 * action.value);
           }
         }
 
