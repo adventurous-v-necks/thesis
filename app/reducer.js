@@ -343,10 +343,11 @@ export default function reduce(state, action) {
             effect.node.curve = makeDistortionCurve(.5 * action.value);
           }
         }
-
+      }
       return Object.assign({}, state, {performance: temp, knobs: temp2});
-    }}
+    }
     case 'PLAY_SAMPLE': {
+      console.log(action);
       if (!action.synthetic) {
         state.socket.emit('event2server', { action: action });
       }
