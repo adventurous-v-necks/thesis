@@ -54,7 +54,6 @@ class Patch extends React.Component {
             <option value="sine">Sine Sounds</option>
             <option value="square">Square Sounds</option>
             <option value="sawtooth">Sawtooth </option>
-            <option value="4">HR Happytime</option>
           </select>
         </div>
       </div>
