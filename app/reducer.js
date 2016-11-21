@@ -69,6 +69,7 @@ export default function reduce(state, action) {
       numColumns: COLUMNS,
       samples: samples,
       oscs: [null, 'sine', 'sine'],
+      patch: 'sine',
       masterOut: null, // if you're making stuff that makes noise, connect it to this
       audioContext: null, // first set when page loads
       nodes: [], // notes of the keyboard which are playing,
@@ -402,6 +403,9 @@ export default function reduce(state, action) {
         oscs: newOscs,
         performance: temp,
       });
+    }
+    case 'PATCH_CHANGE': {
+      return Object.assign({}, state, {patch: action.patch});
     }
     case 'EFFECT_MENU_TOGGLE': {
       return Object.assign({}, state, {effectsMenuActive: !state.effectsMenuActive});
