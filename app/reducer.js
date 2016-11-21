@@ -90,24 +90,22 @@ export default function reduce(state, action) {
       suspended: false,
       recordTimeZero: false,
       customEffects: [
-<<<<<<< 9841cf20899c694bdd9fd6617db564e2a619ab02
-        {
-          name: 'biquadFilter',
-          node: BiquadFilter,
-        },
-        {
-          name: 'BiquadFilterLo',
-          node: BiquadFilterLo,
-        },
-          {
-            name: 'distortion',
-            node: Distortion,
-          },
-        {
-          name: 'ipsum',
-          node: 'placeholder',
-        }],
-=======
+      {
+        name: 'biquadFilter',
+        node: BiquadFilter,
+      },
+      {
+        name: 'BiquadFilterLo',
+        node: BiquadFilterLo,
+      },
+      {
+        name: 'distortion',
+        node: Distortion,
+      },
+      {
+        name: 'ipsum',
+        node: 'placeholder',
+      },
       {
         name: 'BiquadFilterMid',
         node: BiquadFilterMid,
@@ -124,7 +122,6 @@ export default function reduce(state, action) {
         name: 'ipsum',
         node: 'placeholder',
       }],
->>>>>>> biquadfilter addition
       activeEffects: [],
       syncOn: true,
     };
@@ -347,8 +344,8 @@ export default function reduce(state, action) {
       }
       if (action.id > 20) { // one of the effect knobs
         // find which effect it is in our array of active effects
-        console.log('this.this.state.', state)
-        console.log('action', action)
+        console.log('this.this.state.', state.activeEffects)
+        console.log('action', action.id)
         var effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1)[0];
         console.log('effect', effect)
           // inside that effect component, which knob was tweaked?
@@ -356,7 +353,17 @@ export default function reduce(state, action) {
 
           // the effects of each knob tweak will need to be custom defined for each effect (currently; we can do better)
           if (whichKnob === 0) {
-            effect.node.frequency.value = action.value * 15;
+            console.log("whichKnob 0")
+          }
+          if (whichKnob === 1){
+            console.log('whichKnob 1')
+          }
+
+          if (whichKnob === 2) {
+            console.log('whichKnob 2')
+          } 
+          if (whichKnob === 3){
+            console.log('whichKnob 3')
           }
         }
 
@@ -367,23 +374,13 @@ export default function reduce(state, action) {
           }
         }
 
-      return Object.assign({}, state, {performance: temp, knobs: temp2});
-    }
+        return Object.assign({}, state, {performance: temp, knobs: temp2});
+      }
+
     case 'PLAY_SAMPLE': {
       if (!action.synthetic) {
         state.socket.emit('event2server', { action: action });
       }
-          if (whichKnob === 0) effect.node.frequency.value = action.value * 15;
-          if (whichKnob === 1) effect.node.frequency.value = action.value * 15;
-          if (whichKnob === 2) effect.node.frequency.value = action.value * 15;
-          if (whichKnob === 3) effect.node.frequency.value = action.value * 15;
-        }
-        return Object.assign({}, state, {performance: temp, knobs: temp2});
-      }
-      case 'PLAY_SAMPLE': {
-        if (!action.synthetic) {
-          state.socket.emit('event2server', { action: action });
-        }
       let allSamples = Object.assign([], state.samples); //clone to avoid mutation
       let theSample = allSamples[action.sample.column][action.sample.index]; //find relevant sample
       theSample.playing = !theSample.playing;
@@ -454,29 +451,32 @@ export default function reduce(state, action) {
       allActiveEffects[allActiveEffects.length - 1].node.connect(newEffectNode);
       newEffectNode.connect(state.audioContext.destination);
     }
-
+      console.log('allActiveEffects')
       // add new effect to list of active effects, including refs to its knobs
       allActiveEffects.push({name:effect, node:newEffectNode, knobs:[allKnobs.length, allKnobs+3], faders:[]});
 // different effects will need different numbers of knobs.
-      if (effect === 'BiquadFilterMid') {
-        allKnobs.push(100);
-        allKnobs.push(100);
-        allKnobs.push(100);
-        allKnobs.push(100);
-      }
+if (effect === 'BiquadFilterMid') {
+  allKnobs.push(100);
+  allKnobs.push(100);
+  allKnobs.push(100);
+  allKnobs.push(100);
+} else {
+  allKnobs.push(100);
+  allKnobs.push(100);
+}
 
-      return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
-    }
-    case 'EFFECT_FROM_RACK': {
-      let allActiveEffects = state.activeEffects.slice();
-      let knobPos = action.id.search(/[0-9]/g);
-      let textId = action.id.slice(0,knobPos);
-      let firstKnob = Number(action.id.slice(knobPos));
-      for (var i in allActiveEffects) {
-        i = Number(i);
-        if (allActiveEffects[i].name === textId & allActiveEffects[i].knobs[0] === firstKnob) {
-          allActiveEffects[i].name = 'to be deleted';
-          allActiveEffects[i].node.disconnect();
+return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
+}
+case 'EFFECT_FROM_RACK': {
+  let allActiveEffects = state.activeEffects.slice();
+  let knobPos = action.id.search(/[0-9]/g);
+  let textId = action.id.slice(0,knobPos);
+  let firstKnob = Number(action.id.slice(knobPos));
+  for (var i in allActiveEffects) {
+    i = Number(i);
+    if (allActiveEffects[i].name === textId & allActiveEffects[i].knobs[0] === firstKnob) {
+      allActiveEffects[i].name = 'to be deleted';
+      allActiveEffects[i].node.disconnect();
           if (allActiveEffects[i-1]) { // there is an effect before this one
             if (allActiveEffects[i+1]) { // and there's one after it
               allActiveEffects[i-1].node.connect(allActiveEffects[i+1].node);
