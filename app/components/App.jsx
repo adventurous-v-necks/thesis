@@ -1,6 +1,7 @@
 // you need these two imports minimum
 import React from 'react';
 import styles from '../App.scss';
+import RoomDropDown from './RoomDropDown.jsx';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
@@ -36,6 +37,7 @@ class App extends React.Component {
   customNavbar() {
     return this.props.loggedIn ? (
       <span>
+      <li className="menu-item"><RoomDropDown /></li>
       <li className="menu-item"><Link to="/signout" onClick={this.logOut.bind(this)}>Sign Out</Link></li>
       <li className="menu-item"><Link to="/profile">{JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username}</Link></li>
       </span>

@@ -125,6 +125,7 @@ export default function reduce(state, action) {
       activeEffects: [],
       syncOn: true,
       lastPlayed: 0, // time (audio time) the last sample was played
+      activeRooms: [], // this should be moved to database in production
     };
   }
 
@@ -550,6 +551,12 @@ export default function reduce(state, action) {
       }
       allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
       return Object.assign({}, state, {activeEffects: allActiveEffects});
+    }
+    case 'NAVIGATE_ROOM': {
+      let allActiveRooms = state.activeRooms.slice();
+      console.log('action: ', action);
+      
+      return Object.assign({}, state);
     }
     default: {
       console.error('Reducer Error: ', action);
