@@ -58,6 +58,7 @@ export default function reduce(state, action) {
       samples.push(column);
     }
     return {
+      loggedIn: !!window.localStorage.getItem('com.rejuicy.user'),
       performance: [],
       recording: false,
       playing: false,
@@ -111,8 +112,11 @@ export default function reduce(state, action) {
   }
 
   switch (action.type) {
-    case 'STORE_USER': {
-      return Object.assign({}, state, {user: action.who});
+    case 'USER_LOGIN': {
+      return Object.assign({}, state, {loggedIn: true});
+    }
+    case 'USER_LOGOUT': {
+      return Object.assign({}, state, {loggedIn: false});
     }
     case 'MARKER_UPDATE': {
       return Object.assign({}, state, {markerTime: state.audioContext.currentTime - state.recordStartTime});

@@ -23,9 +23,9 @@ render(
     <Router history={browserHistory}>
       <Route component={App} title="[Path]">
           <Route path="/" component={Landing} />
-          <Route path="/player" component={Player} /> 
+          <Route path="/player" component={Player} />
           <Route path="/signUp" component={SignUp} />
-          <Route path="tryLogin(/:failed)" component={LoginForm} />
+          <Route path="/signin" component={LoginForm} />
           <Route path="*" component={FourOhFour}/>
       </Route>
     </Router>
