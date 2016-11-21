@@ -5,6 +5,14 @@ import {connect} from 'react-redux';
 class Patch extends React.Component {
   constructor(props) {
     super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.props.dispatch({
+      type: 'PATCH_CHANGE', 
+      patch: event.target.value,
+    });
   }
 
   render() {
@@ -41,10 +49,11 @@ class Patch extends React.Component {
       <div className="patch">
         <div style={style}>
         <span style={labelStyle}>Patch</span>
-          <select size={1} style={selectStyle}>
-            <option value="1">CrazyTime Piano</option>
-            <option value="2">Pirate-y Tones</option>
-            <option value="3">Dungeon Synth</option>
+        <select size={1} style={selectStyle} 
+          value={this.props.patch} onChange={this.handleChange}>
+            <option value="sine">Sine Sounds</option>
+            <option value="square">Square Sounds</option>
+            <option value="sawtooth">Sawtooth </option>
             <option value="4">HR Happytime</option>
           </select>
         </div>
@@ -55,7 +64,9 @@ class Patch extends React.Component {
 
 
 const mapStateToProps = function(state) {
-  return {};
+  return {
+    patch: state.patch,
+  };
 }
 
 export default connect(mapStateToProps)(Patch);
