@@ -14,9 +14,13 @@ class EffectsUnit extends React.Component {
   }
   componentDidMount() {
     this.setState({
-      knob1: this.props.knobs.length - 2,
-      knob2: this.props.knobs.length - 1,
+      knobs: this.state.knobs,
+      knob1: this.props.knobs.length - 4,
+      knob2: this.props.knobs.length - 3,  
+      knob3: this.props.knobs.length - 2,
+      knob4: this.props.knobs.length - 1,
     });
+    console.log('componentDidMount', this.state)
   }
   removeEffect(e) {
     this.props.dispatch({type: 'EFFECT_FROM_RACK', id: this.props.id});
@@ -53,10 +57,17 @@ class EffectsUnit extends React.Component {
         </div>
         <div className="knobContainer" style={knobContainerStyle}>
           <div style={knobStyle}>
-            <Knob key={this.props.knobs.length - 2} id={this.state.knob1}/>
+            <Knob key={this.props.knobs.length - 4} id={this.state.knob1}/>
+          </div>          
+          <div style={knobStyle}>
+            <Knob key={this.props.knobs.length - 3} id={this.state.knob2}/>
           </div>
           <div style={knobStyle}>
-            <Knob key={this.props.knobs.length - 1} id={this.state.knob2}/>
+            <Knob key={this.props.knobs.length - 2} id={this.state.knob3}/>
+          </div>
+          <div style={knobStyle}>
+            <Knob key={this.props.knobs.length - 1 } id={this.state.knob4}/>
+            {console.log('this.props.id', this.props)}
           </div>
         </div>
       </div>

@@ -90,6 +90,7 @@ export default function reduce(state, action) {
       suspended: false,
       recordTimeZero: false,
       customEffects: [
+<<<<<<< 9841cf20899c694bdd9fd6617db564e2a619ab02
         {
           name: 'biquadFilter',
           node: BiquadFilter,
@@ -106,6 +107,24 @@ export default function reduce(state, action) {
           name: 'ipsum',
           node: 'placeholder',
         }],
+=======
+      {
+        name: 'BiquadFilterMid',
+        node: BiquadFilterMid,
+      },
+      {
+        name: 'lorem',
+        node: 'placeholder',
+      },
+      {
+        name: 'fx',
+        node: 'placeholder',
+      },
+      {
+        name: 'ipsum',
+        node: 'placeholder',
+      }],
+>>>>>>> biquadfilter addition
       activeEffects: [],
       syncOn: true,
     };
@@ -247,7 +266,7 @@ export default function reduce(state, action) {
         let allSamples = Object.assign([], state.samples);
         for (var sampleColumn of allSamples) {
           for (var sample of sampleColumn) {
-              if (sample.playing) sample.gainNode.connect(state.masterOut);
+            if (sample.playing) sample.gainNode.connect(state.masterOut);
           }
         }
         return Object.assign({}, state, {syncOn: false});
@@ -256,7 +275,7 @@ export default function reduce(state, action) {
         let allSamples = Object.assign([], state.samples);
         for (var sampleColumn of allSamples) {
           for (var sample of sampleColumn) {
-              if (sample.playing) sample.gainNode.connect(state.pitchShiftNode);
+            if (sample.playing) sample.gainNode.connect(state.pitchShiftNode);
           }
         }
         return Object.assign({}, state, {syncOn: true});
@@ -303,9 +322,11 @@ export default function reduce(state, action) {
       });
     }
     case 'KNOB_TWIDDLE': {
+      console.log('action 302', action)
       let temp = Object.assign([], state.performance);
       let temp2 = Object.assign([], state.knobs);
       temp2[action.id] = action.value;
+      console.log('temp2', temp[action.id])
       if (!action.synthetic) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
         state.socket.emit('event2server', { action: action });
@@ -322,15 +343,17 @@ export default function reduce(state, action) {
       }
       if (action.id >= 7 && action.id <= 12) { // one of the oscillator knobs
       }
-      if (action.id >=13 && action.id <= 20) { // reserved for additional features
+      if (action.id >=13 && action.id <= 20) { 
       }
       if (action.id > 20) { // one of the effect knobs
         // find which effect it is in our array of active effects
+        console.log('this.this.state.', state)
+        console.log('action', action)
         var effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1)[0];
-        if (effect.name === 'biquadFilter') {
-          console.log('biquadFilter')
+        console.log('effect', effect)
           // inside that effect component, which knob was tweaked?
           let whichKnob = effect.knobs.indexOf(action.id);
+
           // the effects of each knob tweak will need to be custom defined for each effect (currently; we can do better)
           if (whichKnob === 0) {
             effect.node.frequency.value = action.value * 15;
@@ -345,11 +368,22 @@ export default function reduce(state, action) {
         }
 
       return Object.assign({}, state, {performance: temp, knobs: temp2});
-    }}
+    }
     case 'PLAY_SAMPLE': {
       if (!action.synthetic) {
         state.socket.emit('event2server', { action: action });
       }
+          if (whichKnob === 0) effect.node.frequency.value = action.value * 15;
+          if (whichKnob === 1) effect.node.frequency.value = action.value * 15;
+          if (whichKnob === 2) effect.node.frequency.value = action.value * 15;
+          if (whichKnob === 3) effect.node.frequency.value = action.value * 15;
+        }
+        return Object.assign({}, state, {performance: temp, knobs: temp2});
+      }
+      case 'PLAY_SAMPLE': {
+        if (!action.synthetic) {
+          state.socket.emit('event2server', { action: action });
+        }
       let allSamples = Object.assign([], state.samples); //clone to avoid mutation
       let theSample = allSamples[action.sample.column][action.sample.index]; //find relevant sample
       theSample.playing = !theSample.playing;
@@ -422,9 +456,14 @@ export default function reduce(state, action) {
     }
 
       // add new effect to list of active effects, including refs to its knobs
-      allActiveEffects.push({name:effect, node:newEffectNode, knobs:[allKnobs.length,allKnobs+1], faders:[]});
-      allKnobs.push(100);
-      allKnobs.push(100); // different effects will need different numbers of knobs.
+      allActiveEffects.push({name:effect, node:newEffectNode, knobs:[allKnobs.length, allKnobs+3], faders:[]});
+// different effects will need different numbers of knobs.
+      if (effect === 'BiquadFilterMid') {
+        allKnobs.push(100);
+        allKnobs.push(100);
+        allKnobs.push(100);
+        allKnobs.push(100);
+      }
 
       return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
     }
@@ -449,16 +488,16 @@ export default function reduce(state, action) {
             state.masterOut.connect(allActiveEffects[i+1].node);
             } else { // there are no effects left once it's been removed
             state.masterOut.connect(state.audioContext.destination);
-            }
           }
         }
       }
-      allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
-      return Object.assign({}, state, {activeEffects: allActiveEffects});
     }
-    default: {
-      console.error('Reducer Error: ', action);
-      return Object.assign({}, state);
-    }
+    allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
+    return Object.assign({}, state, {activeEffects: allActiveEffects});
   }
+  default: {
+    console.error('Reducer Error: ', action);
+    return Object.assign({}, state);
+  }
+}
 };
