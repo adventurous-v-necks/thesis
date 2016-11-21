@@ -50,13 +50,13 @@ class Oscillator extends React.Component {
             <tr style={h5w1}>
               <td style={{width: "50%"}}>
                 <div style={knobStyle}>
-                  <Knob id={num === 1 ? 7 : 8}/>
+                  <Knob id={num === 1 ? 7 : 8} label="Volume"/>
                 </div>
               </td>
 
               <td style={{width: "50%"}}>
                 <div style={knobStyle}>
-                  <Knob id={num === 1 ? 9 : 10}/>
+                  <Knob id={num === 1 ? 9 : 10} label="Detune"/>
                 </div>
               </td>
             </tr>
