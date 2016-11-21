@@ -322,6 +322,11 @@ export default function reduce(state, action) {
       if (action.id == '6') { //synthVolum
       }
       if (action.id >= 7 && action.id <= 12) { // one of the oscillator knobs
+        if (action.id === 7 || action.id === 8) {// osc volume
+
+        } else if (action.id === 9 || action.id === 10) { // osc detune
+
+        }
       }
       if (action.id >=13 && action.id <= 20) { // reserved for additional features
       }
