@@ -303,8 +303,9 @@ export default function reduce(state, action) {
       });
     }
     case 'KNOB_TWIDDLE': {
-      console.log('action line 306',action)
+      console.log('action line 306',typeof action.id)
       action.id = Number(action.id);
+      console.log('action id passed through the Number', typeof action.id)
       let temp = Object.assign([], state.performance);
       let temp2 = Object.assign([], state.knobs);
       temp2[action.id] = action.value;
@@ -327,26 +328,25 @@ export default function reduce(state, action) {
       if (action.id >=13 && action.id <= 20) { // reserved for additional features
       }
       if (action.id > 20) { // one of the effect knobs
-        console.log(state.activeEffects);
         var effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1)[0];
         console.log('found effect', effect)
 
-       if (effect.name === 'BiquadFilterMid') {
-        let whichKnob = effect.knobs.indexOf(action.id);
+        if (effect.name === 'BiquadFilterMid') {
+          let whichKnob = effect.knobs.indexOf(action.id);
 
-        if (whichKnob === 0) {
-          console.log('whichKnob = 0')
+          if (whichKnob === 0) {
+            console.log(whichKnob)
+          }
+          if (whichKnob === 1) {
+            console.log(whichKnob)
+          }
+          if (whichKnob === 2) {
+            console.log(whichKnob)
+          }
+          if (whichKnob === 3) {
+            console.log(whichKnob)
+          }
         }
-        if (whichKnob === 1) {
-          console.log('whichKnob = 1')
-        }
-        if (whichKnob === 2) {
-          console.log('whichKnob = 2')
-        }
-        if (whichKnob === 3) {
-          console.log('whichKnob = 3')
-        }
-      }
         // find which effect it is in our array of active effects
         if (effect.name === 'biquadFilter') {
           // inside that effect component, which knob was tweaked?
@@ -370,7 +370,6 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
     case 'PLAY_SAMPLE': {
-      console.log(action);
       if (!action.synthetic) {
         state.socket.emit('event2server', { action: action });
       }
@@ -458,9 +457,9 @@ export default function reduce(state, action) {
        console.log('adding ',effect);
 
 
-      return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
-    }
-    case 'EFFECT_FROM_RACK': {
+       return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
+     }
+     case 'EFFECT_FROM_RACK': {
       let allActiveEffects = state.activeEffects.slice();
       let knobPos = action.id.search(/[0-9]/g);
       let textId = action.id.slice(0,knobPos);
