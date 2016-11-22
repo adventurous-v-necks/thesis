@@ -43,16 +43,17 @@ class EffectsDropDown extends React.Component {
       cursor: 'pointer',
     }
 
-    let DropDownItems = this.props.customEffects.map((effect) => {
-      let effectName = effect.name;
-      return <li key={this.props.customEffects.indexOf(effect)} value={effectName} style={listItemStyle} onClick={this.addEffectToRack}>{effectName}</li>
-    });;
+    let DropDownItems = '';
     let ButtonDisplay;
     //let customEffects = this.props.customEffects;
     if (this.props.effectsMenuActive) {
       ButtonDisplay = 'fa fa-minus-square-o';
       // DropDownItems =
       listDropDownStyle.maxHeight = '8em';
+      DropDownItems = this.props.customEffects.map((effect) => {
+        let effectName = effect.name;
+        return <li key={this.props.customEffects.indexOf(effect)} value={effectName} style={listItemStyle} onClick={this.addEffectToRack}>{effectName}</li>
+      });;
     } else {
       ButtonDisplay = 'fa fa-plus-square-o';
       listDropDownStyle.maxHeight = '0px';
