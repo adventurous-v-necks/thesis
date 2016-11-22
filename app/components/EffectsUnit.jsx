@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from '../App.scss';
 import Knob from './Knob.jsx';
-
 import {connect} from 'react-redux';
 
 class EffectsUnit extends React.Component {
@@ -14,9 +13,12 @@ class EffectsUnit extends React.Component {
   }
   componentDidMount() {
     this.setState({
-      knob1: this.props.knobs.length - 2,
-      knob2: this.props.knobs.length - 1,
+      knob1: this.props.knobs.length - 4,
+      knob2: this.props.knobs.length - 3, 
+      knob3: this.props.knobs.length - 2,
+      knob4: this.props.knobs.length - 1,
     });
+
   }
   removeEffect(e) {
     this.props.dispatch({type: 'EFFECT_FROM_RACK', id: this.props.id});
@@ -53,10 +55,16 @@ class EffectsUnit extends React.Component {
         </div>
         <div className="knobContainer" style={knobContainerStyle}>
           <div style={knobStyle}>
-            <Knob key={this.props.knobs.length - 2} id={this.state.knob1}/>
+            <Knob key={this.props.knobs.length - 4} id={this.state.knob1}/>
           </div>
           <div style={knobStyle}>
-            <Knob key={this.props.knobs.length - 1} id={this.state.knob2}/>
+            <Knob key={this.props.knobs.length - 3} id={this.state.knob2}/>
+          </div>
+          <div style={knobStyle}>
+            <Knob key={this.props.knobs.length - 2} id={this.state.knob3}/>
+          </div>
+          <div style={knobStyle}>
+            <Knob key={this.props.knobs.length - 1} id={this.state.knob4}/>
           </div>
         </div>
       </div>

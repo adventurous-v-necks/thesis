@@ -90,22 +90,22 @@ export default function reduce(state, action) {
       suspended: false,
       recordTimeZero: false,
       customEffects: [
-        {
-          name: 'biquadFilter',
-          node: BiquadFilter,
-        },
-        {
-          name: 'BiquadFilterLo',
-          node: BiquadFilterLo,
-        },
-          {
-            name: 'distortion',
-            node: Distortion,
-          },
-        {
-          name: 'ipsum',
-          node: 'placeholder',
-        }],
+      {
+        name: 'BiquadFilterMid',
+        node: BiquadFilterMid,
+      },
+      {
+        name: 'BiquadFilterLo',
+        node: BiquadFilterLo,
+      },
+      {
+        name: 'distortion',
+        node: Distortion,
+      },
+      {
+        name: 'ipsum',
+        node: 'placeholder',
+      }],
       activeEffects: [],
       syncOn: true,
     };
@@ -247,7 +247,7 @@ export default function reduce(state, action) {
         let allSamples = Object.assign([], state.samples);
         for (var sampleColumn of allSamples) {
           for (var sample of sampleColumn) {
-              if (sample.playing) sample.gainNode.connect(state.masterOut);
+            if (sample.playing) sample.gainNode.connect(state.masterOut);
           }
         }
         return Object.assign({}, state, {syncOn: false});
@@ -256,7 +256,7 @@ export default function reduce(state, action) {
         let allSamples = Object.assign([], state.samples);
         for (var sampleColumn of allSamples) {
           for (var sample of sampleColumn) {
-              if (sample.playing) sample.gainNode.connect(state.pitchShiftNode);
+            if (sample.playing) sample.gainNode.connect(state.pitchShiftNode);
           }
         }
         return Object.assign({}, state, {syncOn: true});
@@ -303,9 +303,12 @@ export default function reduce(state, action) {
       });
     }
     case 'KNOB_TWIDDLE': {
+      console.log('action line 306',action)
       let temp = Object.assign([], state.performance);
+      console.log('temp', temp)
       let temp2 = Object.assign([], state.knobs);
       temp2[action.id] = action.value;
+      console.log('temp2[action.id]', temp2[action.id])
       if (!action.synthetic) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
         state.socket.emit('event2server', { action: action });
@@ -325,10 +328,29 @@ export default function reduce(state, action) {
       if (action.id >=13 && action.id <= 20) { // reserved for additional features
       }
       if (action.id > 20) { // one of the effect knobs
-        // find which effect it is in our array of active effects
+        console.log('state.activeEffects', state.activeEffects)
         var effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1)[0];
+        console.log('effect 331', effect)
+
+       if (effect.name === 'BiquadFilterMid') {
+        let whichKnob = effect.knobs.indexOf(action.id);
+        console.log('whichKnob', effect.knobs)
+
+        if (whichKnob === 0) {
+          console.log('whichKnob = 0')
+        }
+        if (whichKnob === 1) {
+          console.log('whichKnob = 1')
+        }
+        if (whichKnob === 2) {
+          console.log('whichKnob = 2')
+        }
+        if (whichKnob === 3) {
+          console.log('whichKnob = 3')
+        }
+      }
+        // find which effect it is in our array of active effects
         if (effect.name === 'biquadFilter') {
-          console.log('biquadFilter')
           // inside that effect component, which knob was tweaked?
           let whichKnob = effect.knobs.indexOf(action.id);
           // the effects of each knob tweak will need to be custom defined for each effect (currently; we can do better)
@@ -343,6 +365,9 @@ export default function reduce(state, action) {
             effect.node.curve = makeDistortionCurve(.5 * action.value);
           }
         }
+
+
+
       }
       return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
@@ -424,8 +449,13 @@ export default function reduce(state, action) {
 
       // add new effect to list of active effects, including refs to its knobs
       allActiveEffects.push({name:effect, node:newEffectNode, knobs:[allKnobs.length,allKnobs+1], faders:[]});
-      allKnobs.push(100);
-      allKnobs.push(100); // different effects will need different numbers of knobs.
+       // different effects will need different numbers of knobs.
+      if (effect === 'BiquadFilterMid') {
+        allKnobs.push(100);
+        allKnobs.push(100);
+        allKnobs.push(100);
+        allKnobs.push(100);
+      }
 
       return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
     }
@@ -450,16 +480,16 @@ export default function reduce(state, action) {
             state.masterOut.connect(allActiveEffects[i+1].node);
             } else { // there are no effects left once it's been removed
             state.masterOut.connect(state.audioContext.destination);
-            }
           }
         }
       }
-      allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
-      return Object.assign({}, state, {activeEffects: allActiveEffects});
     }
-    default: {
-      console.error('Reducer Error: ', action);
-      return Object.assign({}, state);
-    }
+    allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
+    return Object.assign({}, state, {activeEffects: allActiveEffects});
   }
+  default: {
+    console.error('Reducer Error: ', action);
+    return Object.assign({}, state);
+  }
+}
 };
