@@ -19,11 +19,11 @@ import IO from 'socket.io-client';
 const sched = function() {
   let state = store.getState();
   let nextEvent = state.performance[events];
-  if (!nextEvent) return;
+  if (!nextEvent) { return; }
   window.requestAnimationFrame(sched);
   let when = Math.abs(nextEvent.timestamp - state.recordStartTime);
   let delta = playTime + when;
-  store.dispatch({type:'MARKER_UPDATE'});
+  store.dispatch({type: 'MARKER_UPDATE'});
   if (state.audioContext.currentTime - delta >= 0) {
     // trigger the event
     store.dispatch(Object.assign(nextEvent.action, {synthetic: true}));
@@ -59,10 +59,10 @@ export default function reduce(state, action) {
     for (let col = 0; col < COLUMNS; col++) {
       let column = [];
       for (let sample = 0; sample < SAMPLES_PER_COLUMN; sample++) {
-        column.push({sampleUrl: sampleUrls[(col*5+sample)%18],
+        column.push({sampleUrl: sampleUrls[(col * 5 + sample) % 18],
           index: sample,
           column: col,
-          sampleName: sampleUrls[(col*5+sample)%18].split('/')[2].split('_')[2].split('.')[0],
+          sampleName: sampleUrls[(col * 5 + sample) % 18].split('/')[2].split('_')[2].split('.')[0],
           playing: false,
           loaded: false,
           buffer: null
@@ -114,10 +114,10 @@ export default function reduce(state, action) {
           name: 'BiquadFilterLo',
           node: BiquadFilterLo,
         },
-          {
-            name: 'distortion',
-            node: Distortion,
-          },
+        {
+          name: 'distortion',
+          node: Distortion,
+        },
         {
           name: 'ipsum',
           node: 'placeholder',
@@ -161,13 +161,13 @@ export default function reduce(state, action) {
     }
     case 'KEY_UP': {
       // TODO: optimize this -- use a hash table instead of an array
-      let new_nodes = [];
+      let newNodes = [];
       for (let i = 0; i < state.nodes.length; i++) {
         if (Math.round(state.nodes[i].frequency.value) === Math.round(action.frequency)) {
           state.nodes[i].stop(0);
           state.nodes[i].disconnect();
         } else {
-          new_nodes.push(nodes[i]);
+          newNodes.push(nodes[i]);
         }
       }
       let temp = Object.assign([], state.performance);
@@ -175,7 +175,7 @@ export default function reduce(state, action) {
         state.socket.emit('event2server', { action: action });
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
-      return Object.assign({}, state, {nodes: new_nodes, performance: temp});
+      return Object.assign({}, state, {nodes: newNodes, performance: temp});
     }
     case 'KEY_DOWN': {
       let temp = Object.assign([], state.nodes);
@@ -263,7 +263,7 @@ export default function reduce(state, action) {
         let allSamples = Object.assign([], state.samples);
         for (var sampleColumn of allSamples) {
           for (var sample of sampleColumn) {
-              if (sample.playing) sample.gainNode.connect(state.masterOut);
+            if (sample.playing) { sample.gainNode.connect(state.masterOut); }
           }
         }
         return Object.assign({}, state, {syncOn: false});
@@ -272,7 +272,7 @@ export default function reduce(state, action) {
         let allSamples = Object.assign([], state.samples);
         for (var sampleColumn of allSamples) {
           for (var sample of sampleColumn) {
-              if (sample.playing) sample.gainNode.connect(state.pitchShiftNode);
+            if (sample.playing) { sample.gainNode.connect(state.pitchShiftNode); }
           }
         }
         return Object.assign({}, state, {syncOn: true});
@@ -290,7 +290,7 @@ export default function reduce(state, action) {
       let bpm = Object.assign({}, state.BPM);
       if (action.id === 'tempoFader') {
         bpm = Math.round((action.value * (state.maxTempo - state.minTempo) / 100) + state.minTempo);
-        const ratio = ((bpm+state.minTempo)/state.maxTempo).toFixed(2);
+        const ratio = ((bpm + state.minTempo) / state.maxTempo).toFixed(2);
         state.pitchShiftNode.onaudioprocess = pitchShifter.bind(state.pitchShiftNode, ratio);
         for (let col of state.samples) {
           for (let sample of col) {
@@ -326,24 +326,24 @@ export default function reduce(state, action) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
         state.socket.emit('event2server', { action: action });
       }
-      if (action.id == '0') { // Global Volume
+      if (action.id === 0) { // Global Volume
         state.masterOut.gain.value = action.value / 100;
       }
       if (action.id >= 1 && action.id <= 5) { // one of the sampler column volume knobs
-        for (let sample of state.samples[action.id-1]) {
-          if (sample.playing) sample.gainNode.gain.value = action.value / 100;
+        for (let sample of state.samples[action.id - 1]) {
+          if (sample.playing) { sample.gainNode.gain.value = action.value / 100; }
         }
       }
-      if (action.id == '6') { // Synth Volume
+      if (action.id === 6) { // Synth Volume
         temp2[6] = action.value;
         state.synthGainNode.gain.value = action.value / 100;
       }
       if (action.id >= 7 && action.id <= 12) {            // Oscillator Knobs
         if (action.id === 7 || action.id === 8) {         // Oscillator Volume
         } else if (action.id === 9 || action.id === 10) { // Oscillator Detune
-          let detuneVal = (action.value - 127.5) * (200/255) ;
+          let detuneVal = (action.value - 127.5) * (200 / 255);
           let newDetune = state.oscdetune;
-          if (action.id === 9)  { newDetune[1] = detuneVal; }
+          if (action.id === 9) { newDetune[1] = detuneVal; }
           if (action.id === 10) { newDetune[2] = detuneVal; }
 
           return Object.assign({}, state, {
@@ -359,7 +359,6 @@ export default function reduce(state, action) {
         // find which effect it is in our array of active effects
         var effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1)[0];
         if (effect.name === 'biquadFilter') {
-          console.log('biquadFilter')
           // inside that effect component, which knob was tweaked?
           let whichKnob = effect.knobs.indexOf(action.id);
           // the effects of each knob tweak will need to be custom defined for each effect (currently; we can do better)
@@ -391,20 +390,20 @@ export default function reduce(state, action) {
         theSample.source.loop = true;
         if (action.buffer.duration) {
           theSample.source.buffer = action.buffer;
-          const ratio = ((state.BPM+state.minTempo)/state.maxTempo).toFixed(2);
+          const ratio = ((state.BPM + state.minTempo) / state.maxTempo).toFixed(2);
           theSample.source.playbackRate.value = ratio;
         } else {
           for (var i = 0; i < COLUMNS * SAMPLES_PER_COLUMN; i++) {
             if ((state.sampleBuffers[i][0] === action.sample.column) && (state.sampleBuffers[i][1] === action.sample.index)) {
               theSample.source.buffer = state.sampleBuffers[i][2];
-              const ratio = ((state.BPM+state.minTempo)/state.maxTempo).toFixed(2);
+              const ratio = ((state.BPM + state.minTempo) / state.maxTempo).toFixed(2);
               theSample.source.playbackRate.value = ratio;
             }
           }
         }
 
         let gainNode = state.audioContext.createGain();
-        gainNode.gain.value = state.knobs[action.sample.column+1]/100;
+        gainNode.gain.value = state.knobs[action.sample.column + 1] / 100;
         theSample.source.connect(gainNode);
         theSample.gainNode = gainNode;
         if (state.syncOn) {
@@ -453,15 +452,20 @@ export default function reduce(state, action) {
       let newEffectNode = state.customEffects.filter(fx => fx.name === action.effect)[0].node(state.audioContext);
       if (allActiveEffects.length === 0) { // this is the first effect unit we're adding
         state.masterOut.disconnect();
-      state.masterOut.connect(newEffectNode);
-      newEffectNode.connect(state.audioContext.destination);
-    } else {
-      allActiveEffects[allActiveEffects.length - 1].node.disconnect();
-      allActiveEffects[allActiveEffects.length - 1].node.connect(newEffectNode);
-      newEffectNode.connect(state.audioContext.destination);
-    }
+        state.masterOut.connect(newEffectNode);
+        newEffectNode.connect(state.audioContext.destination);
+      } else {
+        allActiveEffects[allActiveEffects.length - 1].node.disconnect();
+        allActiveEffects[allActiveEffects.length - 1].node.connect(newEffectNode);
+        newEffectNode.connect(state.audioContext.destination);
+      }
       // add new effect to list of active effects, including refs to its knobs
-      allActiveEffects.push({name:effect, node:newEffectNode, knobs:[allKnobs.length,allKnobs+1], faders:[]});
+      allActiveEffects.push({
+        name: effect, 
+        node: newEffectNode, 
+        knobs: [allKnobs.length, allKnobs + 1], 
+        faders: [],
+      });
       allKnobs.push(100);
       allKnobs.push(100); // different effects will need different numbers of knobs.
 
@@ -470,24 +474,24 @@ export default function reduce(state, action) {
     case 'EFFECT_FROM_RACK': {
       let allActiveEffects = state.activeEffects.slice();
       let knobPos = action.id.search(/[0-9]/g);
-      let textId = action.id.slice(0,knobPos);
+      let textId = action.id.slice(0, knobPos);
       let firstKnob = Number(action.id.slice(knobPos));
       for (var i in allActiveEffects) {
         i = Number(i);
         if (allActiveEffects[i].name === textId & allActiveEffects[i].knobs[0] === firstKnob) {
           allActiveEffects[i].name = 'to be deleted';
           allActiveEffects[i].node.disconnect();
-          if (allActiveEffects[i-1]) { // there is an effect before this one
-            if (allActiveEffects[i+1]) { // and there's one after it
-              allActiveEffects[i-1].node.connect(allActiveEffects[i+1].node);
+          if (allActiveEffects[i - 1]) { // there is an effect before this one
+            if (allActiveEffects[i + 1]) { // and there's one after it
+              allActiveEffects[i - 1].node.connect(allActiveEffects[i + 1].node);
             } else { // there's an effect before it, but not after it
-            allActiveEffects[i-1].node.connect(state.audioContext.destination);
-          }
+              allActiveEffects[i - 1].node.connect(state.audioContext.destination);
+            }
           } else { // there's no effect before it
-          if (allActiveEffects[i+1]) {
-            state.masterOut.connect(allActiveEffects[i+1].node);
+            if (allActiveEffects[i + 1]) {
+              state.masterOut.connect(allActiveEffects[i + 1].node);
             } else { // there are no effects left once it's been removed
-            state.masterOut.connect(state.audioContext.destination);
+              state.masterOut.connect(state.audioContext.destination);
             }
           }
         }
@@ -500,4 +504,5 @@ export default function reduce(state, action) {
       return Object.assign({}, state);
     }
   }
-};
+}
+
