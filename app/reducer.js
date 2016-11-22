@@ -69,6 +69,7 @@ export default function reduce(state, action) {
       numColumns: COLUMNS,
       samples: samples,
       oscwaves: [null, 'sine', 'sine'],
+      oscdetune: [null, -100, 100],
       patch: 'sine',
       masterOut: null, // if you're making stuff that makes noise, connect it to this
       audioContext: null, // first set when page loads
@@ -82,7 +83,7 @@ export default function reduce(state, action) {
       knobs[13-20] are reserved for additional features
       knobs[20+] are reserved for effects
       */
-      knobs: Array(21).fill(100),
+      knobs: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
       timeZero: 0,
       suspended: false,
       markerTime: 0,
@@ -170,6 +171,7 @@ export default function reduce(state, action) {
         let oscillator = state.audioContext.createOscillator();
         oscillator.type = state.oscwaves[i + 1]; //TODO: only works for one synth sound right now
         oscillator.frequency.value = action.frequency;
+        oscillator.detune.value = state.oscdetune[i + 1];
 
         oscillator.connect(state.synthGainNode);
         oscillator.start(0);
@@ -325,10 +327,19 @@ export default function reduce(state, action) {
         if (action.id === 7 || action.id === 8) {// osc volume
 
         } else if (action.id === 9 || action.id === 10) { // osc detune
+          let detuneVal = (action.value - 127.5) * (200/255) ;
+          let newDetune = state.oscdetune;
+          if (action.id === 9)  { newDetune[1] = detuneVal; }
+          if (action.id === 10) { newDetune[2] = detuneVal; }
 
+          return Object.assign({}, state, {
+            performance: temp,
+            knobs: temp2,
+            oscdetune: newDetune,
+          });
         }
       }
-      if (action.id >=13 && action.id <= 20) { // reserved for additional features
+      if (action.id >= 13 && action.id <= 20) { // reserved for additional features
       }
       if (action.id > 20) { // one of the effect knobs
         // find which effect it is in our array of active effects
@@ -405,7 +416,7 @@ export default function reduce(state, action) {
       newOscWaves[action.oscnum] = action.wave;
 
       return Object.assign({}, state, {
-        oscwaves newOscWaves,
+        oscwaves: newOscWaves,
         performance: temp,
       });
     }
