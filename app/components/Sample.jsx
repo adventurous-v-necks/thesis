@@ -10,6 +10,24 @@ class Sample extends React.Component {
   constructor(props) {
     super(props);
   }
+  preventDefault(e) {
+    // according to React docs we need this bound to onDragOver due to Chrome bug
+    e.preventDefault();
+  }
+  onDrop(e) {
+    e.preventDefault();
+    if (e.dataTransfer.files[0].type.substr(0,5)!=='audio') {
+      alert('Wrong file type! You have to drag an audio file');
+    }
+    let data = new FormData();
+    data.append('file', e.dataTransfer.files[0]);
+    fetch('/upload', {method: 'POST', body: data, credentials: 'include'}).then(resp => {
+      console.log(resp);
+      resp.json().then(r => {
+        console.log(r);
+      });
+    });
+  }
   componentWillMount() {
     //load sample
     let request = new XMLHttpRequest();
@@ -36,7 +54,7 @@ class Sample extends React.Component {
       animation: this.props.playing ? 'play-anim 1s infinite' : 'none',
     };
     return (
-      <div title="Click to Play Loop" ref={'1loop'} key={this.props.sample.sampleName} id={`sample${this.props.sample.column}-${this.props.sample.index}`} style={style} onClick={this.playSample.bind(this)}><span style={{userSelect:'none',height:'auto',maxHeight:'1em', cursor:'text'}} contentEditable suppressContentEditableWarning>{this.props.sample.sampleName}</span><br/>
+      <div onDragOver={this.preventDefault} onDrop={this.onDrop.bind(this)} title="Click to Play Loop" ref={'1loop'} key={this.props.sample.sampleName} id={`sample${this.props.sample.column}-${this.props.sample.index}`} style={style} onClick={this.playSample.bind(this)}><span style={{userSelect:'none',height:'auto',maxHeight:'1em', cursor:'text'}} contentEditable suppressContentEditableWarning>{this.props.sample.sampleName}</span><br/>
         {!this.props.playing ? (<i className="fa fa-play" id={`sample${this.props.sample.column}-${this.props.sample.index}`}></i>) : (<i id={`playbt${this.props.sample.column}-${this.props.sample.index}`}className="fa fa-square"></i>)}
       </div>
     );
