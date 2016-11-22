@@ -90,22 +90,22 @@ export default function reduce(state, action) {
       suspended: false,
       recordTimeZero: false,
       customEffects: [
-        {
-          name: 'biquadFilter',
-          node: BiquadFilter,
-        },
-        {
-          name: 'BiquadFilterLo',
-          node: BiquadFilterLo,
-        },
-          {
-            name: 'distortion',
-            node: Distortion,
-          },
-        {
-          name: 'ipsum',
-          node: 'placeholder',
-        }],
+      {
+        name: 'BiquadFilterMid',
+        node: BiquadFilterMid,
+      },
+      {
+        name: 'BiquadFilterLo',
+        node: BiquadFilterLo,
+      },
+      {
+        name: 'distortion',
+        node: Distortion,
+      },
+      {
+        name: 'ipsum',
+        node: 'placeholder',
+      }],
       activeEffects: [],
       syncOn: true,
     };
@@ -247,7 +247,7 @@ export default function reduce(state, action) {
         let allSamples = Object.assign([], state.samples);
         for (var sampleColumn of allSamples) {
           for (var sample of sampleColumn) {
-              if (sample.playing) sample.gainNode.connect(state.masterOut);
+            if (sample.playing) sample.gainNode.connect(state.masterOut);
           }
         }
         return Object.assign({}, state, {syncOn: false});
@@ -256,7 +256,7 @@ export default function reduce(state, action) {
         let allSamples = Object.assign([], state.samples);
         for (var sampleColumn of allSamples) {
           for (var sample of sampleColumn) {
-              if (sample.playing) sample.gainNode.connect(state.pitchShiftNode);
+            if (sample.playing) sample.gainNode.connect(state.pitchShiftNode);
           }
         }
         return Object.assign({}, state, {syncOn: true});
@@ -303,6 +303,9 @@ export default function reduce(state, action) {
       });
     }
     case 'KNOB_TWIDDLE': {
+      console.log('action line 306',typeof action.id)
+      action.id = Number(action.id);
+      console.log('action id passed through the Number', typeof action.id)
       let temp = Object.assign([], state.performance);
       let temp2 = Object.assign([], state.knobs);
       temp2[action.id] = action.value;
@@ -325,10 +328,31 @@ export default function reduce(state, action) {
       if (action.id >=13 && action.id <= 20) { // reserved for additional features
       }
       if (action.id > 20) { // one of the effect knobs
-        // find which effect it is in our array of active effects
         var effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1)[0];
+        console.log('found effect', effect)
+
+        if (effect.name === 'BiquadFilterMid') {
+          console.log('action', action)
+          let whichKnob = effect.knobs.indexOf(action.id);
+          console.log('whichKnob anyway', whichKnob)
+          if (whichKnob === 0) {
+            console.log(whichKnob)
+          }
+          if (whichKnob === 1) {
+            console.log(whichKnob)
+          }
+          if (whichKnob === 2) {
+            console.log(whichKnob)
+          }
+          if (whichKnob === 3) {
+            console.log(whichKnob)
+          }
+          if (whichKnob === 3) {
+            console.log(whichKnob)
+          }
+        }
+        // find which effect it is in our array of active effects
         if (effect.name === 'biquadFilter') {
-          console.log('biquadFilter')
           // inside that effect component, which knob was tweaked?
           let whichKnob = effect.knobs.indexOf(action.id);
           // the effects of each knob tweak will need to be custom defined for each effect (currently; we can do better)
@@ -343,11 +367,13 @@ export default function reduce(state, action) {
             effect.node.curve = makeDistortionCurve(.5 * action.value);
           }
         }
+
+
+
       }
       return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
     case 'PLAY_SAMPLE': {
-      console.log(action);
       if (!action.synthetic) {
         state.socket.emit('event2server', { action: action });
       }
@@ -422,14 +448,22 @@ export default function reduce(state, action) {
       newEffectNode.connect(state.audioContext.destination);
     }
 
-      // add new effect to list of active effects, including refs to its knobs
-      allActiveEffects.push({name:effect, node:newEffectNode, knobs:[allKnobs.length,allKnobs+1], faders:[]});
+    if (effect === 'BiquadFilterMid') {
       allKnobs.push(100);
-      allKnobs.push(100); // different effects will need different numbers of knobs.
-
-      return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
+      allKnobs.push(100);
+      allKnobs.push(100);
+      allKnobs.push(100);
     }
-    case 'EFFECT_FROM_RACK': {
+
+      // add new effect to list of active effects, including refs to its knobs
+      allActiveEffects.push({name:effect, node:newEffectNode, knobs:[allKnobs.length-1, allKnobs.length-2, allKnobs.length-3, allKnobs.length-4], faders:[]});
+       // different effects will need different numbers of knobs.
+       console.log('adding ',effect);
+
+
+       return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
+     }
+     case 'EFFECT_FROM_RACK': {
       let allActiveEffects = state.activeEffects.slice();
       let knobPos = action.id.search(/[0-9]/g);
       let textId = action.id.slice(0,knobPos);
@@ -450,16 +484,16 @@ export default function reduce(state, action) {
             state.masterOut.connect(allActiveEffects[i+1].node);
             } else { // there are no effects left once it's been removed
             state.masterOut.connect(state.audioContext.destination);
-            }
           }
         }
       }
-      allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
-      return Object.assign({}, state, {activeEffects: allActiveEffects});
     }
-    default: {
-      console.error('Reducer Error: ', action);
-      return Object.assign({}, state);
-    }
+    allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
+    return Object.assign({}, state, {activeEffects: allActiveEffects});
   }
+  default: {
+    console.error('Reducer Error: ', action);
+    return Object.assign({}, state);
+  }
+}
 };
