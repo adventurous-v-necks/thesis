@@ -556,12 +556,12 @@ export default function reduce(state, action) {
     case 'ROOM_MENU_TOGGLE': {
       return Object.assign({}, state, {roomsMenuActive: !state.roomsMenuActive});
     }
-    case 'NAVIGATE_ROOM': {
-      let allActiveRooms = state.activeRooms.slice();
-      console.log('action: ', action);
-      // AJAX call to server (send userId and roomId)
-      return Object.assign({}, state);
-    }
+    // case 'NAVIGATE_ROOM': {
+    //   let allActiveRooms = state.activeRooms.slice();
+    //   console.log('action: ', action);
+    //   // AJAX call to server (send userId and roomId)
+    //   return Object.assign({}, state);
+    // }
     default: {
       console.error('Reducer Error: ', action);
       return Object.assign({}, state);
