@@ -68,7 +68,7 @@ export default function reduce(state, action) {
       maxTempo: 180,
       numColumns: COLUMNS,
       samples: samples,
-      oscs: [null, 'sine', 'sine'],
+      oscwaves: [null, 'sine', 'sine'],
       patch: 'sine',
       masterOut: null, // if you're making stuff that makes noise, connect it to this
       audioContext: null, // first set when page loads
@@ -168,7 +168,7 @@ export default function reduce(state, action) {
 
       for (let i = 0; i < 2; i++) {
         let oscillator = state.audioContext.createOscillator();
-        oscillator.type = state.oscs[i + 1]; //TODO: only works for one synth sound right now
+        oscillator.type = state.oscwaves[i + 1]; //TODO: only works for one synth sound right now
         oscillator.frequency.value = action.frequency;
 
         oscillator.connect(state.synthGainNode);
@@ -401,20 +401,20 @@ export default function reduce(state, action) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
 
-      let newOscs = Array.from(state.oscs);
-      newOscs[action.oscnum] = action.wave;
+      let newOscWaves = Array.from(state.oscwaves);
+      newOscWaves[action.oscnum] = action.wave;
 
       return Object.assign({}, state, {
-        oscs: newOscs,
+        oscwaves newOscWaves,
         performance: temp,
       });
     }
     case 'PATCH_CHANGE': {
-      const newOscs = [null, action.patch, action.patch];
+      const newOscWaves = [null, action.patch, action.patch];
 
       return Object.assign({}, state, {
         patch: action.patch,
-        oscs: newOscs,
+        oscwaves: newOscWaves,
       });
     }
     case 'EFFECT_MENU_TOGGLE': {
