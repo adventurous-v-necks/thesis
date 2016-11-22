@@ -18,10 +18,17 @@ const isDeveloping = process.env.NODE_ENV !== 'production';
 const mongoAddress = isDeveloping ? 'mongodb://localhost/dj-controller' : 'mongodb://devMongo:27017/dj-controller';
 
 mongoose.Promise = Promise;
-Grid.mongo = mongoose.mongo;
 mongoose.connect(mongoAddress);
-let db = mongoose.connection;
-let gfs = new Grid(db);
+Grid.mongo = mongoose.mongo;
+
+let conn;
+if (isDeveloping) {
+  conn = mongoose.createConnection('localhost','dj-controller', 27017);
+} else {
+  conn = mongoose.createConnection('devMongo', 'dj-controller', 27017);
+}
+let gfs = new Grid(conn.db);
+var db = mongoose.connection;
 
 db.on('error',console.error);
 
@@ -39,27 +46,9 @@ const port = isDeveloping ? 3000 : process.env.PORT;
 
 const app = express();
 
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-
-var counter = 0;
-io.on('connection', function (socket) {
-  socket.on('event2server', function (data) {
-    socket.broadcast.emit('event', {data : data} )
-  });
-});
-
-
-app.use(express.static('public'));
-
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(require('cookie-parser')());
-
-var fileUpload = require('express-fileupload');
-app.use(fileUpload());
-
 const expressSession = require('express-session');
 const MongoStore = require('connect-mongo')(expressSession);
 app.use(expressSession({ secret: 'mysecret', resave:true, saveUninitialized:true, store: new MongoStore({mongooseConnection:db, collection:'session'})}));
@@ -82,28 +71,29 @@ passport.use(new LocalStrategy(function(username, password, done) {
   });
 }));
 
-app.get('/example_rest_endpoint/:id', function response(req, res) {
-res.write(`hello ${req.params.id}`); // or you can use res.json({some object})
-res.end();
-});
+app.use(express.static('public'));
+
+let fileUpload = require('express-fileupload');
+app.use(fileUpload());
 
 app.get('/getLoggedInUsername', function response(req, res) {
   res.write(req.user ? req.user.username : 'Not Logged In');
   res.end();
 });
 
-app.all('/login',
+app.post('/login',
   passport.authenticate('local', { failWithError: true }),
   function(req, res, next) {
-    res.json({status: 'ok', username: req.user.username});
+    return res.json({status: 'ok', username: req.user.username, user:req.user});
   },
   function(err, req, res, next) {
-    res.json({status: 'bad', message: 'Login failed, incorrect username or password'});
+    console.log(err);
+    return res.json({status: 'bad', message: 'Login failed, incorrect username or password'});
   }
 );
 
 app.post('/signup', function (req, res) {
-  var newuser = new User({username:req.body.username});
+  var newuser = new User({username:req.body.username, email: req.body.email});
   newuser.password = newuser.generateHash(req.body.password);
   newuser.save(function(err,data) {
     res.json({status: 'ok', message: 'Successfully created user', username: req.body.username});
@@ -111,28 +101,29 @@ app.post('/signup', function (req, res) {
 });
 
 app.post('/upload', function (req, res) {
-  console.log(req.files, req.user, req.files.file);
-  let to = gfs.createWriteStream({filename: 'tom2.wav'});
+  let to = gfs.createWriteStream({filename: req.user.username+'___'+req.files.file.name});
   to.on('error',(e)=>console.log(e));
   to.on('close', () => {
-    res.json({status: 'ok', message: 'uploaded file', filename: 'http://localhost:3000/file.wav'});
+    res.json({status: 'ok', message: 'uploaded file',
+    filename: 'http://localhost:3000/get/'+req.user.username+'___'+req.files.file.name
+    });
   });
-  to.on('open', ()=> console.log('opened'));
   req.files.file.mv('/tmp/'+req.files.file.name, (e,f) => {
-    console.log(e,f);
     fs.createReadStream('/tmp/'+req.files.file.name).on('end', () => {
       to.end();
     }).on('error', (e) => {
-      console.log(e);
       res.json({status: 'bad', message: 'upload failed'});
-    }).on('data', (d) =>console.log(d)).pipe(to);
+    }).pipe(to);
   });
 });
 
 app.get('/get/:id', function (req, res) {
-  console.log(req.params.id);
-  //res.set('Content-Type', 'image/jpeg');
   gfs.createReadStream({filename: req.params.id}).pipe(res);
+});
+
+app.get('/logout', function(req,res) {
+  req.logout();
+  res.redirect('/');
 });
 
 const reactRoutes = [{path: '/abc', auth: true}, {path: '/tryLogin', auth: false}];
@@ -184,6 +175,14 @@ app.use(function(err, req, res, next) {
   res.status(404).sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+io.on('connection', function (socket) {
+  socket.on('event2server', function (data) {
+    socket.broadcast.emit('event', {data : data} )
+  });
+});
 server.listen(port, '0.0.0.0', function onStart(err) {
   if (err) {
     console.log(err);

@@ -30,6 +30,7 @@ class App extends React.Component {
     e.preventDefault();
     window.localStorage.removeItem('com.rejuicy.user');
     this.props.dispatch({type:'USER_LOGOUT'});
+    fetch('/logout', {credentials:'include'});
     this.context.router.push('/');
   }
   customNavbar() {

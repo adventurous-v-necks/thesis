@@ -25,14 +25,15 @@ class existingLogin extends React.Component {
       username: e.target.username.value,
       password: e.target.password.value});
     this.setState({submitted: true});
-    fetch('/login', {method:'POST', headers: theHeaders, body: stringyForm}).then(resp => {
+    fetch('/login', {credentials:'include',method:'POST', headers: theHeaders, body: stringyForm}).then(resp => {
+      console.log(resp.headers);
       resp.json().then(r => {
         if (r.status === 'ok') {
           window.localStorage.setItem('com.rejuicy.user',JSON.stringify({
             username: r.username
           }));
           this.props.dispatch({type:'USER_LOGIN'});
-          this.context.router.push('/player');
+          this.context.router.replace('/player');
         } else {
           alert('Sign in failed!');
           this.setState({submitted: false});
