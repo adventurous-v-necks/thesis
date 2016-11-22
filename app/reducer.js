@@ -31,14 +31,27 @@ const sched = function() {
   }
 };
 
-const sampleUrls = ['/samples/100bpm_Hamir_Bass_1.wav.mp3', '/samples/100bpm_Hamir_Bass_2.wav.mp3',
-'/samples/100bpm_Hamir_Clap.mp3', '/samples/100bpm_Hamir_Drop_1.wav.mp3',
-'/samples/100bpm_Hamir_Drop_2.wav.mp3', '/samples/100bpm_Hamir_DrumLoop_01.wav.mp3',
-'/samples/100bpm_Hamir_DrumLoop_02.wav.mp3', '/samples/100bpm_Hamir_DrumLoop_(No_kick)_01.wav.mp3',
-'/samples/100bpm_Hamir_Fx_Noise.wav.mp3', '/samples/100bpm_Hamir_Fx_Riseup.wav.mp3',
-'/samples/100bpm_Hamir_Hithat.wav.mp3', '/samples/100bpm_Hamir_Perc.wav.mp3', '/samples/100bpm_Hamir_Ride_1.wav.mp3',
-'/samples/100bpm_Hamir_Ride_2.wav.mp3', '/samples/100bpm_Hamir_Snare.wav.mp3', '/samples/100bpm_Hamir_Kick.mp3',
-'/samples/100bpm_Hamir_Sub.wav.mp3', '/samples/100bpm_Hamir_Synth_1.wav.mp3', '/samples/100bpm_Hamir_Synth_2.wav.mp3'];
+const sampleUrls = [
+  '/samples/100bpm_Hamir_Bass_1.wav.mp3',
+  '/samples/100bpm_Hamir_Bass_2.wav.mp3',
+  '/samples/100bpm_Hamir_Clap.mp3',
+  '/samples/100bpm_Hamir_Drop_1.wav.mp3',
+  '/samples/100bpm_Hamir_Drop_2.wav.mp3',
+  '/samples/100bpm_Hamir_DrumLoop_01.wav.mp3',
+  '/samples/100bpm_Hamir_DrumLoop_02.wav.mp3',
+  '/samples/100bpm_Hamir_DrumLoop_(No_kick)_01.wav.mp3',
+  '/samples/100bpm_Hamir_Fx_Noise.wav.mp3',
+  '/samples/100bpm_Hamir_Fx_Riseup.wav.mp3',
+  '/samples/100bpm_Hamir_Hithat.wav.mp3',
+  '/samples/100bpm_Hamir_Perc.wav.mp3',
+  '/samples/100bpm_Hamir_Ride_1.wav.mp3',
+  '/samples/100bpm_Hamir_Ride_2.wav.mp3',
+  '/samples/100bpm_Hamir_Snare.wav.mp3',
+  '/samples/100bpm_Hamir_Kick.mp3',
+  '/samples/100bpm_Hamir_Sub.wav.mp3',
+  '/samples/100bpm_Hamir_Synth_1.wav.mp3',
+  '/samples/100bpm_Hamir_Synth_2.wav.mp3'
+];
 
 export default function reduce(state, action) {
   if (state === undefined) {
@@ -186,7 +199,6 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {nodes: temp, performance: temp2});
     }
     case 'CREATE_AUDIO_CONTEXT': {
-
       // DEVEL:
       let socket = IO.connect();
       // DEPLOY:
@@ -448,7 +460,6 @@ export default function reduce(state, action) {
       allActiveEffects[allActiveEffects.length - 1].node.connect(newEffectNode);
       newEffectNode.connect(state.audioContext.destination);
     }
-
       // add new effect to list of active effects, including refs to its knobs
       allActiveEffects.push({name:effect, node:newEffectNode, knobs:[allKnobs.length,allKnobs+1], faders:[]});
       allKnobs.push(100);
