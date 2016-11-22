@@ -46,6 +46,30 @@ const port = isDeveloping ? 3000 : process.env.PORT;
 
 const app = express();
 
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+var counter = 0;
+io.on('connection', function (socket) {
+  // socket.on('room', function (room) {
+  //   socket.join(room);
+  // });
+
+  socket.on('room', function(room){
+    if(socket.room) {
+      socket.leave(socket.room);
+    }
+
+    socket.room = room;
+    socket.join(room);
+  });
+  
+  io.sockets.in(room).emit('event2server', {data : data});
+});
+
+
+app.use(express.static('public'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(require('cookie-parser')());
@@ -128,7 +152,12 @@ app.get('/logout', function(req,res) {
 app.get('/room/:id', function response(req, res) {
   console.log('get request to /rooms: ', req.params.id);
   // res.write({status: 'ok'});
-  res.end();
+  // io.on('change room', function(data) {
+  //   socket.join(req.params.id);
+  //   console.log('inside server.js change room =====================');
+  // });
+  // io.to(req.params.id).emit('event', {data : data});
+  // res.end();
 });
 
 const reactRoutes = [{path: '/abc', auth: true}, {path: '/tryLogin', auth: false}];
