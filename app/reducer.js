@@ -326,7 +326,7 @@ export default function reduce(state, action) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
         state.socket.emit('event2server', { action: action });
       }
-      if (action.id === 0) { // Global Volume
+      if (action.id === '0') { // Global Volume
         state.masterOut.gain.value = action.value / 100;
       }
       if (action.id >= 1 && action.id <= 5) { // one of the sampler column volume knobs
