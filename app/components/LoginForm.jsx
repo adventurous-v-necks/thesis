@@ -26,7 +26,6 @@ class existingLogin extends React.Component {
       password: e.target.password.value});
     this.setState({submitted: true});
     fetch('/login', {credentials:'include',method:'POST', headers: theHeaders, body: stringyForm}).then(resp => {
-      console.log(resp.headers);
       resp.json().then(r => {
         if (r.status === 'ok') {
           window.localStorage.setItem('com.rejuicy.user',JSON.stringify({
