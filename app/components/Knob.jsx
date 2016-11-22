@@ -35,6 +35,10 @@ class Knob extends React.Component {
     transform = Math.max(-100, transform);
     transform = Math.min(100, transform);
     style.transform = 'rotate('+transform+'deg)';
+    let displayValue = myValue
+    if (this.props.id === 9 || this.props.id === 10) { 
+      displayValue = Math.round((displayValue - 127.5) * (200/255));
+    }
 
 
     const labelFunc = (label) => {
@@ -61,11 +65,13 @@ class Knob extends React.Component {
       }
     }
 
+    
+
     return (
       <div title={this.props.title} onMouseDown={this.handleMouseDown.bind(this)}
         style={{cursor: 'crosshair', userSelect:'none', height:'auto'}}>
         <div className="samplerVol">
-          <span className="knob-text">{myValue}</span>
+          <span className="knob-text">{displayValue}</span>
           <div className="dialANDlabel"style={{align: 'center'}}>
             <svg viewBox="-6 -6 12 12" className="dial">
               <g  style={style}  className="knob">
