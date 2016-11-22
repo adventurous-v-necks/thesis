@@ -303,12 +303,9 @@ export default function reduce(state, action) {
       });
     }
     case 'KNOB_TWIDDLE': {
-      console.log('action line 306',action)
       let temp = Object.assign([], state.performance);
-      console.log('temp', temp)
       let temp2 = Object.assign([], state.knobs);
       temp2[action.id] = action.value;
-      console.log('temp2[action.id]', temp2[action.id])
       if (!action.synthetic) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
         state.socket.emit('event2server', { action: action });
@@ -328,25 +325,18 @@ export default function reduce(state, action) {
       if (action.id >=13 && action.id <= 20) { // reserved for additional features
       }
       if (action.id > 20) { // one of the effect knobs
-        console.log('state.activeEffects', state.activeEffects)
         var effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1)[0];
-        console.log('effect 331', effect)
 
        if (effect.name === 'BiquadFilterMid') {
         let whichKnob = effect.knobs.indexOf(action.id);
-        console.log('whichKnob', effect.knobs)
 
         if (whichKnob === 0) {
-          console.log('whichKnob = 0')
         }
         if (whichKnob === 1) {
-          console.log('whichKnob = 1')
         }
         if (whichKnob === 2) {
-          console.log('whichKnob = 2')
         }
         if (whichKnob === 3) {
-          console.log('whichKnob = 3')
         }
       }
         // find which effect it is in our array of active effects
@@ -372,7 +362,6 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
     case 'PLAY_SAMPLE': {
-      console.log(action);
       if (!action.synthetic) {
         state.socket.emit('event2server', { action: action });
       }
