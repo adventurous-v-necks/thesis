@@ -11,14 +11,17 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/User.js');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const Grid = require('gridfs-stream');
+const fs = require('fs');
 const isDeveloping = process.env.NODE_ENV !== 'production';
 
 const mongoAddress = isDeveloping ? 'mongodb://localhost/dj-controller' : 'mongodb://devMongo:27017/dj-controller';
 
 mongoose.Promise = Promise;
+Grid.mongo = mongoose.mongo;
 mongoose.connect(mongoAddress);
-
 let db = mongoose.connection;
+let gfs = new Grid(db);
 
 db.on('error',console.error);
 
@@ -53,6 +56,10 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(require('cookie-parser')());
+
+var fileUpload = require('express-fileupload');
+app.use(fileUpload());
+
 const expressSession = require('express-session');
 const MongoStore = require('connect-mongo')(expressSession);
 app.use(expressSession({ secret: 'mysecret', resave:true, saveUninitialized:true, store: new MongoStore({mongooseConnection:db, collection:'session'})}));
@@ -101,6 +108,31 @@ app.post('/signup', function (req, res) {
   newuser.save(function(err,data) {
     res.json({status: 'ok', message: 'Successfully created user', username: req.body.username});
   });
+});
+
+app.post('/upload', function (req, res) {
+  console.log(req.files, req.user, req.files.file);
+  let to = gfs.createWriteStream({filename: 'tom2.wav'});
+  to.on('error',(e)=>console.log(e));
+  to.on('close', () => {
+    res.json({status: 'ok', message: 'uploaded file', filename: 'http://localhost:3000/file.wav'});
+  });
+  to.on('open', ()=> console.log('opened'));
+  req.files.file.mv('/tmp/'+req.files.file.name, (e,f) => {
+    console.log(e,f);
+    fs.createReadStream('/tmp/'+req.files.file.name).on('end', () => {
+      to.end();
+    }).on('error', (e) => {
+      console.log(e);
+      res.json({status: 'bad', message: 'upload failed'});
+    }).on('data', (d) =>console.log(d)).pipe(to);
+  });
+});
+
+app.get('/get/:id', function (req, res) {
+  console.log(req.params.id);
+  //res.set('Content-Type', 'image/jpeg');
+  gfs.createReadStream({filename: req.params.id}).pipe(res);
 });
 
 const reactRoutes = [{path: '/abc', auth: true}, {path: '/tryLogin', auth: false}];
