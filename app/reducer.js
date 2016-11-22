@@ -332,8 +332,9 @@ export default function reduce(state, action) {
         console.log('found effect', effect)
 
         if (effect.name === 'BiquadFilterMid') {
+          console.log('action', action)
           let whichKnob = effect.knobs.indexOf(action.id);
-
+          console.log('whichKnob anyway', whichKnob)
           if (whichKnob === 0) {
             console.log(whichKnob)
           }
@@ -341,6 +342,9 @@ export default function reduce(state, action) {
             console.log(whichKnob)
           }
           if (whichKnob === 2) {
+            console.log(whichKnob)
+          }
+          if (whichKnob === 3) {
             console.log(whichKnob)
           }
           if (whichKnob === 3) {

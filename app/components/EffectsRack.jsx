@@ -17,7 +17,7 @@ class EffectsRack extends React.Component {
       borderRadius: '2px',
       backgroundColor: '#efefef',
       width: '100%',
-      height:'100%',
+      height:'135%',
       position:'relative',
       textAlign: 'right',
       paddingTop: '0.6em',
