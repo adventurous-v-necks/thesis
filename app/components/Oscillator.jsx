@@ -41,7 +41,7 @@ class Oscillator extends React.Component {
 
     const oscNum = `osc${this.props.number}`;
     const num = this.props.number;
-    const oscs = this.props.oscs;
+    const oscwaves = this.props.oscwaves;
 
     return (
       <div className={oscNum} style={h1w5}>
@@ -65,11 +65,11 @@ class Oscillator extends React.Component {
                 <div>
                   <form action="" style={{position: 'relative', top: '-15%'}}>
                     <input type="radio" style={radioLabelStyle} name={oscNum} value="sine"
-                      checked={oscs[num] === 'sine'} onChange={this.handleWaveChange}/>Sine
+                      checked={oscwaves[num] === 'sine'} onChange={this.handleWaveChange}/>Sine
                     <input type="radio" style={radioLabelStyle} name={oscNum} value="square"
-                      checked={oscs[num] === 'square'} onChange={this.handleWaveChange}/>Square
+                      checked={oscwaves[num] === 'square'} onChange={this.handleWaveChange}/>Square
                     <input type="radio" style={radioLabelStyle} name={oscNum} value="sawtooth"
-                      checked={oscs[num] === 'sawtooth'} onChange={this.handleWaveChange}/>Sawtooth
+                      checked={oscwaves[num] === 'sawtooth'} onChange={this.handleWaveChange}/>Sawtooth
                   </form>
                 </div>
               </td>
@@ -84,7 +84,7 @@ class Oscillator extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    oscs: state.oscs,
+    oscwaves: state.oscwaves,
   };
 }
 
