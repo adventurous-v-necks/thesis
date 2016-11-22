@@ -70,6 +70,7 @@ export default function reduce(state, action) {
       samples: samples,
       oscwaves: [null, 'sine', 'sine'],
       oscdetune: [null, -100, 100],
+      // oscvolumes: [null, 80, 80],
       patch: 'sine',
       masterOut: null, // if you're making stuff that makes noise, connect it to this
       audioContext: null, // first set when page loads
@@ -83,7 +84,7 @@ export default function reduce(state, action) {
       knobs[13-20] are reserved for additional features
       knobs[20+] are reserved for effects
       */
-      knobs: [100, 100, 100, 100, 100, 100, 100, 100, 100, 127.5, 127.5, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+      knobs: [100, 100, 100, 100, 100, 100, 50, 80, 80, 127.5, 127.5, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
       timeZero: 0,
       suspended: false,
       markerTime: 0,
@@ -313,7 +314,7 @@ export default function reduce(state, action) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
         state.socket.emit('event2server', { action: action });
       }
-      if (action.id == '0') { //globalVolume
+      if (action.id == '0') { // Global Volume
         state.masterOut.gain.value = action.value / 100;
       }
       if (action.id >= 1 && action.id <= 5) { // one of the sampler column volume knobs
@@ -321,12 +322,13 @@ export default function reduce(state, action) {
           if (sample.playing) sample.gainNode.gain.value = action.value / 100;
         }
       }
-      if (action.id == '6') { //synthVolum
+      if (action.id == '6') { // Synth Volume
+        temp2[6] = action.value;
+        state.synthGainNode.gain.value = action.value / 100;
       }
-      if (action.id >= 7 && action.id <= 12) { // one of the oscillator knobs
-        if (action.id === 7 || action.id === 8) {// osc volume
-
-        } else if (action.id === 9 || action.id === 10) { // osc detune
+      if (action.id >= 7 && action.id <= 12) {            // Oscillator Knobs
+        if (action.id === 7 || action.id === 8) {         // Oscillator Volume
+        } else if (action.id === 9 || action.id === 10) { // Oscillator Detune
           let detuneVal = (action.value - 127.5) * (200/255) ;
           let newDetune = state.oscdetune;
           if (action.id === 9)  { newDetune[1] = detuneVal; }
