@@ -126,6 +126,7 @@ export default function reduce(state, action) {
       syncOn: true,
       lastPlayed: 0, // time (audio time) the last sample was played
       activeRooms: [], // this should be moved to database in production
+      currentRoom: '', // current logged in user
       roomsMenuActive: false,
     };
   }
@@ -175,7 +176,7 @@ export default function reduce(state, action) {
       }
       let temp = Object.assign([], state.performance);
       if (!action.synthetic) {
-        state.socket.emit('event2server', { action: action });
+        state.socket.emit('event2server', { action: action, room: state.currentRoom });
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
       return Object.assign({}, state, {nodes: newNodes, performance: temp});
@@ -194,7 +195,7 @@ export default function reduce(state, action) {
         oscillator.start(0);
         temp.push(oscillator);
         if (!action.synthetic) {
-          state.socket.emit('event2server', { action: action });
+          state.socket.emit('event2server', { action: action, room: state.currentRoom });
           temp2.push({action: action, timestamp: state.audioContext.currentTime});
         }
       }
@@ -287,7 +288,7 @@ export default function reduce(state, action) {
       document.getElementById(action.id).value = action.value;
       let temp = Object.assign([], state.performance);
       if (!action.synthetic) {
-        state.socket.emit('event2server', { action: action });
+        state.socket.emit('event2server', { action: action, room: state.currentRoom });
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
       let bpm = Object.assign({}, state.BPM);
@@ -335,7 +336,7 @@ export default function reduce(state, action) {
       temp2[action.id] = action.value;
       if (!action.synthetic) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
-        state.socket.emit('event2server', { action: action });
+        state.socket.emit('event2server', { action: action, room: state.currentRoom });
       }
       if (action.id === '0') { // Global Volume
         state.masterOut.gain.value = action.value / 100;
@@ -407,7 +408,7 @@ export default function reduce(state, action) {
     }
     case 'PLAY_SAMPLE': {
       if (!action.synthetic) {
-        state.socket.emit('event2server', { action: action });
+        state.socket.emit('event2server', { action: action, room: state.currentRoom });
       }
       let allSamples = Object.assign([], state.samples); //clone to avoid mutation
       let theSample = allSamples[action.sample.column][action.sample.index]; //find relevant sample
@@ -460,7 +461,7 @@ export default function reduce(state, action) {
     case 'OSC_WAVE_CHANGE': {
       let temp = Object.assign([], state.performance);
       if (!action.synthetic) {
-        state.socket.emit('event2server', { action: action });
+        state.socket.emit('event2server', { action: action, room: state.currentRoom });
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
 
@@ -556,12 +557,12 @@ export default function reduce(state, action) {
     case 'ROOM_MENU_TOGGLE': {
       return Object.assign({}, state, {roomsMenuActive: !state.roomsMenuActive});
     }
-    // case 'NAVIGATE_ROOM': {
-    //   let allActiveRooms = state.activeRooms.slice();
-    //   console.log('action: ', action);
-    //   // AJAX call to server (send userId and roomId)
-    //   return Object.assign({}, state);
-    // }
+    case 'NAVIGATE_ROOM': {
+      let room = action.room;
+      // socket call
+      state.socket.emit('room', { room: state.currentRoom }); 
+      return Object.assign({}, state, {currentRoom: room});
+    }
     default: {
       console.error('Reducer Error: ', action);
       return Object.assign({}, state);
