@@ -304,11 +304,10 @@ export default function reduce(state, action) {
     }
     case 'KNOB_TWIDDLE': {
       console.log('action line 306',action)
+      action.id = Number(action.id);
       let temp = Object.assign([], state.performance);
-      console.log('temp', temp)
       let temp2 = Object.assign([], state.knobs);
       temp2[action.id] = action.value;
-      console.log('temp2[action.id]', temp2[action.id])
       if (!action.synthetic) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
         state.socket.emit('event2server', { action: action });
@@ -328,13 +327,12 @@ export default function reduce(state, action) {
       if (action.id >=13 && action.id <= 20) { // reserved for additional features
       }
       if (action.id > 20) { // one of the effect knobs
-        console.log('state.activeEffects', state.activeEffects)
+        console.log(state.activeEffects);
         var effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1)[0];
-        console.log('effect 331', effect)
+        console.log('found effect', effect)
 
        if (effect.name === 'BiquadFilterMid') {
         let whichKnob = effect.knobs.indexOf(action.id);
-        console.log('whichKnob', effect.knobs)
 
         if (whichKnob === 0) {
           console.log('whichKnob = 0')
@@ -447,15 +445,18 @@ export default function reduce(state, action) {
       newEffectNode.connect(state.audioContext.destination);
     }
 
+    if (effect === 'BiquadFilterMid') {
+      allKnobs.push(100);
+      allKnobs.push(100);
+      allKnobs.push(100);
+      allKnobs.push(100);
+    }
+
       // add new effect to list of active effects, including refs to its knobs
-      allActiveEffects.push({name:effect, node:newEffectNode, knobs:[allKnobs.length,allKnobs+1], faders:[]});
+      allActiveEffects.push({name:effect, node:newEffectNode, knobs:[allKnobs.length-1, allKnobs.length-2, allKnobs.length-3, allKnobs.length-4], faders:[]});
        // different effects will need different numbers of knobs.
-      if (effect === 'BiquadFilterMid') {
-        allKnobs.push(100);
-        allKnobs.push(100);
-        allKnobs.push(100);
-        allKnobs.push(100);
-      }
+       console.log('adding ',effect);
+
 
       return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
     }
