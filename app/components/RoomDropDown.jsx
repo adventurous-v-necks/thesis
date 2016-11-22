@@ -14,8 +14,18 @@ class RoomDropDown extends React.Component {
     this.props.dispatch({type: 'ROOM_MENU_TOGGLE'});
   }
 
-  goToSelectedRoom() {
-    this.props.dispatch({type: 'NAVIGATE_ROOM'});
+  goToSelectedRoom(e) {
+    let roomname = e.nativeEvent.target.attributes.value.value;
+    e.preventDefault();
+    let theHeaders = new Headers({ "Content-Type": "application/json" });
+    fetch('/room/' + roomname, {method: 'GET', headers: theHeaders}).then(resp => {
+        if (resp.status === 200) {
+          console.log('good request');
+          // this.context.router.push('/player'); add current state of player for given room
+        } else {
+          alert('could not find requested room');
+        }
+    });
   }
 
   render() {

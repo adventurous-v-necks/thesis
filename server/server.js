@@ -124,6 +124,11 @@ app.get('/get/:id', function (req, res) {
 app.get('/logout', function(req,res) {
   req.logout();
   res.redirect('/');
+
+app.get('/room/:id', function response(req, res) {
+  console.log('get request to /rooms: ', req.params.id);
+  // res.write({status: 'ok'});
+  res.end();
 });
 
 const reactRoutes = [{path: '/abc', auth: true}, {path: '/tryLogin', auth: false}];
