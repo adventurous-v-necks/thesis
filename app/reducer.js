@@ -126,6 +126,7 @@ export default function reduce(state, action) {
       syncOn: true,
       lastPlayed: 0, // time (audio time) the last sample was played
       activeRooms: [], // this should be moved to database in production
+      roomsMenuActive: false,
     };
   }
 
@@ -552,10 +553,13 @@ export default function reduce(state, action) {
       allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
       return Object.assign({}, state, {activeEffects: allActiveEffects});
     }
+    case 'ROOM_MENU_TOGGLE': {
+      return Object.assign({}, state, {roomsMenuActive: !state.roomsMenuActive});
+    }
     case 'NAVIGATE_ROOM': {
       let allActiveRooms = state.activeRooms.slice();
       console.log('action: ', action);
-      
+      // AJAX call to server (send userId and roomId)
       return Object.assign({}, state);
     }
     default: {
