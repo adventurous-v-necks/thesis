@@ -46,7 +46,6 @@ class App extends React.Component {
       <span>
       <li className="menu-item"><Link to="/signup">Sign Up</Link></li>
       <li className="menu-item"><Link to="/signin">Sign In</Link></li>
-      <li className="menu-item"><RoomDropDown /></li> 
       </span>
       );
   }

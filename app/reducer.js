@@ -125,15 +125,20 @@ export default function reduce(state, action) {
       activeEffects: [],
       syncOn: true,
       lastPlayed: 0, // time (audio time) the last sample was played
-      activeRooms: [], // this should be moved to database in production
-      currentRoom: '', // current logged in user
+      activeRooms: [],
+      currentRoom: '',
       roomsMenuActive: false,
     };
   }
 
   switch (action.type) {
     case 'USER_LOGIN': {
-      return Object.assign({}, state, {loggedIn: true});
+      let newUserRoom = JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username;
+      state.socket.emit('room', { joinRoom: newUserRoom});
+      let allActiveRooms = state.activeRooms.slice();
+      allActiveRooms.concat(newUserRoom)
+      // console.log('username: ', JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username);
+      return Object.assign({}, state, {loggedIn: true, activeRooms: allActiveRooms, currentRoom: newUserRoom});
     }
     case 'USER_LOGOUT': {
       return Object.assign({}, state, {loggedIn: false});
@@ -560,8 +565,12 @@ export default function reduce(state, action) {
     }
     case 'NAVIGATE_ROOM': {
       let room = action.room;
-      state.socket.emit('room', { toRoom: room,  leaveRoom: state.currentRoom}); 
+      state.socket.emit('room', { joinRoom: room,  leaveRoom: state.currentRoom}); 
       return Object.assign({}, state, {currentRoom: room});
+    }
+    case 'UPDATE_ACTIVE_ROOMS': {
+      // console.log('in reducer active rooms: ', action.activeRooms);
+      return Object.assign({}, state, {activeRooms: action.activeRooms});
     }
     default: {
       console.error('Reducer Error: ', action);

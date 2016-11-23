@@ -10,27 +10,29 @@ class RoomDropDown extends React.Component {
     this.goToSelectedRoom = this.goToSelectedRoom.bind(this);
   }
 
-  toggleMenu() {
+  toggleMenu(e) {
+    e.preventDefault();
+    let theHeaders = new Headers({ "Content-Type": "application/json" });
+    fetch('/liveRooms', {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
+      resp.json().then(r => {
+        if (r.status === 'ok') {
+          // console.log('=============r: ', r.rooms);
+          // console.log('------------stringify: ', JSON.stringify({activeRooms: r.activeRooms}));
+          this.props.dispatch({type: 'UPDATE_ACTIVE_ROOMS', activeRooms: r.rooms})
+        } /*else {
+          console.log('=============could not find requested room');
+        }*/
+      });
+    });
     this.props.dispatch({type: 'ROOM_MENU_TOGGLE'});
   }
 
   goToSelectedRoom(e) {
     let roomname = e.nativeEvent.target.attributes.value.value;
     this.props.dispatch({type: 'NAVIGATE_ROOM', room: roomname});
-    // e.preventDefault();
-    // let theHeaders = new Headers({ "Content-Type": "application/json" });
-    // fetch('/room/' + roomname, {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
-    //     if (resp.status === 200) {
-    //       console.log('good request');
-    //       // this.context.router.push('/player'); add current state of player for given room
-    //     } else {
-    //       alert('could not find requested room');
-    //     }
-    // });
   }
 
   render() {
-    console.log('roomdropdown props: ', this.props);
 
     let dropDownStyle = {
       maxHeight: '0px',
