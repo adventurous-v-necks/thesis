@@ -62,9 +62,9 @@ io.on('connection', function (socket) {
 
     socket.room = room;
     socket.join(room);
-  });
-  
-  io.sockets.in(room).emit('event2server', {data : data});
+    
+    io.sockets.in(room).emit('event2server', {data : data});
+  });  
 });
 
 

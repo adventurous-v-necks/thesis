@@ -19,7 +19,7 @@ class RoomDropDown extends React.Component {
     this.props.dispatch({type: 'NAVIGATE_ROOM', room: roomname});
     e.preventDefault();
     let theHeaders = new Headers({ "Content-Type": "application/json" });
-    fetch('/room/' + roomname, {method: 'GET', headers: theHeaders}).then(resp => {
+    fetch('/room/' + roomname, {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
         if (resp.status === 200) {
           console.log('good request');
           // this.context.router.push('/player'); add current state of player for given room
