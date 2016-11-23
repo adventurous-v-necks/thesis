@@ -6,6 +6,7 @@ const userSchema = mongoose.Schema({
   password: String,
   email: String,
   session: String,
+  patches: [Schema.Types.Mixed]},
 });
 
 userSchema.methods.generateHash = function(password) {
