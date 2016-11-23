@@ -49,7 +49,7 @@ class EffectsUnit extends React.Component {
       <div style={componentStyle}>
         <div className="effectName" style={effectNameStyle}>
           <i className="fa fa-minus-square-o" aria-hidden="true" style={{float: 'left', paddingLeft: '.02em'}} onClick={this.removeEffect}></i>
-          {this.props.id}
+          {this.props.id.slice(0, this.props.id.length - 2)}
         </div>
         <div className="knobContainer" style={knobContainerStyle}>
           <div style={knobStyle}>
