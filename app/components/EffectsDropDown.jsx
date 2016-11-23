@@ -53,7 +53,7 @@ class EffectsDropDown extends React.Component {
       DropDownItems = this.props.customEffects.map((effect) => {
         let effectName = effect.name;
         return <li key={this.props.customEffects.indexOf(effect)} value={effectName} style={listItemStyle} onClick={this.addEffectToRack}>{effectName}</li>
-      });;
+      });
     } else {
       ButtonDisplay = 'fa fa-plus-square-o';
       listDropDownStyle.maxHeight = '0px';
