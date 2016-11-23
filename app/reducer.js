@@ -267,7 +267,7 @@ export default function reduce(state, action) {
       let BFHi = BiquadFilterHi(audioCtx);
 
       let synthGainNode = audioCtx.createGain();
-      synthGainNode.gain.value = 0.3;
+      synthGainNode.gain.value = 0.2;
 
       let convolver = audioCtx.createConvolver();
       let gainNode = audioCtx.createGain();
@@ -377,7 +377,7 @@ export default function reduce(state, action) {
       }
       if (action.id === 6) { // Synth Volume
         temp2[6] = action.value;
-        state.synthGainNode.gain.value = action.value / 100 / 3;
+        state.synthGainNode.gain.value = action.value / 100 / 5;
       }
       if (action.id >= 7 && action.id <= 12) {            // Oscillator Knobs
         if (action.id === 7 || action.id === 8) {         // Oscillator Volume
@@ -390,7 +390,7 @@ export default function reduce(state, action) {
           return {
             ...state,
             performance: temp,
-            knobx: temp2,
+            knobs: temp2,
             oscdetune: newDetune,
           };
         }
