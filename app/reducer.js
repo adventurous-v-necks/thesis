@@ -83,8 +83,7 @@ export default function reduce(state, action) {
       numColumns: COLUMNS,
       samples: samples,
       oscwaves: [null, 'sine', 'sine'],
-      oscdetune: [null, -100, 100],
-      // oscvolumes: [null, 80, 80],
+      // oscdetune: [null, 127.5, 127.5],
       patch: 'sine',
       masterOut: null, // if you're making stuff that makes noise, connect it to this
       audioContext: null, // first set when page loads
@@ -98,7 +97,7 @@ export default function reduce(state, action) {
       knobs[13-20] are reserved for additional features
       knobs[20+] are reserved for effects
       */
-      knobs: [100, 100, 100, 100, 100, 100, 100, 80, 80, 127.5, 127.5, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+      knobs: [100, 100, 100, 100, 100, 100, 100, 80, 80, 127, 127, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
       timeZero: 0,
       suspended: false,
       markerTime: 0,
@@ -202,7 +201,8 @@ export default function reduce(state, action) {
         let oscillator = state.audioContext.createOscillator();
         oscillator.type = state.oscwaves[i + 1]; //TODO: only works for one synth sound right now
         oscillator.frequency.value = action.frequency;
-        oscillator.detune.value = state.oscdetune[i + 1];
+        // oscillator.detune.value = state.oscdetune[i + 1];
+        oscillator.detune.value = (state.knobs[i + 9] - 127.5) * (200 / 255);
 
         oscillator.connect(state.synthGainNode);
         oscillator.start(0);
@@ -383,15 +383,17 @@ export default function reduce(state, action) {
         if (action.id === 7 || action.id === 8) {         // Oscillator Volume
         } else if (action.id === 9 || action.id === 10) { // Oscillator Detune
           let detuneVal = (action.value - 127.5) * (200 / 255);
-          let newDetune = state.oscdetune;
-          if (action.id === 9) { newDetune[1] = detuneVal; }
-          if (action.id === 10) { newDetune[2] = detuneVal; }
+          // let newDetune = state.oscdetune;
+          // if (action.id === 9) { newDetune[1] = detuneVal; }
+          // if (action.id === 10) { newDetune[2] = detuneVal; }
+          if (action.id === 9) temp2[9] = action.value;
+          if (action.id === 10) temp2[10] = action.value;
 
           return {
             ...state,
             performance: temp,
             knobs: temp2,
-            oscdetune: newDetune,
+            // oscdetune: newDetune,
           };
         }
       }
@@ -484,7 +486,7 @@ export default function reduce(state, action) {
 
       return {
         ...state,
-        oscwaves: newOscwaves,
+        oscwaves: newOscWaves,
         performance: temp,
       };
     }
