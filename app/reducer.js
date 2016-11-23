@@ -107,20 +107,20 @@ export default function reduce(state, action) {
       recordTimeZero: false,
       customEffects: [
         {
+          name: 'biquadFilter',
+          node: BiquadFilter,
+        },
+        {
           name: 'BiquadFilterLo',
           node: BiquadFilterLo,
         },
         {
-          name: 'BiquadFilterMid',
-          node: BiquadFilterMid,
-        },
-        {
-          name: 'BiquadFilterHi',
-          node: BiquadFilterHi,
-        },
-        {
-          name: 'distortionis',
+          name: 'distortion',
           node: Distortion,
+        },
+        {
+          name: 'ipsum',
+          node: 'placeholder',
         }],
       activeEffects: [],
       syncOn: true,
@@ -323,14 +323,6 @@ export default function reduce(state, action) {
       temp.push([action.col, action.idx, action.buffer]);
       return Object.assign({}, state, {sampleBuffers: temp});
     }
-    case 'SAMPLE_UPLOADED': {
-      let temp = Object.assign([], state.samples);
-      temp[action.col][action.index].sampleName = action.name;
-      temp[action.col][action.index].sampleUrl = action.url;
-      temp[action.col][action.index].playing = false;
-      console.log(temp[action.col][action.index]);
-      return Object.assign({}, state, {samples: temp});
-    }
     case 'PLAY': {
       events = 0;
       playTime = state.audioContext.currentTime;
@@ -368,11 +360,12 @@ export default function reduce(state, action) {
           if (action.id === 9) { newDetune[1] = detuneVal; }
           if (action.id === 10) { newDetune[2] = detuneVal; }
 
-          return Object.assign({}, state, {
+          return {
+            ...state,
             performance: temp,
-            knobs: temp2,
+            knobx: temp2,
             oscdetune: newDetune,
-          });
+          };
         }
       }
       if (action.id >= 13 && action.id <= 20) { // reserved for additional features
@@ -380,28 +373,10 @@ export default function reduce(state, action) {
       if (action.id > 20) { // one of the effect knobs
         // find which effect it is in our array of active effects
         var effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1)[0];
-        if (effect.name === 'BiquadFilterLo') {
+        if (effect.name === 'biquadFilter') {
           // inside that effect component, which knob was tweaked?
           let whichKnob = effect.knobs.indexOf(action.id);
           // the effects of each knob tweak will need to be custom defined for each effect (currently; we can do better)
-          if (whichKnob === 0) {
-            effect.node.frequency.value = action.value * 15;
-          }
-        }
-
-        if (effect.name === 'BiquadFilterMid') {
-
-          let whichKnob = effect.knobs.indexOf(action.id);
-
-          if (whichKnob === 0) {
-            effect.node.frequency.value = action.value * 15;
-          }
-        }
-
-         if (effect.name === 'BiquadFilterHi') {
-
-          let whichKnob = effect.knobs.indexOf(action.id);
-
           if (whichKnob === 0) {
             effect.node.frequency.value = action.value * 15;
           }
@@ -519,21 +494,6 @@ export default function reduce(state, action) {
       });
       allKnobs.push(100);
       allKnobs.push(100); // different effects will need different numbers of knobs.
-
-      if(effect.name === "BiquadFilterLo") {
-        allKnobs.push(100);
-        allKnobs.push(100);
-      }
-
-      if(effect.name === "BiquadFilterMid") {
-        allKnobs.push(100);
-        allKnobs.push(100);
-      }
-
-      if(effect.name === "BiquadFilterHi") {
-        allKnobs.push(100);
-        allKnobs.push(100);
-      }
 
       return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
     }
