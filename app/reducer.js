@@ -124,6 +124,7 @@ export default function reduce(state, action) {
         }],
       activeEffects: [],
       syncOn: true,
+      lastPlayed: 0, // time (audio time) the last sample was played
     };
   }
 
@@ -295,7 +296,7 @@ export default function reduce(state, action) {
         for (let col of state.samples) {
           for (let sample of col) {
             if (sample.playing) {
-              sample.source.playbackRate.value = ratio;
+              //sample.source.playbackRate.value = ratio;
             }
           }
         }
@@ -403,13 +404,13 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
     case 'PLAY_SAMPLE': {
-      console.log(action);
       if (!action.synthetic) {
         state.socket.emit('event2server', { action: action });
       }
       let allSamples = Object.assign([], state.samples); //clone to avoid mutation
       let theSample = allSamples[action.sample.column][action.sample.index]; //find relevant sample
       theSample.playing = !theSample.playing;
+      let time = 0;
 
       if (theSample.playing) {
         theSample.source = state.audioContext.createBufferSource();
@@ -437,12 +438,22 @@ export default function reduce(state, action) {
         } else {
           gainNode.connect(state.masterOut);
         }
-        theSample.source.start();
+        // beat sync
+        time = state.lastPlayed === 0 ? state.audioContext.currentTime : state.lastPlayed;
+        //TODO: why state.BPM-20 you say? the initial loops we have are at 100bpm
+        //but our tempo fader starts at 120. fix this fiddle factor.
+        let startNextBarTime = time + 32*(1/((state.BPM-20)));
+        while (startNextBarTime < state.audioContext.currentTime) {
+          startNextBarTime += 32*(1/((state.BPM-20)));
+        }
+        theSample.source.start(startNextBarTime - state.audioContext.currentTime);
+        // end beat sync
+
       } else {
         theSample.source.stop();
         theSample.source = null;
       }
-      return Object.assign({}, state, {samples: allSamples});
+      return Object.assign({}, state, {samples: allSamples, lastPlayed: time});
     }
     case 'OSC_WAVE_CHANGE': {
       let temp = Object.assign([], state.performance);
@@ -487,9 +498,9 @@ export default function reduce(state, action) {
       }
       // add new effect to list of active effects, including refs to its knobs
       allActiveEffects.push({
-        name: effect, 
-        node: newEffectNode, 
-        knobs: [allKnobs.length, allKnobs + 1], 
+        name: effect,
+        node: newEffectNode,
+        knobs: [allKnobs.length, allKnobs + 1],
         faders: [],
       });
       allKnobs.push(100);
@@ -546,4 +557,3 @@ export default function reduce(state, action) {
     }
   }
 }
-
