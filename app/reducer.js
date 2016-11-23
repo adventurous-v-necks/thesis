@@ -107,20 +107,20 @@ export default function reduce(state, action) {
       recordTimeZero: false,
       customEffects: [
         {
-          name: 'biquadFilter',
-          node: BiquadFilter,
-        },
-        {
           name: 'BiquadFilterLo',
           node: BiquadFilterLo,
         },
         {
-          name: 'distortion',
-          node: Distortion,
+          name: 'BiquadFilterMid',
+          node: BiquadFilterMid,
         },
         {
-          name: 'ipsum',
-          node: 'placeholder',
+          name: 'BiquadFilterHi',
+          node: BiquadFilterHi,
+        },
+        {
+          name: 'distortionis',
+          node: Distortion,
         }],
       activeEffects: [],
       syncOn: true,
@@ -366,10 +366,28 @@ export default function reduce(state, action) {
       if (action.id > 20) { // one of the effect knobs
         // find which effect it is in our array of active effects
         var effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1)[0];
-        if (effect.name === 'biquadFilter') {
+        if (effect.name === 'BiquadFilterLo') {
           // inside that effect component, which knob was tweaked?
           let whichKnob = effect.knobs.indexOf(action.id);
           // the effects of each knob tweak will need to be custom defined for each effect (currently; we can do better)
+          if (whichKnob === 0) {
+            effect.node.frequency.value = action.value * 15;
+          }
+        }
+
+        if (effect.name === 'BiquadFilterMid') {
+
+          let whichKnob = effect.knobs.indexOf(action.id);
+
+          if (whichKnob === 0) {
+            effect.node.frequency.value = action.value * 15;
+          }
+        }
+
+         if (effect.name === 'BiquadFilterHi') {
+
+          let whichKnob = effect.knobs.indexOf(action.id);
+
           if (whichKnob === 0) {
             effect.node.frequency.value = action.value * 15;
           }
@@ -476,6 +494,21 @@ export default function reduce(state, action) {
       });
       allKnobs.push(100);
       allKnobs.push(100); // different effects will need different numbers of knobs.
+
+      if(effect.name === "BiquadFilterLo") {
+        allKnobs.push(100);
+        allKnobs.push(100);
+      }
+
+      if(effect.name === "BiquadFilterMid") {
+        allKnobs.push(100);
+        allKnobs.push(100);
+      }
+
+      if(effect.name === "BiquadFilterHi") {
+        allKnobs.push(100);
+        allKnobs.push(100);
+      }
 
       return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
     }
