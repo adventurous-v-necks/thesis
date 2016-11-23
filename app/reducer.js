@@ -355,7 +355,7 @@ export default function reduce(state, action) {
       }
       if (action.id === 6) { // Synth Volume
         temp2[6] = action.value;
-        state.synthGainNode.gain.value = action.value / 100;
+        state.synthGainNode.gain.value = action.value / 100 / 3;
       }
       if (action.id >= 7 && action.id <= 12) {            // Oscillator Knobs
         if (action.id === 7 || action.id === 8) {         // Oscillator Volume
