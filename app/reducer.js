@@ -32,25 +32,25 @@ const sched = function() {
 };
 
 const sampleUrls = [
-  '/samples/100bpm_Hamir_Bass_1.wav.mp3',
-  '/samples/100bpm_Hamir_Bass_2.wav.mp3',
-  '/samples/100bpm_Hamir_Clap.mp3',
-  '/samples/100bpm_Hamir_Drop_1.wav.mp3',
-  '/samples/100bpm_Hamir_Drop_2.wav.mp3',
-  '/samples/100bpm_Hamir_DrumLoop_01.wav.mp3',
-  '/samples/100bpm_Hamir_DrumLoop_02.wav.mp3',
-  '/samples/100bpm_Hamir_DrumLoop_(No_kick)_01.wav.mp3',
-  '/samples/100bpm_Hamir_Fx_Noise.wav.mp3',
-  '/samples/100bpm_Hamir_Fx_Riseup.wav.mp3',
-  '/samples/100bpm_Hamir_Hithat.wav.mp3',
-  '/samples/100bpm_Hamir_Perc.wav.mp3',
-  '/samples/100bpm_Hamir_Ride_1.wav.mp3',
-  '/samples/100bpm_Hamir_Ride_2.wav.mp3',
-  '/samples/100bpm_Hamir_Snare.wav.mp3',
-  '/samples/100bpm_Hamir_Kick.mp3',
-  '/samples/100bpm_Hamir_Sub.wav.mp3',
-  '/samples/100bpm_Hamir_Synth_1.wav.mp3',
-  '/samples/100bpm_Hamir_Synth_2.wav.mp3'
+'/samples/100bpm_Hamir_Bass_1.wav.mp3',
+'/samples/100bpm_Hamir_Bass_2.wav.mp3',
+'/samples/100bpm_Hamir_Clap.mp3',
+'/samples/100bpm_Hamir_Drop_1.wav.mp3',
+'/samples/100bpm_Hamir_Drop_2.wav.mp3',
+'/samples/100bpm_Hamir_DrumLoop_01.wav.mp3',
+'/samples/100bpm_Hamir_DrumLoop_02.wav.mp3',
+'/samples/100bpm_Hamir_DrumLoop_(No_kick)_01.wav.mp3',
+'/samples/100bpm_Hamir_Fx_Noise.wav.mp3',
+'/samples/100bpm_Hamir_Fx_Riseup.wav.mp3',
+'/samples/100bpm_Hamir_Hithat.wav.mp3',
+'/samples/100bpm_Hamir_Perc.wav.mp3',
+'/samples/100bpm_Hamir_Ride_1.wav.mp3',
+'/samples/100bpm_Hamir_Ride_2.wav.mp3',
+'/samples/100bpm_Hamir_Snare.wav.mp3',
+'/samples/100bpm_Hamir_Kick.mp3',
+'/samples/100bpm_Hamir_Sub.wav.mp3',
+'/samples/100bpm_Hamir_Synth_1.wav.mp3',
+'/samples/100bpm_Hamir_Synth_2.wav.mp3'
 ];
 
 export default function reduce(state, action) {
@@ -105,23 +105,27 @@ export default function reduce(state, action) {
       effectsMenuActive: false,
       suspended: false,
       recordTimeZero: false,
-      customEffects: [
-        {
-          name: 'biquadFilter',
-          node: BiquadFilter,
-        },
-        {
-          name: 'BiquadFilterLo',
-          node: BiquadFilterLo,
-        },
-        {
-          name: 'distortion',
-          node: Distortion,
-        },
-        {
-          name: 'ipsum',
-          node: 'placeholder',
-        }],
+    customEffects: [
+      {
+        name: 'BiquadFilterLo',
+        node: BiquadFilterLo,
+      },
+      {
+        name: 'BiquadFilterMid',
+        node: BiquadFilterMid,
+      },
+      {
+        name: 'BiquadFilterHi',
+        node: BiquadFilterHi,
+      },
+      {
+        name: 'Distortion',
+        node: Distortion,
+      },
+      {
+        name: 'ipsum',
+        node: 'placeholder',
+      }],
       activeEffects: [],
       syncOn: true,
     };
@@ -366,29 +370,48 @@ export default function reduce(state, action) {
       if (action.id > 20) { // one of the effect knobs
         // find which effect it is in our array of active effects
         var effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1)[0];
-        if (effect.name === 'biquadFilter') {
+
+        if (effect.name === 'BiquadFilterLo') {
           // inside that effect component, which knob was tweaked?
           let whichKnob = effect.knobs.indexOf(action.id);
           // the effects of each knob tweak will need to be custom defined for each effect (currently; we can do better)
           if (whichKnob === 0) {
-            effect.node.frequency.value = action.value * 15;
-          }
-        }
+           effect.node.frequency.value = action.value *15 
+         }
+       }
 
-        if (effect.name === 'distortion') {
+       if (effect.name === 'BiquadFilterHi') {
+          // inside that effect component, which knob was tweaked?
           let whichKnob = effect.knobs.indexOf(action.id);
+          // the effects of each knob tweak will need to be custom defined for each effect (currently; we can do better)
           if (whichKnob === 0) {
-            effect.node.curve = makeDistortionCurve(.5 * action.value);
-          }
+           effect.node.frequency.value = action.value *15 
+         }
+       }
+
+       if (effect.name === 'BiquadFilterMid') {
+          // inside that effect component, which knob was tweaked?
+          let whichKnob = effect.knobs.indexOf(action.id);
+          // the effects of each knob tweak will need to be custom defined for each effect (currently; we can do better)
+          if (whichKnob === 0) {
+           effect.node.frequency.value = action.value *15 
+         }
+       }
+
+       if (effect.name === 'distortion') {
+        let whichKnob = effect.knobs.indexOf(action.id);
+        if (whichKnob === 0) {
+          effect.node.curve = makeDistortionCurve(.5 * action.value);
         }
       }
-      return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
-    case 'PLAY_SAMPLE': {
-      console.log(action);
-      if (!action.synthetic) {
-        state.socket.emit('event2server', { action: action });
-      }
+    return Object.assign({}, state, {performance: temp, knobs: temp2});
+  }
+  case 'PLAY_SAMPLE': {
+    console.log(action);
+    if (!action.synthetic) {
+      state.socket.emit('event2server', { action: action });
+    }
       let allSamples = Object.assign([], state.samples); //clone to avoid mutation
       let theSample = allSamples[action.sample.column][action.sample.index]; //find relevant sample
       theSample.playing = !theSample.playing;
@@ -460,13 +483,13 @@ export default function reduce(state, action) {
       let newEffectNode = state.customEffects.filter(fx => fx.name === action.effect)[0].node(state.audioContext);
       if (allActiveEffects.length === 0) { // this is the first effect unit we're adding
         state.masterOut.disconnect();
-        state.masterOut.connect(newEffectNode);
-        newEffectNode.connect(state.audioContext.destination);
-      } else {
-        allActiveEffects[allActiveEffects.length - 1].node.disconnect();
-        allActiveEffects[allActiveEffects.length - 1].node.connect(newEffectNode);
-        newEffectNode.connect(state.audioContext.destination);
-      }
+      state.masterOut.connect(newEffectNode);
+      newEffectNode.connect(state.audioContext.destination);
+    } else {
+      allActiveEffects[allActiveEffects.length - 1].node.disconnect();
+      allActiveEffects[allActiveEffects.length - 1].node.connect(newEffectNode);
+      newEffectNode.connect(state.audioContext.destination);
+    }
       // add new effect to list of active effects, including refs to its knobs
       allActiveEffects.push({
         name: effect, 
@@ -476,6 +499,21 @@ export default function reduce(state, action) {
       });
       allKnobs.push(100);
       allKnobs.push(100); // different effects will need different numbers of knobs.
+
+      if(effect.name === 'BiquadFilterLo'){
+        allKnobs.push(100);
+        allKnobs.push(100);
+      }
+
+      if(effect.name === 'BiquadFilterMid'){
+        allKnobs.push(100);
+        allKnobs.push(100);
+      }
+
+      if(effect.name === 'BiquadFilterHi'){
+        allKnobs.push(100);
+        allKnobs.push(100);
+      }
 
       return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
     }
@@ -493,24 +531,24 @@ export default function reduce(state, action) {
             if (allActiveEffects[i + 1]) { // and there's one after it
               allActiveEffects[i - 1].node.connect(allActiveEffects[i + 1].node);
             } else { // there's an effect before it, but not after it
-              allActiveEffects[i - 1].node.connect(state.audioContext.destination);
-            }
+            allActiveEffects[i - 1].node.connect(state.audioContext.destination);
+          }
           } else { // there's no effect before it
-            if (allActiveEffects[i + 1]) {
-              state.masterOut.connect(allActiveEffects[i + 1].node);
+          if (allActiveEffects[i + 1]) {
+            state.masterOut.connect(allActiveEffects[i + 1].node);
             } else { // there are no effects left once it's been removed
-              state.masterOut.connect(state.audioContext.destination);
-            }
+            state.masterOut.connect(state.audioContext.destination);
           }
         }
       }
-      allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
-      return Object.assign({}, state, {activeEffects: allActiveEffects});
     }
-    default: {
-      console.error('Reducer Error: ', action);
-      return Object.assign({}, state);
-    }
+    allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
+    return Object.assign({}, state, {activeEffects: allActiveEffects});
   }
+  default: {
+    console.error('Reducer Error: ', action);
+    return Object.assign({}, state);
+  }
+}
 }
 

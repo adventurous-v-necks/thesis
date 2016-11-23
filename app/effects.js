@@ -3,6 +3,7 @@ export let BiquadFilterLo = (audioCtx) => {
   filter.type = "lowpass";
   filter.frequency.value = 750;
   filter.gain.value = 25;  
+  filter.Q.value = 2;
   return filter;
 }
 
@@ -10,7 +11,7 @@ export let BiquadFilterMid = (audioCtx) => {
   let filter = audioCtx.createBiquadFilter();
   filter.type = "bandpass";
   filter.frequency.value = 1750;
-  filter.Q.value = 1000;
+  filter.Q.value = 2;
   return filter;
 }
 
@@ -19,6 +20,7 @@ export let BiquadFilterHi = (audioCtx) => {
   filter.type = "highpass";
   filter.frequency.value = 2750;
   filter.gain.value = 50;
+  filter.Q.value = 2;
   return filter;
 }
 
@@ -37,7 +39,7 @@ export let makeDistortionCurve = (amount) => {
 	let deg = Math.PI / 180;
 	let i = 0;
 	let x;
-	  
+
   for ( ; i < n_samples; ++i ) {
     x = i * 2 / n_samples - 1;
     curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
