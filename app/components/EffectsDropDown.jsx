@@ -45,10 +45,10 @@ class EffectsDropDown extends React.Component {
 
     let DropDownItems = '';
     let ButtonDisplay;
-    //let customEffects = this.props.customEffects;
+
     if (this.props.effectsMenuActive) {
       ButtonDisplay = 'fa fa-minus-square-o';
-      // DropDownItems =
+
       listDropDownStyle.maxHeight = '8em';
       DropDownItems = this.props.customEffects.map((effect) => {
         let effectName = effect.name;
