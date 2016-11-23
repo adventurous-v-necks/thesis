@@ -216,7 +216,6 @@ export default function reduce(state, action) {
       // let socket = io.connect('http://rejuicy.com:8092'); (or should it be ws://rejuicy.com:8092???? - TO TEST)
 
       socket.on('event', function (data) {
-        console.log('socket event client side data: ', data);
         store.dispatch(Object.assign(data.data.action, {synthetic: true}));
       });
 
