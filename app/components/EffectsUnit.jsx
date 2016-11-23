@@ -34,6 +34,7 @@ class EffectsUnit extends React.Component {
     const effectNameStyle = {
       height: 'auto',
       width: '100%',
+      fontWeight: 'bold',
     };
     const knobContainerStyle = {
       heigth: 'auto',
@@ -43,12 +44,13 @@ class EffectsUnit extends React.Component {
       height: 'auto',
       width: '50%',
       textAlign: 'center',
+      fontWeight: 'bold',
     };
 
     return (
       <div style={componentStyle}>
         <div className="effectName" style={effectNameStyle}>
-          <i className="fa fa-minus-square-o" aria-hidden="true" style={{float: 'left', paddingLeft: '.02em'}} onClick={this.removeEffect}></i>
+          <i className="fa fa-minus-square-o" aria-hidden="true" style={{float: 'left', paddingLeft: '.02em', fontWeight: 'bold'}} onClick={this.removeEffect}></i>
           {this.props.id.slice(0, this.props.id.length - 2)}
         </div>
         <div className="knobContainer" style={knobContainerStyle}>
