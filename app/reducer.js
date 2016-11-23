@@ -219,22 +219,25 @@ export default function reduce(state, action) {
         store.dispatch(Object.assign(data.data.action, {synthetic: true}));
       });
 
-
       let audioCtx = new AudioContext();
       let grainSize = 512;
-      let pitchRatio = 1;
+
       let pitchShiftNode = audioCtx.createScriptProcessor(grainSize, 1, 1);
       pitchShiftNode.buffer = new Float32Array(grainSize * 2);
       pitchShiftNode.grainWindow = hannWindow(grainSize);
       pitchShiftNode.onaudioprocess = pitchShifter.bind(pitchShiftNode, 1);
+
       let BFLo = BiquadFilterLo(audioCtx);
       let BFMid = BiquadFilterMid(audioCtx);
       let BFHi = BiquadFilterHi(audioCtx);
+
       let synthGainNode = audioCtx.createGain();
       synthGainNode.gain.value = 0.3;
+
       let convolver = audioCtx.createConvolver();
       let gainNode = audioCtx.createGain();
       gainNode.gain.value = 1;
+
       synthGainNode.connect(gainNode);
       pitchShiftNode.connect(gainNode);
       // let distortion = audioCtx.createWaveShaper();
