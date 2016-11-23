@@ -501,13 +501,14 @@ export default function reduce(state, action) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
 
-      let newOscWaves = Array.from(state.oscwaves);
+      let newOscWaves = [...state.oscwaves];
       newOscWaves[action.oscnum] = action.wave;
 
-      return Object.assign({}, state, {
-        oscwaves: newOscWaves,
+      return {
+        ...state,
+        oscwaves: newOscwaves,
         performance: temp,
-      });
+      };
     }
     case 'PATCH_CHANGE': {
       const newOscWaves = [null, action.patch, action.patch];
