@@ -34,7 +34,7 @@ class App extends React.Component {
     fetch('/logout', {credentials:'include'});
     this.context.router.push('/');
   }
-  // remove logged out dropdown before committing, only in for ease of development
+
   customNavbar() {
     return this.props.loggedIn ? (
       <span>

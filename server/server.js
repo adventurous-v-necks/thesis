@@ -129,29 +129,16 @@ app.get('/logout', function(req,res) {
   res.redirect('/');
 });
 
-// app.get('/room/:id', function response(req, res) {
-//   console.log('get request to /rooms: ', req.params.id);
-//   // res.write({status: 'ok'});
-//   // io.on('change room', function(data) {
-//   //   socket.join(req.params.id);
-//   //   console.log('inside server.js change room =====================');
-//   // });
-//   // io.to(req.params.id).emit('event', {data : data});
-//   // res.end();
-// });
-
 app.get('/liveRooms', function response(req, res) {
-  // console.log('io.sockets.rooms: ', io.sockets.adapter.rooms);
+
   let activeRooms = [];
-  // var clients_in_the_room = io.sockets.adapter.rooms; 
   for (let roomname in io.sockets.adapter.rooms ) {
-    // console.log('client: %s', roomname); //Seeing is believing
     if ( roomname.indexOf('AAA') === -1 ) {
       activeRooms.push(roomname);
     }
   }
-  console.log('activeRooms: ', activeRooms);
-  res.json({status: 'ok',rooms: activeRooms});
+
+  res.json({status: 'ok', rooms: activeRooms});
 });
 
 const reactRoutes = [{path: '/abc', auth: true}, {path: '/tryLogin', auth: false}];
@@ -213,12 +200,10 @@ io.on('connection', function (socket) {
   });
 
   socket.on('room', function(data){
-    // console.log('room data: ', data);
     if(data.leaveRoom) {
       socket.leave(data.leaveRoom);
     }
     socket.join(data.joinRoom);
-    // console.log('joined room: ', data.joinRoom);
   });  
 });
 

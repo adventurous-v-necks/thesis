@@ -134,10 +134,12 @@ export default function reduce(state, action) {
   switch (action.type) {
     case 'USER_LOGIN': {
       let newUserRoom = JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username;
+      
       state.socket.emit('room', { joinRoom: newUserRoom});
+
       let allActiveRooms = state.activeRooms.slice();
       allActiveRooms.concat(newUserRoom)
-      // console.log('username: ', JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username);
+
       return Object.assign({}, state, {loggedIn: true, activeRooms: allActiveRooms, currentRoom: newUserRoom});
     }
     case 'USER_LOGOUT': {
@@ -569,7 +571,6 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {currentRoom: room});
     }
     case 'UPDATE_ACTIVE_ROOMS': {
-      // console.log('in reducer active rooms: ', action.activeRooms);
       return Object.assign({}, state, {activeRooms: action.activeRooms});
     }
     default: {

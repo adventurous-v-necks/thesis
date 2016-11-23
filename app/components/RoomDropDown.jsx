@@ -16,12 +16,8 @@ class RoomDropDown extends React.Component {
     fetch('/liveRooms', {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
       resp.json().then(r => {
         if (r.status === 'ok') {
-          // console.log('=============r: ', r.rooms);
-          // console.log('------------stringify: ', JSON.stringify({activeRooms: r.activeRooms}));
           this.props.dispatch({type: 'UPDATE_ACTIVE_ROOMS', activeRooms: r.rooms})
-        } /*else {
-          console.log('=============could not find requested room');
-        }*/
+        } 
       });
     });
     this.props.dispatch({type: 'ROOM_MENU_TOGGLE'});
