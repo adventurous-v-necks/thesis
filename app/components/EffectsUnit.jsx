@@ -26,7 +26,7 @@ class EffectsUnit extends React.Component {
     const componentStyle = {
       fontSize: '1.2em',
       height: '100%',
-      width: '25%',
+      width: '10%',
       border: '1px solid #383838',
       backgroundColor: '#efefef',
       float: 'left',
