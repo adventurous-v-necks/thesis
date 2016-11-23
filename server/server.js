@@ -46,27 +46,6 @@ const port = isDeveloping ? 3000 : process.env.PORT;
 
 const app = express();
 
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-
-var counter = 0;
-io.on('connection', function (socket) {
-  // socket.on('room', function (room) {
-  //   socket.join(room);
-  // });
-
-  socket.on('room', function(room){
-    if(socket.room) {
-      socket.leave(socket.room);
-    }
-
-    socket.room = room;
-    socket.join(room);
-    
-    io.sockets.in(room).emit('event2server', {data : data});
-  });  
-});
-
 
 app.use(express.static('public'));
 
@@ -148,6 +127,7 @@ app.get('/get/:id', function (req, res) {
 app.get('/logout', function(req,res) {
   req.logout();
   res.redirect('/');
+});
 
 app.get('/room/:id', function response(req, res) {
   console.log('get request to /rooms: ', req.params.id);
@@ -213,10 +193,19 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
 io.on('connection', function (socket) {
-  socket.on('event2server', function (data) {
-    socket.broadcast.emit('event', {data : data} )
+
+  socket.on('event2server', function(data) {
+    socket.to(data.room).emit('event', {data : data});
   });
+
+  socket.on('room', function(data){
+    if(data.leaveRoom) {
+      socket.leave(data.leaveRoom);
+    }
+    socket.join(data.toRoom);
+  });  
 });
+
 server.listen(port, '0.0.0.0', function onStart(err) {
   if (err) {
     console.log(err);

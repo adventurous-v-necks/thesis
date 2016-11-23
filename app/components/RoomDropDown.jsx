@@ -17,16 +17,16 @@ class RoomDropDown extends React.Component {
   goToSelectedRoom(e) {
     let roomname = e.nativeEvent.target.attributes.value.value;
     this.props.dispatch({type: 'NAVIGATE_ROOM', room: roomname});
-    e.preventDefault();
-    let theHeaders = new Headers({ "Content-Type": "application/json" });
-    fetch('/room/' + roomname, {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
-        if (resp.status === 200) {
-          console.log('good request');
-          // this.context.router.push('/player'); add current state of player for given room
-        } else {
-          alert('could not find requested room');
-        }
-    });
+    // e.preventDefault();
+    // let theHeaders = new Headers({ "Content-Type": "application/json" });
+    // fetch('/room/' + roomname, {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
+    //     if (resp.status === 200) {
+    //       console.log('good request');
+    //       // this.context.router.push('/player'); add current state of player for given room
+    //     } else {
+    //       alert('could not find requested room');
+    //     }
+    // });
   }
 
   render() {
@@ -61,9 +61,6 @@ class RoomDropDown extends React.Component {
       ActiveRooms = this.props.activeRooms.map((roomname) => {
         return <li key={this.props.activeRooms.indexOf(roomname)} value={roomname} style={listItemStyle} onClick={this.goToSelectedRoom}>{roomname}</li>
       });
-      console.log('activeRooms: ', ActiveRooms);
-      // console.log('activeRooms type: ', typeof ActiveRooms);
-      // ActiveRooms.push('<li>Create a Room</li>');
     } else {
       dropDownStyle.maxHeight = '0px';
     }
