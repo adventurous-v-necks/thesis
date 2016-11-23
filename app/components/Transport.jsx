@@ -48,7 +48,7 @@ class Transport extends React.Component {
             <Knob id="0" title="Adjust Volume" label='Master'/>
           </span>
         </div>
-        <span style={{backgroundColor:'#efefef', marginTop: '-0.5em', position:'absolute', left:'1em', height:'1em', paddingLeft:'0.5em', paddingRight:'0.5em'}}>Transport Controls</span>
+        <span style={{backgroundColor:'#efefef', fontSize:'20px', marginTop: '-0.5em', position:'absolute', left:'1em', height:'1em', paddingLeft:'0.5em', paddingRight:'0.5em'}}>Transport Controls</span>
       </span>
     );
   }
