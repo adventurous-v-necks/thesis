@@ -296,7 +296,7 @@ export default function reduce(state, action) {
         for (let col of state.samples) {
           for (let sample of col) {
             if (sample.playing) {
-              //sample.source.playbackRate.value = ratio;
+              sample.source.playbackRate.value = ratio;
             }
           }
         }
