@@ -69,17 +69,17 @@ class Knob extends React.Component {
 
     return (
       <div title={this.props.title} onMouseDown={this.handleMouseDown.bind(this)}
-        style={{cursor: 'crosshair', userSelect:'none', height:'auto'}}>
+        style={{cursor: 'crosshair', userSelect:'none', height:'auto', fontWeight: 'bold'}}>
         <div className="samplerVol">
-          <span className="knob-text">{displayValue}</span>
-          <div className="dialANDlabel"style={{align: 'center'}}>
+          <span className="knob-text" style={{fontWeight: 'bold'}}>{displayValue}</span>
+          <div className="dialANDlabel"style={{align: 'center', fontWeight: 'bold'}}>
             <svg viewBox="-6 -6 12 12" className="dial">
               <g  style={style}  className="knob">
                 <g className="knob_gfx" >
                   <circle cx="0" cy="0" r="5"/>
                     <line x1="0" y1="-0.6" x2="0" y2="-4.4"/>
                 </g>
-              <text className="knob_number"/>
+              <text style={{color: '#474747', fontWeight: 'bold'}} className="knob_number"/>
               </g>
             </svg>
             {labelFunc(this.props.label)}

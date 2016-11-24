@@ -40,6 +40,7 @@ class Synth extends React.Component {
       height:'1em',
       paddingLeft:'0.5em',
       paddingRight:'0.5em',
+      fontSize:'20px',
     }
 
     return (
