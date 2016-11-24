@@ -83,8 +83,6 @@ export default function reduce(state, action) {
       numColumns: COLUMNS,
       samples: samples,
       oscwaves: [null, 'sine', 'sine'],
-      oscdetune: [null, -100, 100],
-      // oscvolumes: [null, 80, 80],
       patch: 'sine',
       masterOut: null, // if you're making stuff that makes noise, connect it to this
       audioContext: null, // first set when page loads
@@ -98,7 +96,13 @@ export default function reduce(state, action) {
       knobs[13-20] are reserved for additional features
       knobs[20+] are reserved for effects
       */
-      knobs: [100, 100, 100, 100, 100, 100, 100, 80, 80, 127.5, 127.5, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+      knobs: [
+        100, 100, 100, 100, 100, 
+        100, 100, 100, 100, 127, 
+        127, 100, 100, 100, 100, 
+        100, 100, 100, 100, 100, 
+        100, 100
+      ],
       timeZero: 0,
       suspended: false,
       markerTime: 0,
@@ -108,20 +112,20 @@ export default function reduce(state, action) {
       recordTimeZero: false,
       customEffects: [
         {
+          name: 'biquadFilter',
+          node: BiquadFilter,
+        },
+        {
           name: 'BiquadFilterLo',
           node: BiquadFilterLo,
         },
         {
-          name: 'BiquadFilterMid',
-          node: BiquadFilterMid,
-        },
-        {
-          name: 'BiquadFilterHi',
-          node: BiquadFilterHi,
-        },
-        {
-          name: 'distortionis',
+          name: 'distortion',
           node: Distortion,
+        },
+        {
+          name: 'ipsum',
+          node: 'placeholder',
         }],
       activeEffects: [],
       syncOn: true,
@@ -202,9 +206,10 @@ export default function reduce(state, action) {
         let oscillator = state.audioContext.createOscillator();
         oscillator.type = state.oscwaves[i + 1]; //TODO: only works for one synth sound right now
         oscillator.frequency.value = action.frequency;
-        oscillator.detune.value = state.oscdetune[i + 1];
+        // oscillator.detune.value = state.oscdetune[i + 1];
+        oscillator.detune.value = (state.knobs[i + 9] - 127.5) * (200 / 255);
 
-        oscillator.connect(state.synthGainNode);
+        oscillator.connect(state.oscGainNodes[i]);
         oscillator.start(0);
         temp.push(oscillator);
         if (!action.synthetic) {
@@ -254,22 +259,32 @@ export default function reduce(state, action) {
         store.dispatch(Object.assign(data.data.action, {synthetic: true}));
       });
 
-
       let audioCtx = new AudioContext();
       let grainSize = 512;
-      let pitchRatio = 1;
+
       let pitchShiftNode = audioCtx.createScriptProcessor(grainSize, 1, 1);
       pitchShiftNode.buffer = new Float32Array(grainSize * 2);
       pitchShiftNode.grainWindow = hannWindow(grainSize);
       pitchShiftNode.onaudioprocess = pitchShifter.bind(pitchShiftNode, 1);
+
       let BFLo = BiquadFilterLo(audioCtx);
       let BFMid = BiquadFilterMid(audioCtx);
       let BFHi = BiquadFilterHi(audioCtx);
+
+      let oscGainNode1 = audioCtx.createGain();
+      oscGainNode1.gain.value = 1;
+      let oscGainNode2 = audioCtx.createGain();
+      oscGainNode2.gain.value = 1;
+
       let synthGainNode = audioCtx.createGain();
-      synthGainNode.gain.value = 0.3;
+      synthGainNode.gain.value = 0.4;
+
       let convolver = audioCtx.createConvolver();
       let gainNode = audioCtx.createGain();
       gainNode.gain.value = 1;
+
+      oscGainNode1.connect(synthGainNode);
+      oscGainNode2.connect(synthGainNode);
       synthGainNode.connect(gainNode);
       pitchShiftNode.connect(gainNode);
       // let distortion = audioCtx.createWaveShaper();
@@ -290,6 +305,7 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {
         audioContext: audioCtx,
         masterOut: gainNode,
+        oscGainNodes: [oscGainNode1, oscGainNode2],
         pitchShiftNode: pitchShiftNode,
         synthGainNode: synthGainNode,
         socket: socket,
@@ -347,14 +363,6 @@ export default function reduce(state, action) {
       temp.push([action.col, action.idx, action.buffer]);
       return Object.assign({}, state, {sampleBuffers: temp});
     }
-    case 'SAMPLE_UPLOADED': {
-      let temp = Object.assign([], state.samples);
-      temp[action.col][action.index].sampleName = action.name;
-      temp[action.col][action.index].sampleUrl = action.url;
-      temp[action.col][action.index].playing = false;
-      console.log(temp[action.col][action.index]);
-      return Object.assign({}, state, {samples: temp});
-    }
     case 'PLAY': {
       events = 0;
       playTime = state.audioContext.currentTime;
@@ -382,50 +390,23 @@ export default function reduce(state, action) {
       }
       if (action.id === 6) { // Synth Volume
         temp2[6] = action.value;
-        state.synthGainNode.gain.value = action.value / 100;
+        state.synthGainNode.gain.value = action.value / 100 / 5;
       }
-      if (action.id >= 7 && action.id <= 12) {            // Oscillator Knobs
+      if (action.id >= 7 && action.id <= 12) {            // Oscillator Knobs, Vol+Detune
+        temp2[action.id] = action.value;
         if (action.id === 7 || action.id === 8) {         // Oscillator Volume
-        } else if (action.id === 9 || action.id === 10) { // Oscillator Detune
-          let detuneVal = (action.value - 127.5) * (200 / 255);
-          let newDetune = state.oscdetune;
-          if (action.id === 9) { newDetune[1] = detuneVal; }
-          if (action.id === 10) { newDetune[2] = detuneVal; }
-
-          return Object.assign({}, state, {
-            performance: temp,
-            knobs: temp2,
-            oscdetune: newDetune,
-          });
-        }
+          state.oscGainNodes[action.id - 7].gain.value = action.value / 100;
+        } 
       }
       if (action.id >= 13 && action.id <= 20) { // reserved for additional features
       }
       if (action.id > 20) { // one of the effect knobs
         // find which effect it is in our array of active effects
         var effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1)[0];
-        if (effect.name === 'BiquadFilterLo') {
+        if (effect.name === 'biquadFilter') {
           // inside that effect component, which knob was tweaked?
           let whichKnob = effect.knobs.indexOf(action.id);
           // the effects of each knob tweak will need to be custom defined for each effect (currently; we can do better)
-          if (whichKnob === 0) {
-            effect.node.frequency.value = action.value * 15;
-          }
-        }
-
-        if (effect.name === 'BiquadFilterMid') {
-
-          let whichKnob = effect.knobs.indexOf(action.id);
-
-          if (whichKnob === 0) {
-            effect.node.frequency.value = action.value * 15;
-          }
-        }
-
-         if (effect.name === 'BiquadFilterHi') {
-
-          let whichKnob = effect.knobs.indexOf(action.id);
-
           if (whichKnob === 0) {
             effect.node.frequency.value = action.value * 15;
           }
@@ -501,13 +482,14 @@ export default function reduce(state, action) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
 
-      let newOscWaves = Array.from(state.oscwaves);
+      let newOscWaves = [...state.oscwaves];
       newOscWaves[action.oscnum] = action.wave;
 
-      return Object.assign({}, state, {
+      return {
+        ...state,
         oscwaves: newOscWaves,
         performance: temp,
-      });
+      };
     }
     case 'PATCH_CHANGE': {
       const newOscWaves = [null, action.patch, action.patch];
@@ -544,21 +526,6 @@ export default function reduce(state, action) {
       });
       allKnobs.push(100);
       allKnobs.push(100); // different effects will need different numbers of knobs.
-
-      if(effect.name === "BiquadFilterLo") {
-        allKnobs.push(100);
-        allKnobs.push(100);
-      }
-
-      if(effect.name === "BiquadFilterMid") {
-        allKnobs.push(100);
-        allKnobs.push(100);
-      }
-
-      if(effect.name === "BiquadFilterHi") {
-        allKnobs.push(100);
-        allKnobs.push(100);
-      }
 
       return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
     }
