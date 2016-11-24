@@ -10,6 +10,7 @@ let SAMPLES_PER_COLUMN = 5;
 import {hannWindow, linearInterpolation, pitchShifter} from './audioHelpers.js';
 
 import {BiquadFilter, BiquadFilterLo, BiquadFilterMid, BiquadFilterHi, Distortion, makeDistortionCurve} from './effects.js';
+import {processMidiMessage} from './processMidiMessage.js';
 
 import {store} from './main.js';
 
@@ -128,13 +129,17 @@ export default function reduce(state, action) {
       activeRooms: [],
       currentRoom: '',
       roomsMenuActive: false,
+      midi: null, // the midi object as a whole, if we got one
+      midiDevices: [],
+      midiDevice: 0, // an integer selection 0-n from the midi outputs available on midi object
+      midiOutput: null, // the actual midi output object to send messages on
     };
   }
 
   switch (action.type) {
     case 'USER_LOGIN': {
       let newUserRoom = JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username;
-      
+
       state.socket.emit('room', { joinRoom: newUserRoom});
 
       let allActiveRooms = state.activeRooms.slice();
@@ -172,6 +177,7 @@ export default function reduce(state, action) {
     }
     case 'KEY_UP': {
       // TODO: optimize this -- use a hash table instead of an array
+      // TODO: this is not working polyphonically - try pressing 2 keys at once
       let newNodes = [];
       for (let i = 0; i < state.nodes.length; i++) {
         if (Math.round(state.nodes[i].frequency.value) === Math.round(action.frequency)) {
@@ -191,7 +197,7 @@ export default function reduce(state, action) {
     case 'KEY_DOWN': {
       let temp = Object.assign([], state.nodes);
       let temp2 = Object.assign([], state.performance);
-
+      console.log(action.frequency);
       for (let i = 0; i < 2; i++) {
         let oscillator = state.audioContext.createOscillator();
         oscillator.type = state.oscwaves[i + 1]; //TODO: only works for one synth sound right now
@@ -208,6 +214,35 @@ export default function reduce(state, action) {
       }
 
       return Object.assign({}, state, {nodes: temp, performance: temp2});
+    }
+    case 'MIDI_OK': {
+      let devices = [];
+      for (var output of action.midiObj.outputs.values()) {
+        devices.push(output.name);
+      }
+      for (var input of action.midiObj.inputs.values()) {
+        input.onmidimessage = processMidiMessage;
+      }
+      return Object.assign({}, state, {midi: action.midiObj, midiDevices: devices});
+    }
+    case 'CHANGE_MIDI': {
+      let output = 0;
+      let midiout = state.midi.outputs.values();
+      while (output < action.device) { output++; midiout.next(); }
+      output = midiout.next().value;
+
+      if (action.name.indexOf('APC Key 25')!==-1) {
+        // light up a 5x5 matrix
+        for (let col = 32; col >= 0; col -= 8) {
+          for (let row = 0; row < 5; row += 1) {
+            output.send([0x90, col+row, 3]);
+          }
+        }
+      }
+      if (action.name.indexOf('Pioneer DDJ-SB')!==-1) {
+        // do something else
+      }
+      return Object.assign({}, state, {midiDevice: action.device, midiOutput: output});
     }
     case 'CREATE_AUDIO_CONTEXT': {
       // DEVEL:
@@ -251,14 +286,6 @@ export default function reduce(state, action) {
       // gainNode.connect(compressor);
       // compressor.connect(audioCtx.destination);
       gainNode.connect(audioCtx.destination);
-
-
-      // case 'EFFECT_DELETED': {
-      //   for (var effect in state.activeEffects) {
-      //     state.activeEffects[effect].connect(state.activeEffects[effect+1]);
-      //   }
-      //   state.activeEffects[state.activeEffects.length-1].connect(state.audioCtx.masterOut);
-      // }
 
       return Object.assign({}, state, {
         audioContext: audioCtx,
@@ -417,6 +444,7 @@ export default function reduce(state, action) {
       if (!action.synthetic) {
         state.socket.emit('event2server', { action: action, room: state.currentRoom });
       }
+
       let allSamples = Object.assign([], state.samples); //clone to avoid mutation
       let theSample = allSamples[action.sample.column][action.sample.index]; //find relevant sample
       theSample.playing = !theSample.playing;
@@ -458,8 +486,9 @@ export default function reduce(state, action) {
         }
         theSample.source.start(startNextBarTime - state.audioContext.currentTime);
         // end beat sync
-
+        state.midiOutput.send([0x90,(32-action.sample.index*8)+action.sample.column,2]);
       } else {
+        state.midiOutput.send([0x90,(32-action.sample.index*8)+action.sample.column,3]);
         theSample.source.stop();
         theSample.source = null;
       }
@@ -566,7 +595,7 @@ export default function reduce(state, action) {
     }
     case 'NAVIGATE_ROOM': {
       let room = action.room;
-      state.socket.emit('room', { joinRoom: room,  leaveRoom: state.currentRoom}); 
+      state.socket.emit('room', { joinRoom: room,  leaveRoom: state.currentRoom});
       return Object.assign({}, state, {currentRoom: room});
     }
     case 'UPDATE_ACTIVE_ROOMS': {

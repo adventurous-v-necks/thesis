@@ -26,6 +26,11 @@ class App extends React.Component {
     //  };
     //  xhr.send();
      this.props.dispatch({type:'CREATE_AUDIO_CONTEXT'});
+     if (navigator.requestMIDIAccess) {
+       navigator.requestMIDIAccess({sysex: false}).then((accessObj)=> {
+         this.props.dispatch({type: 'MIDI_OK', midiObj: accessObj});
+       }, (err) => console.log(err));
+     }
   }
   logOut(e) {
     e.preventDefault();
@@ -49,12 +54,30 @@ class App extends React.Component {
       </span>
       );
   }
+  newMidi(e) {
+    let name = e.target.children[e.target.value].innerText;
+    this.props.dispatch({type:'CHANGE_MIDI', device: e.target.value, name});
+  }
   render() {
+    let midiDropdownStyle = {
+      color: 'white',
+      left: '5em',
+      position: 'relative',
+      padding: '0 1em',
+      border: '1px solid white',
+      height: '2em',
+      top: '1.5em',
+    };
     return (
       <div id="app">
         <nav>
           <ul>
             <li className="logo"><Link to="/">DJ Controller</Link></li>
+            <li><select name="midi-select" style={midiDropdownStyle} onChange={this.newMidi.bind(this)}>
+              {this.props.midiDevices.map((dev,i) => (
+                <option key={dev} value={i}>{dev}</option>
+              ))}
+            </select></li>
             {this.customNavbar.call(this)}
           </ul>
         </nav>
@@ -68,7 +91,8 @@ class App extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    loggedIn: state.loggedIn
+    loggedIn: state.loggedIn,
+    midiDevices: state.midiDevices,
   };
 }
 
