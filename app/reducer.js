@@ -82,7 +82,6 @@ export default function reduce(state, action) {
       numColumns: COLUMNS,
       samples: samples,
       oscwaves: [null, 'sine', 'sine'],
-      // oscdetune: [null, 127.5, 127.5],
       patch: 'sine',
       masterOut: null, // if you're making stuff that makes noise, connect it to this
       audioContext: null, // first set when page loads
@@ -366,17 +365,11 @@ export default function reduce(state, action) {
         temp2[6] = action.value;
         state.synthGainNode.gain.value = action.value / 100 / 5;
       }
-      if (action.id >= 7 && action.id <= 12) {            // Oscillator Knobs
+      if (action.id >= 7 && action.id <= 12) {            // Oscillator Knobs, Vol+Detune
         temp2[action.id] = action.value;
-
         if (action.id === 7 || action.id === 8) {         // Oscillator Volume
           state.oscGainNodes[action.id - 7].gain.value = action.value / 100;
-        } else if (action.id === 9 || action.id === 10) { // Oscillator Detune
-          // let detuneVal = (action.value - 127.5) * (200 / 255);
-          // temp2[action.id] = action.value;
-          // if (action.id === 9) temp2[9] = action.value;
-          // if (action.id === 10) temp2[10] = action.value;
-        }
+        } 
       }
       if (action.id >= 13 && action.id <= 20) { // reserved for additional features
       }
