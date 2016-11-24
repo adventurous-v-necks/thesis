@@ -23,7 +23,7 @@ class Sampler extends React.Component {
           {columns()}
         </div>
         <span style={{marginTop: '-0.5em', position:'absolute', zIndex:'1', left:'0.4em', height:'1em', paddingLeft:'0.5em', paddingRight:'0.5em'}}>
-          <span style={{height:'1em', paddingRight: '0.5em', position: 'relative', top: '-0.1em', paddingLeft: '0.5em', left:'0.3em', backgroundColor:'#efefef', lineHeight:'1em'}}>Sampler</span>
+          <span style={{ fontSize:'20px', height:'1em', paddingRight: '0.5em', position: 'relative', top: '-0.1em', paddingLeft: '0.5em', left:'0.3em', backgroundColor:'#efefef', lineHeight:'1em'}}>Sampler</span>
         </span>
       </div>
     );

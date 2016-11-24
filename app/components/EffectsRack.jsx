@@ -21,6 +21,7 @@ class EffectsRack extends React.Component {
       position:'relative',
       textAlign: 'right',
       paddingTop: '0.6em',
+      fontWeight: 'bold'
     };
 
     let activeEffects = this.props.activeEffects;
@@ -38,7 +39,7 @@ class EffectsRack extends React.Component {
         </div>
         <EffectsDropDown />
       </div>
-      <span style={{backgroundColor:'#efefef', marginTop: '-0.5em', position:'absolute', left:'1em', height:'1em', paddingLeft:'0.5em', paddingRight:'0.5em'}}>Effects Rack</span>
+      <span style={{fontSize: '20px', backgroundColor:'#efefef', marginTop: '-0.5em', position:'absolute', left:'1em', height:'1em', paddingLeft:'0.5em', paddingRight:'0.5em'}}>Effects Rack</span>
     </div>
     );
   }
