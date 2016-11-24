@@ -17,7 +17,7 @@ class Fader extends React.Component {
     var style = {
       cursor: 'crosshair',
     };
-    var labelStyle = {fontSize:'0.8em'};
+    var labelStyle = {fontSize:'0.8em', float: 'center'};
     if (this.props.width) style.width = this.props.width;
     if (this.props.vertical) {
       style.transform = 'rotateZ(270deg)';
