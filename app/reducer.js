@@ -363,6 +363,14 @@ export default function reduce(state, action) {
       temp.push([action.col, action.idx, action.buffer]);
       return Object.assign({}, state, {sampleBuffers: temp});
     }
+    case 'SAMPLE_UPLOADED': {
+      let temp = Object.assign([], state.samples);
+      temp[action.col][action.index].sampleName = action.name;
+      temp[action.col][action.index].sampleUrl = action.url;
+      temp[action.col][action.index].playing = false;
+      // console.log(temp[action.col][action.index]);
+      return Object.assign({}, state, {samples: temp});
+    }
     case 'PLAY': {
       events = 0;
       playTime = state.audioContext.currentTime;
