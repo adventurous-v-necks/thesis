@@ -97,7 +97,13 @@ export default function reduce(state, action) {
       knobs[13-20] are reserved for additional features
       knobs[20+] are reserved for effects
       */
-      knobs: [100, 100, 100, 100, 100, 100, 100, 80, 80, 127, 127, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+      knobs: [
+        100, 100, 100, 100, 100, 
+        100, 100, 100, 100, 127, 
+        127, 100, 100, 100, 100, 
+        100, 100, 100, 100, 100, 
+        100, 100
+      ],
       timeZero: 0,
       suspended: false,
       markerTime: 0,
@@ -204,7 +210,7 @@ export default function reduce(state, action) {
         // oscillator.detune.value = state.oscdetune[i + 1];
         oscillator.detune.value = (state.knobs[i + 9] - 127.5) * (200 / 255);
 
-        oscillator.connect(state.synthGainNode);
+        oscillator.connect(state.oscGainNodes[i]);
         oscillator.start(0);
         temp.push(oscillator);
         if (!action.synthetic) {
@@ -266,13 +272,20 @@ export default function reduce(state, action) {
       let BFMid = BiquadFilterMid(audioCtx);
       let BFHi = BiquadFilterHi(audioCtx);
 
+      let oscGainNode1 = audioCtx.createGain();
+      oscGainNode1.gain.value = 1;
+      let oscGainNode2 = audioCtx.createGain();
+      oscGainNode2.gain.value = 1;
+
       let synthGainNode = audioCtx.createGain();
-      synthGainNode.gain.value = 0.2;
+      synthGainNode.gain.value = 0.4;
 
       let convolver = audioCtx.createConvolver();
       let gainNode = audioCtx.createGain();
       gainNode.gain.value = 1;
 
+      oscGainNode1.connect(synthGainNode);
+      oscGainNode2.connect(synthGainNode);
       synthGainNode.connect(gainNode);
       pitchShiftNode.connect(gainNode);
       // let distortion = audioCtx.createWaveShaper();
@@ -293,6 +306,7 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {
         audioContext: audioCtx,
         masterOut: gainNode,
+        oscGainNodes: [oscGainNode1, oscGainNode2],
         pitchShiftNode: pitchShiftNode,
         synthGainNode: synthGainNode,
         socket: socket,
@@ -380,21 +394,15 @@ export default function reduce(state, action) {
         state.synthGainNode.gain.value = action.value / 100 / 5;
       }
       if (action.id >= 7 && action.id <= 12) {            // Oscillator Knobs
-        if (action.id === 7 || action.id === 8) {         // Oscillator Volume
-        } else if (action.id === 9 || action.id === 10) { // Oscillator Detune
-          let detuneVal = (action.value - 127.5) * (200 / 255);
-          // let newDetune = state.oscdetune;
-          // if (action.id === 9) { newDetune[1] = detuneVal; }
-          // if (action.id === 10) { newDetune[2] = detuneVal; }
-          if (action.id === 9) temp2[9] = action.value;
-          if (action.id === 10) temp2[10] = action.value;
+        temp2[action.id] = action.value;
 
-          return {
-            ...state,
-            performance: temp,
-            knobs: temp2,
-            // oscdetune: newDetune,
-          };
+        if (action.id === 7 || action.id === 8) {         // Oscillator Volume
+          state.oscGainNodes[action.id - 7].gain.value = action.value / 100;
+        } else if (action.id === 9 || action.id === 10) { // Oscillator Detune
+          // let detuneVal = (action.value - 127.5) * (200 / 255);
+          // temp2[action.id] = action.value;
+          // if (action.id === 9) temp2[9] = action.value;
+          // if (action.id === 10) temp2[10] = action.value;
         }
       }
       if (action.id >= 13 && action.id <= 20) { // reserved for additional features
