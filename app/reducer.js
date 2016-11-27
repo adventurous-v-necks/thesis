@@ -343,7 +343,7 @@ export default function reduce(state, action) {
       oscGainNode2.gain.value = 1;
 
       let synthGainNode = audioCtx.createGain();
-      synthGainNode.gain.value = 0.4;
+      synthGainNode.gain.value = 0.2;
 
       let convolver = audioCtx.createConvolver();
       let gainNode = audioCtx.createGain();
@@ -478,7 +478,7 @@ export default function reduce(state, action) {
       }
       if (action.id === 6) { // Synth Volume
         temp2[6] = action.value;
-        state.synthGainNode.gain.value = action.value / 100 / 5;
+        state.synthGainNode.gain.value = action.value / 102 / 5;
       }
       if (action.id >= 7 && action.id <= 12) {            // Oscillator Knobs, Vol+Detune
         temp2[action.id] = action.value;
