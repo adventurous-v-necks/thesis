@@ -28,6 +28,22 @@ class RoomDropDown extends React.Component {
     this.props.dispatch({type: 'NAVIGATE_ROOM', room: roomname});
   }
 
+  // <select name="midi-select" style={midiDropdownStyle} onChange={this.newMidi.bind(this)}>
+  //               {this.props.midiDevices.map((dev,i) => (
+  //                 <option key={dev} value={i}>{dev}</option>
+  //               ))}
+  //             </select>
+
+  // let midiDropdownStyle = {
+  //   color: 'white',
+  //   left: '5em',
+  //   position: 'relative',
+  //   padding: '0 1em',
+  //   border: '1px solid white',
+  //   height: '2em',
+  //   top: '1.5em',
+  // };
+
   render() {
 
     let dropDownStyle = {
