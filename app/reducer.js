@@ -9,7 +9,7 @@ let SAMPLES_PER_COLUMN = 5;
 
 import {hannWindow, linearInterpolation, pitchShifter} from './audioHelpers.js';
 
-import {BiquadFilter, BiquadFilterLo, BiquadFilterMid, BiquadFilterHi, Distortion, makeDistortionCurve} from './effects.js';
+import {BiquadFilter, BiquadFilterLo, BiquadFilterMid, BiquadFilterHi, MOOGFilter, Distortion, makeDistortionCurve} from './effects.js';
 import {processMidiMessage} from './processMidiMessage.js';
 
 import {store} from './main.js';
@@ -124,8 +124,12 @@ export default function reduce(state, action) {
           node: BiquadFilterHi,
         },
         {
-          name: 'distortionis',
+          name: 'distortion',
           node: Distortion,
+        },
+        {
+          name: 'MOOG',
+          node: MOOG,
         }],
       activeEffects: [],
       syncOn: true,
@@ -308,6 +312,8 @@ export default function reduce(state, action) {
       let oscGainNode2 = audioCtx.createGain();
       oscGainNode2.gain.value = 1;
 
+      let MOOG = MOOGFilter(audioCtx);
+
       let synthGainNode = audioCtx.createGain();
       synthGainNode.gain.value = 0.4;
 
@@ -471,16 +477,29 @@ export default function reduce(state, action) {
             effect.node.frequency.value = action.value * 15;
           }
         }
+// double check against committed code
         if (effect.name === 'BiquadFilterHi') {
+
           let whichKnob = effect.knobs.indexOf(action.id);
           if (whichKnob === 0) {
             effect.node.frequency.value = action.value * 15;
           }
         }
         if (effect.name === 'distortion') {
+
           let whichKnob = effect.knobs.indexOf(action.id);
+
           if (whichKnob === 0) {
             effect.node.curve = makeDistortionCurve(.5 * action.value);
+          }
+        }
+
+        if (effect.name === 'MOOG') {
+
+          let whichKnob = effect.knobs.indexOf(action.id);
+
+          if (whichKnob === 0) {
+            console.log('twiddle moog knob');
           }
         }
       }
@@ -597,17 +616,22 @@ export default function reduce(state, action) {
       allKnobs.push(100);
       allKnobs.push(100); // different effects will need different numbers of knobs.
 
-      if(effect.name === "BiquadFilterLo") {
+      if(effect.name === 'BiquadFilterLo') {
         allKnobs.push(100);
         allKnobs.push(100);
       }
 
-      if(effect.name === "BiquadFilterMid") {
+      if(effect.name === 'BiquadFilterMid') {
         allKnobs.push(100);
         allKnobs.push(100);
       }
 
-      if(effect.name === "BiquadFilterHi") {
+      if(effect.name === 'BiquadFilterHi') {
+        allKnobs.push(100);
+        allKnobs.push(100);
+      }
+
+      if(effect.name === 'MOOG') {
         allKnobs.push(100);
         allKnobs.push(100);
       }
