@@ -137,6 +137,8 @@ export default function reduce(state, action) {
       midiDevices: [],
       midiDevice: 0, // an integer selection 0-n from the midi outputs available on midi object
       midiOutput: null, // the actual midi output object to send messages on
+      savedSets: [],
+      faders: {}, // each fader - global BPM then column BPM
     };
   }
 
@@ -153,6 +155,36 @@ export default function reduce(state, action) {
     }
     case 'USER_LOGOUT': {
       return Object.assign({}, state, {loggedIn: false});
+    }
+    case 'GOT_SAVED_SETS': {
+      return Object.assign({}, state, {savedSets: action.sets.sets});
+    }
+    case 'LOAD_SET': {
+      console.log(action.set);
+      let set = action.set;
+      for (let fader of Object.keys(set.faders)) {
+        console.log(fader, set.faders[fader]);
+        document.getElementById(fader).value = Number(set.faders[fader]);
+      }
+      // for (let sample of set.samples) {
+      //   console.log(sample);
+      // }
+      return Object.assign({}, state, {
+        BPM: set.BPM,
+        activeEffects: set.activeEffects,
+        maxTempo: set.maxTempo,
+        minTempo: set.minTempo,
+        knobs: set.knobs,
+        performance: set.performance,
+        patch: set.patch,
+        numColumns: set.numColumns,
+        recordStartTime: set.recordStartTime,
+        recordTimeZero: set.recordTimeZero,
+        timeZero: set.timeZero,
+        samples: set.samples,
+        syncOn: state.syncOn,
+        faders: state.faders,
+      });
     }
     case 'MARKER_UPDATE': {
       return Object.assign({}, state, {markerTime: state.audioContext.currentTime - state.recordStartTime});
@@ -232,6 +264,7 @@ export default function reduce(state, action) {
     case 'CHANGE_MIDI': {
       let output = 0;
       let midiout = state.midi.outputs.values();
+      console.log(action);
       while (output < action.device) { output++; midiout.next(); }
       output = midiout.next().value;
 
@@ -341,6 +374,8 @@ export default function reduce(state, action) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
       let bpm = state.BPM;
+      let faders = Object.assign({}, state.faders);
+      faders[action.id] = action.value;
       if (action.id === 'tempoFader') {
         bpm = Math.round((action.value * (state.maxTempo - state.minTempo) / 100) + state.minTempo);
         const ratio = ((bpm + state.minTempo) / state.maxTempo).toFixed(2);
@@ -365,7 +400,7 @@ export default function reduce(state, action) {
           }
         }
       }
-      return Object.assign({}, state, {BPM: bpm, performance: temp});
+      return Object.assign({}, state, {BPM: bpm, performance: temp, faders: faders});
     }
     case 'STORE_REF_TO_SAMPLE': {
       // so the actual buffer itself is being stored locally on the Sample component,
@@ -461,7 +496,8 @@ export default function reduce(state, action) {
       theSample.playing = !theSample.playing;
       let time = 0;
 
-      if (theSample.playing) {
+      if (theSample.playing || action.loadedFromASavedSet) {
+        if (action.loadedFromASavedSet) theSample.playing = true;
         theSample.source = state.audioContext.createBufferSource();
         theSample.source.loop = true;
         if (action.buffer.duration) {

@@ -23,10 +23,11 @@ class Controls extends React.Component {
 
   render() {
     const containerStyle = {
-      width: '25%',
+      width: 'auto',
       top: '50%',
-      transform: 'translateY(-40%)',
-      height: 'auto'
+      transform: 'translateY(-50%)',
+      height: 'auto',
+      verticalAlign: 'middle',
     };
     const style = {
       fontSize: '2em',

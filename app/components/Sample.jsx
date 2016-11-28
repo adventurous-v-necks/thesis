@@ -6,7 +6,8 @@ class Sample extends React.Component {
   // We should avoid local component state, except where we don't
   state = {
     buffer: null,
-    storedSample: null
+    storedSample: null,
+    playing: false,
   };
   constructor(props) {
     super(props);
@@ -41,7 +42,7 @@ class Sample extends React.Component {
     //load sample
     this.lazyLoad.call(this);
   }
-  lazyLoad() {
+  lazyLoad(cb) {
     let request = new XMLHttpRequest();
     request.open('GET', this.props.sample.sampleUrl, true);
     request.responseType = 'arraybuffer';
@@ -49,6 +50,7 @@ class Sample extends React.Component {
         this.props.audioContext.decodeAudioData(request.response, (buffer) => {
             this.setState({buffer: buffer, storedSample: this.props.sample.sampleUrl});
             this.props.dispatch({type: 'STORE_REF_TO_SAMPLE', col: this.props.sample.column, idx: this.props.sample.index, buffer: buffer});
+            if (cb) cb();
         });
     }
     request.send();
@@ -58,7 +60,20 @@ class Sample extends React.Component {
       this.lazyLoad.call(this);
     }
   }
+  componentDidUpdate() {
+    if (this.state.storedSample !== this.props.sample.sampleUrl) {
+      this.lazyLoad.call(this, () => {
+        if (this.props.sample.playing && !this.state.playing) {
+          //means the user must have loaded a saved set
+          this.props.dispatch({type: 'PLAY_SAMPLE', sample: this.props.sample, buffer: this.state.buffer, loadedFromASavedSet:true});
+        }
+      });
+    } else if (this.props.sample.playing && !this.state.playing) {
+      this.props.dispatch({type: 'PLAY_SAMPLE', sample: this.props.sample, buffer: this.state.buffer, loadedFromASavedSet:true});
+    }
+  }
   playSample(e) {
+    this.setState({playing: !this.state.playing});
     this.props.dispatch({type: 'PLAY_SAMPLE', sample: this.props.sample, buffer: this.state.buffer});
   }
   render() {
@@ -71,7 +86,7 @@ class Sample extends React.Component {
       animation: this.props.playing ? 'play-anim 1s infinite' : 'none',
     };
     return (
-      <div onDragOver={this.preventDefault} onDrop={this.onDrop.bind(this)} title="Click to Play Loop or Drop a New Sample" ref={'1loop'} key={this.props.sample.sampleName} id={`sample${this.props.sample.column}-${this.props.sample.index}`} style={style} onClick={this.playSample.bind(this)}><span style={{userSelect:'none',height:'auto',maxHeight:'1em', cursor:'text'}} contentEditable suppressContentEditableWarning>{this.props.sampleName}</span><br/>
+      <div onDragOver={this.preventDefault} onDrop={this.onDrop.bind(this)} title="Click to Play Loop or Drop a New Sample" ref={'1loop'} key={this.props.sample.sampleName} id={`sample${this.props.sample.column}-${this.props.sample.index}`} style={style} onClick={this.playSample.bind(this)}><span style={{userSelect:'none',height:'auto',maxHeight:'1em', cursor:'text',fontSize:'1.8em'}} contentEditable suppressContentEditableWarning>{this.props.sampleName}</span><br/>
         {!this.props.playing ? (<i className="fa fa-play" id={`sample${this.props.sample.column}-${this.props.sample.index}`}></i>) : (<i id={`playbt${this.props.sample.column}-${this.props.sample.index}`}className="fa fa-square"></i>)}
       </div>
     );
