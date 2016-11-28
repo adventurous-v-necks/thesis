@@ -81,16 +81,23 @@ class RoomDropDown extends React.Component {
     // }
 
     // let allActiveRooms = this.props.activeRooms;
-    let allActiveRooms = this.props.activeRooms.filter(roomname => roomname !== this.props.currentRoom);
-    allActiveRooms.unshift(this.props.currentRoom);
+    // let allActiveRooms = this.props.activeRooms.filter(roomname => roomname !== this.props.currentRoom);
+    // allActiveRooms.unshift(this.props.currentRoom);
+
+    let activeRoomsList = this.props.activeRooms;
+    activeRoomsList.unshift('Select a Room');
     
-    console.log('allActiveRooms: ', allActiveRooms);
+    // console.log('allActiveRooms: ', allActiveRooms);
 
     return (
       <div className="roomDropDown">
         <select name="room-select" style={roomDropdownStyle} onChange={this.goToSelectedRoom}>
-          {allActiveRooms.map((roomname, i) => (
-            <option key={allActiveRooms.indexOf(roomname)} value={i}>{roomname}</option>
+          {activeRoomsList.map((roomname, i) => (
+            i === 0
+            ?
+            <option key={'Select a Room'} value={i} selected>{roomname}</option>
+            : 
+            <option key={activeRoomsList.indexOf(roomname)} value={i}>{roomname}</option>
           ))}
         </select>
       </div>

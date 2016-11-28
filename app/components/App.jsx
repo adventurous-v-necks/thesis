@@ -53,7 +53,7 @@ class App extends React.Component {
       <span>
       <li className="menu-item"><Link to="/signout" onClick={this.logOut.bind(this)}>Sign Out</Link></li>
       <li className="menu-item"><Link to="/profile">{JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username}</Link></li>
-      <li className="menu-item"><RoomDropDown /></li>
+      <li className="room-select"><RoomDropDown /></li>
       </span>
       ) : (
       <span>
@@ -89,7 +89,7 @@ class App extends React.Component {
       height: '2em',
       top: '1.5em',
     };
-    
+
     return (
       <div id="app">
         <nav>
