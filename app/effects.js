@@ -27,7 +27,7 @@ export let BiquadFilterHi = (audioCtx) => {
 export let MOOGFilter = (audioCtx) => {
   let bufferSize = 4096;
   let effect = (function() {
-      let node = audioContext.createScriptProcessor(bufferSize, 1, 1);
+      let node = audioCtx.createScriptProcessor(bufferSize, 1, 1);
       let in1, in2, in3, in4, out1, out2, out3, out4;
       in1 = in2 = in3 = in4 = out1 = out2 = out3 = out4 = 0.0;
       node.cutoff = 0.065; // between 0.0 and 1.0
