@@ -97,10 +97,10 @@ export default function reduce(state, action) {
       knobs[20+] are reserved for effects
       */
       knobs: [
-        100, 100, 100, 100, 100, 
-        100, 100, 100, 100, 127, 
-        127, 100, 100, 100, 100, 
-        100, 100, 100, 100, 100, 
+        100, 100, 100, 100, 100,
+        100, 100, 100, 100, 127,
+        127, 100, 100, 100, 100,
+        100, 100, 100, 100, 100,
         100, 100
       ],
       timeZero: 0,
@@ -201,7 +201,6 @@ export default function reduce(state, action) {
     case 'KEY_DOWN': {
       let temp = Object.assign([], state.nodes);
       let temp2 = Object.assign([], state.performance);
-      console.log(action.frequency);
       for (let i = 0; i < 2; i++) {
         let oscillator = state.audioContext.createOscillator();
         oscillator.type = state.oscwaves[i + 1]; //TODO: only works for one synth sound right now
@@ -404,7 +403,7 @@ export default function reduce(state, action) {
         temp2[action.id] = action.value;
         if (action.id === 7 || action.id === 8) {         // Oscillator Volume
           state.oscGainNodes[action.id - 7].gain.value = action.value / 100;
-        } 
+        }
       }
       if (action.id >= 13 && action.id <= 20) { // reserved for additional features
       }
@@ -486,9 +485,13 @@ export default function reduce(state, action) {
         }
         theSample.source.start(startNextBarTime - state.audioContext.currentTime);
         // end beat sync
-        state.midiOutput.send([0x90,(32-action.sample.index*8)+action.sample.column,2]);
+        if (state.midiOutput) {
+          state.midiOutput.send([0x90,(32-action.sample.index*8)+action.sample.column,2]);
+        }
       } else {
-        state.midiOutput.send([0x90,(32-action.sample.index*8)+action.sample.column,3]);
+        if (state.midiOutput) {
+          state.midiOutput.send([0x90,(32-action.sample.index*8)+action.sample.column,3]);
+        }
         theSample.source.stop();
         theSample.source = null;
       }
