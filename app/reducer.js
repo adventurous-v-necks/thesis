@@ -340,16 +340,28 @@ export default function reduce(state, action) {
         state.socket.emit('event2server', { action: action, room: state.currentRoom });
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
-      let bpm = Object.assign({}, state.BPM);
+      let bpm = state.BPM;
       if (action.id === 'tempoFader') {
         bpm = Math.round((action.value * (state.maxTempo - state.minTempo) / 100) + state.minTempo);
         const ratio = ((bpm + state.minTempo) / state.maxTempo).toFixed(2);
         state.pitchShiftNode.onaudioprocess = pitchShifter.bind(state.pitchShiftNode, ratio);
         for (let col of state.samples) {
           for (let sample of col) {
+            // TODO: changing BPM does not affect a sample that's not playing
             if (sample.playing) {
               sample.source.playbackRate.value = ratio;
             }
+          }
+        }
+      }
+      if (action.id.substr(0,5) === 'speed') {
+        // TODO: changing BPM does not affect a sample that's not playing
+        let col = state.samples[action.id.substr(5,1)];
+        let colBpm = Math.round((action.value * (state.maxTempo - state.minTempo) / 100) + state.minTempo);
+        const ratio = ((colBpm + state.minTempo) / state.maxTempo).toFixed(2);
+        for (let sample of col) {
+          if (sample.playing) {
+            sample.source.playbackRate.value = ratio;
           }
         }
       }

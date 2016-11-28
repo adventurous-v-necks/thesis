@@ -55,8 +55,10 @@ class App extends React.Component {
       );
   }
   newMidi(e) {
-    let name = e.target.children[e.target.value].innerText;
-    this.props.dispatch({type:'CHANGE_MIDI', device: e.target.value, name});
+    if (e.target.value != -1) {
+      let name = e.target.children[e.target.value].innerText;
+      this.props.dispatch({type:'CHANGE_MIDI', device: e.target.value, name});
+    }
   }
   render() {
     let midiDropdownStyle = {
@@ -74,6 +76,7 @@ class App extends React.Component {
           <ul>
             <li className="logo"><Link to="/">DJ Controller</Link></li>
             <li><select name="midi-select" style={midiDropdownStyle} onChange={this.newMidi.bind(this)}>
+              <option value="-1">Choose MIDI device</option>
               {this.props.midiDevices.map((dev,i) => (
                 <option key={dev} value={i}>{dev}</option>
               ))}
