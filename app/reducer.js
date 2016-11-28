@@ -197,7 +197,6 @@ export default function reduce(state, action) {
     case 'KEY_DOWN': {
       let temp = Object.assign([], state.nodes);
       let temp2 = Object.assign([], state.performance);
-      console.log(action.frequency);
       for (let i = 0; i < 2; i++) {
         let oscillator = state.audioContext.createOscillator();
         oscillator.type = state.oscwaves[i + 1]; //TODO: only works for one synth sound right now
