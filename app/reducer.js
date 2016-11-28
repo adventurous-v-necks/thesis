@@ -129,7 +129,7 @@ export default function reduce(state, action) {
         },
         {
           name: 'MOOG',
-          node: MOOG,
+          node: MOOGFilter,
         }],
       activeEffects: [],
       syncOn: true,
