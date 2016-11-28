@@ -274,9 +274,11 @@ io.on('connection', function (socket) {
   socket.on('room', function(data){
     if(data.leaveRoom) {
       socket.leave(data.leaveRoom);
+      console.log('room ' + data.leaveRoom + ' was left');
     }
     socket.join(data.joinRoom);
   });
+    console.log('room ' + data.joinRoom + ' was joined');
 });
 
 server.listen(port, '0.0.0.0', function onStart(err) {

@@ -134,9 +134,9 @@ export default function reduce(state, action) {
       activeEffects: [],
       syncOn: true,
       lastPlayed: 0, // time (audio time) the last sample was played
-      activeRooms: ['hans', 'aleks', 'tom'], // change back to [],
-      currentRoom: 'clark', //change back to '',
-      roomsMenuActive: false,
+      activeRooms: [],
+      currentRoom: '',
+      // roomsMenuActive: false,
       midi: null, // the midi object as a whole, if we got one
       midiDevices: [],
       midiDevice: 0, // an integer selection 0-n from the midi outputs available on midi object
@@ -666,11 +666,13 @@ export default function reduce(state, action) {
       allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
       return Object.assign({}, state, {activeEffects: allActiveEffects});
     }
-    case 'ROOM_MENU_TOGGLE': {
-      return Object.assign({}, state, {roomsMenuActive: !state.roomsMenuActive});
-    }
+    // case 'ROOM_MENU_TOGGLE': {
+    //   return Object.assign({}, state, {roomsMenuActive: !state.roomsMenuActive});
+    // }
     case 'NAVIGATE_ROOM': {
       let room = action.room;
+      console.log('nav room: joinRoom: ', room);
+      console.log('nav room: leaveRoom', state.currentRoom);
       state.socket.emit('room', { joinRoom: room,  leaveRoom: state.currentRoom});
       return Object.assign({}, state, {currentRoom: room});
     }

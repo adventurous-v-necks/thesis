@@ -80,15 +80,15 @@ class App extends React.Component {
       top: '1.5em',
     };
 
-    let roomDropdownStyle = {
-      color: 'white',
-      left: '5em',
-      position: 'relative',
-      padding: '0 1em',
-      border: '1px solid white',
-      height: '2em',
-      top: '1.5em',
-    };
+    // let roomDropdownStyle = {
+    //   color: 'white',
+    //   left: '5em',
+    //   position: 'relative',
+    //   padding: '0 1em',
+    //   border: '1px solid white',
+    //   height: '2em',
+    //   top: '1.5em',
+    // };
 
     return (
       <div id="app">
