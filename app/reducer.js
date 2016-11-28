@@ -486,9 +486,13 @@ export default function reduce(state, action) {
         }
         theSample.source.start(startNextBarTime - state.audioContext.currentTime);
         // end beat sync
-        state.midiOutput.send([0x90,(32-action.sample.index*8)+action.sample.column,2]);
+        if (state.midiOutput) {
+          state.midiOutput.send([0x90,(32-action.sample.index*8)+action.sample.column,2]);
+        }
       } else {
-        state.midiOutput.send([0x90,(32-action.sample.index*8)+action.sample.column,3]);
+        if (state.midiOutput) {
+          state.midiOutput.send([0x90,(32-action.sample.index*8)+action.sample.column,3]);
+        }
         theSample.source.stop();
         theSample.source = null;
       }
