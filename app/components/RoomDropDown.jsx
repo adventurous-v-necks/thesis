@@ -24,7 +24,10 @@ class RoomDropDown extends React.Component {
   }
 
   goToSelectedRoom(e) {
-    let roomname = e.nativeEvent.target.attributes.value.value;
+    console.log('e.target.children[e.target.value].innerText: ', e.target.children[e.target.value].innerText);
+    // let roomname = e.nativeEvent.target.attributes.value.value;
+    // let roomname = e.target.children[e.target.value].innerText;
+    let roomname = e.target.children[e.target.value].innerText;
     this.props.dispatch({type: 'NAVIGATE_ROOM', room: roomname});
   }
 
@@ -86,8 +89,8 @@ class RoomDropDown extends React.Component {
     return (
       <div className="roomDropDown">
         <select name="room-select" style={roomDropdownStyle} onChange={this.goToSelectedRoom}>
-          {allActiveRooms.map((roomname) => (
-            <option key={allActiveRooms.indexOf(roomname)} value={roomname}>{roomname}</option>
+          {allActiveRooms.map((roomname, i) => (
+            <option key={allActiveRooms.indexOf(roomname)} value={i}>{roomname}</option>
           ))}
         </select>
       </div>
