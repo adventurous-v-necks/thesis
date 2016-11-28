@@ -6,12 +6,17 @@ import {connect} from 'react-redux';
 class RoomDropDown extends React.Component {
   constructor(props) {
     super(props);
-    this.toggleMenu = this.toggleMenu.bind(this);
+    this.getActiveRooms = this.getActiveRooms.bind(this);
     this.goToSelectedRoom = this.goToSelectedRoom.bind(this);
   }
 
-  toggleMenu(e) {
-    e.preventDefault();
+  componentDidMount() {
+    this.getActiveRooms();
+  }
+
+  getActiveRooms() {
+    // e.preventDefault();
+    console.log('get active rooms called')
     let theHeaders = new Headers({ "Content-Type": "application/json" });
     fetch('/liveRooms', {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
       resp.json().then(r => {
@@ -20,23 +25,29 @@ class RoomDropDown extends React.Component {
         } 
       });
     });
-    this.props.dispatch({type: 'ROOM_MENU_TOGGLE'});
+    // this.props.dispatch({type: 'ROOM_MENU_TOGGLE'});
   }
 
   goToSelectedRoom(e) {
-    console.log('e.target.children[e.target.value].innerText: ', e.target.children[e.target.value].innerText);
-    // let roomname = e.nativeEvent.target.attributes.value.value;
-    // let roomname = e.target.children[e.target.value].innerText;
-    let roomname = e.target.children[e.target.value].innerText;
-    this.props.dispatch({type: 'NAVIGATE_ROOM', room: roomname});
+    // console.log('event target value: ', e.target.value);
+    console.log('event target: ')
+    console.log(e.target.children[e.target.value].innerText)
+    if (e.target.value !== 0) {
+      let roomname = e.target.children[e.target.value].innerText;
+      console.log('navigating to new room: ', roomname);
+      this.props.dispatch({type: 'NAVIGATE_ROOM', room: roomname});
+    }
   }
-
-
 
   render() {
 
-    // console.log('active rooms: ', this.props.activeRooms);
+    console.log('active rooms: ', this.props.activeRooms);
 
+
+    let roomContainer = {      
+      position: 'relative',
+      top: '1.08em',
+    }
     let dropDownStyle = {
       maxHeight: '0px',
       paddingRight: '0.5em',
@@ -47,12 +58,14 @@ class RoomDropDown extends React.Component {
     }
     let roomDropdownStyle = {
       color: 'white',
-      left: '5em',
+      // left: '5em',
       position: 'relative',
       padding: '0 1em',
       border: '1px solid white',
       height: '2em',
-      top: '1.5em',
+      // top: '.3em',
+      // textAlign: 'right',
+      marginRight: '1.5em',
     };
     
     const style = {
@@ -63,41 +76,24 @@ class RoomDropDown extends React.Component {
       fontFamily: 'Permanent Marker',
     }
     const listItemStyle = {
-      display: 'block',
-      height: 'auto',
-      color: '#efefef',
-      cursor: 'pointer',
+    //   display: 'block',
+    //   height: 'auto',
+    //   color: '#efefef',
+    //   cursor: 'pointer',
+      textAlign: 'right',
     }
 
-    // let ActiveRooms = '';
+    // this.getActiveRooms();
 
-    // if (this.props.roomsMenuActive) {
-    //   dropDownStyle.maxHeight = '8em';
-    //   ActiveRooms = this.props.activeRooms.map((roomname) => {
-    //     return <li key={this.props.activeRooms.indexOf(roomname)} value={roomname} style={listItemStyle} onClick={this.goToSelectedRoom}>{roomname}</li>
-    //   });
-    // } else {
-    //   dropDownStyle.maxHeight = '0px';
-    // }
-
-    // let allActiveRooms = this.props.activeRooms;
-    // let allActiveRooms = this.props.activeRooms.filter(roomname => roomname !== this.props.currentRoom);
-    // allActiveRooms.unshift(this.props.currentRoom);
-
-    let activeRoomsList = this.props.activeRooms;
-    activeRoomsList.unshift('Select a Room');
-    
-    // console.log('allActiveRooms: ', allActiveRooms);
+    let allActiveRooms = this.props.activeRooms.filter(roomname => roomname !== this.props.currentRoom);
+    allActiveRooms.unshift(this.props.currentRoom);
 
     return (
-      <div className="roomDropDown">
+      <div className="roomDropDown" style={roomContainer}>
         <select name="room-select" style={roomDropdownStyle} onChange={this.goToSelectedRoom}>
-          {activeRoomsList.map((roomname, i) => (
-            i === 0
-            ?
-            <option key={'Select a Room'} value={i} selected>{roomname}</option>
-            : 
-            <option key={activeRoomsList.indexOf(roomname)} value={i}>{roomname}</option>
+          <option key={"0"} value={"0"}>Select a Room</option>
+          {allActiveRooms.map((roomname, i) => (
+            <option key={roomname} value={i + 1}>{roomname}</option>
           ))}
         </select>
       </div>
