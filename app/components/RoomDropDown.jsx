@@ -86,7 +86,9 @@ class RoomDropDown extends React.Component {
     // this.getActiveRooms();
 
     let allActiveRooms = this.props.activeRooms.filter(roomname => roomname !== this.props.currentRoom);
-    allActiveRooms.unshift(this.props.currentRoom);
+    if (this.props.currentRoom !== '' && this.props.currentRoom !== 'Select a Room') {
+      allActiveRooms.unshift(this.props.currentRoom);
+    }
 
     return (
       <div className="roomDropDown" style={roomContainer}>
