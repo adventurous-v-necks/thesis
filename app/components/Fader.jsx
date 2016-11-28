@@ -25,8 +25,9 @@ class Fader extends React.Component {
       labelStyle.marginLeft = '-5.5em';
     } else {
       labelStyle.position = 'relative';
-      labelStyle.top = '1.5em';
-      labelStyle.left = '-50%';
+      labelStyle.top = '0.5em';
+      labelStyle.left = this.props.noNeedToCenter ? '0' : '50%';
+      labelStyle.transform = this.props.noNeedToCenter ? 'none' : 'translateX(-50%)';
     }
 
     return (
