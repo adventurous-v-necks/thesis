@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const userSchema = mongoose.Schema({username: String, password: String });
+const userSchema = mongoose.Schema({
+  username: {type: String, unique: true, required: true},
+  password: String,
+  email: String,
+  session: String,
+  patches: [mongoose.Schema.Types.Mixed],
+});
 
 userSchema.methods.generateHash = function(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);

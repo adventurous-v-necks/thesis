@@ -10,8 +10,8 @@ export default class Landing extends React.Component {
   }
   render() {
     return (
-      <div>
-        <div className="hero">
+      <div style={{height:'100em'}}>
+        <div className="hero" style={{height:'100%'}}>
           <span className="hello">Online, social DJing</span>
           <Link to="/player"><button>Try a demo</button></Link>
         </div>

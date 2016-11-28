@@ -8,7 +8,7 @@ import Player from './components/Player.jsx';
 import FourOhFour from './components/FourOhFour.jsx';
 import LoginForm from './components/LoginForm.jsx';
 import Landing from './components/Landing.jsx';
-import SignIn from './components/SignIn.jsx';
+import SignUp from './components/SignUp.jsx';
 import reducer from './reducer.js';
 import Sampler from './components/Sampler.jsx';
 import {createStore} from 'redux';
@@ -23,10 +23,9 @@ render(
     <Router history={browserHistory}>
       <Route component={App} title="[Path]">
           <Route path="/" component={Landing} />
-          <Route path="/player" component={Player} /> 
-          <Route path="/sampler" component={Sampler} />
-          <Route path="/signin" component={SignIn} />
-          <Route path="tryLogin(/:failed)" component={LoginForm} />
+          <Route path="/player" component={Player} />
+          <Route path="/signUp" component={SignUp} />
+          <Route path="/signin" component={LoginForm} />
           <Route path="*" component={FourOhFour}/>
       </Route>
     </Router>

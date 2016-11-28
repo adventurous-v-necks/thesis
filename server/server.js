@@ -11,14 +11,24 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/User.js');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const Grid = require('gridfs-stream');
+const fs = require('fs');
 const isDeveloping = process.env.NODE_ENV !== 'production';
 
 const mongoAddress = isDeveloping ? 'mongodb://localhost/dj-controller' : 'mongodb://devMongo:27017/dj-controller';
 
 mongoose.Promise = Promise;
 mongoose.connect(mongoAddress);
+Grid.mongo = mongoose.mongo;
 
-let db = mongoose.connection;
+let conn;
+if (isDeveloping) {
+  conn = mongoose.createConnection('localhost','dj-controller', 27017);
+} else {
+  conn = mongoose.createConnection('devMongo', 'dj-controller', 27017);
+}
+let gfs = new Grid(conn.db);
+var db = mongoose.connection;
 
 db.on('error',console.error);
 
@@ -36,19 +46,8 @@ const port = isDeveloping ? 3000 : process.env.PORT;
 
 const app = express();
 
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-
-var counter = 0
-io.on('connection', function (socket) {
-  socket.on('event2server', function (data) {
-    socket.broadcast.emit('event', {data : data} )
-  });
-});
-
 
 app.use(express.static('public'));
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
@@ -75,20 +74,72 @@ passport.use(new LocalStrategy(function(username, password, done) {
   });
 }));
 
-app.get('/example_rest_endpoint/:id', function response(req, res) {
-res.write(`hello ${req.params.id}`); // or you can use res.json({some object})
-res.end();
-});
+app.use(express.static('public'));
+
+let fileUpload = require('express-fileupload');
+app.use(fileUpload());
 
 app.get('/getLoggedInUsername', function response(req, res) {
   res.write(req.user ? req.user.username : 'Not Logged In');
   res.end();
 });
+
 app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/tryLogin/failed' }),
-  function(req, res) {
-    res.redirect('/');
+  passport.authenticate('local', { failWithError: true }),
+  function(req, res, next) {
+    return res.json({status: 'ok', username: req.user.username, user:req.user});
+  },
+  function(err, req, res, next) {
+    console.log(err);
+    return res.json({status: 'bad', message: 'Login failed, incorrect username or password'});
+  }
+);
+
+app.post('/signup', function (req, res) {
+  var newuser = new User({username:req.body.username, email: req.body.email});
+  newuser.password = newuser.generateHash(req.body.password);
+  newuser.save(function(err,data) {
+    res.json({status: 'ok', message: 'Successfully created user', username: req.body.username});
   });
+});
+
+app.post('/upload', function (req, res) {
+  let to = gfs.createWriteStream({filename: req.user.username+'___'+req.files.file.name});
+  to.on('error',(e)=>console.log(e));
+  to.on('close', () => {
+    res.json({status: 'ok', message: 'uploaded file',
+    filename: 'http://localhost:3000/get/'+req.user.username+'___'+req.files.file.name
+    });
+  });
+  req.files.file.mv('/tmp/'+req.files.file.name, (e,f) => {
+    fs.createReadStream('/tmp/'+req.files.file.name).on('end', () => {
+      to.end();
+    }).on('error', (e) => {
+      res.json({status: 'bad', message: 'upload failed'});
+    }).pipe(to);
+  });
+});
+
+app.get('/get/:id', function (req, res) {
+  gfs.createReadStream({filename: req.params.id}).pipe(res);
+});
+
+app.get('/logout', function(req,res) {
+  req.logout();
+  res.redirect('/');
+});
+
+app.get('/liveRooms', function response(req, res) {
+
+  let activeRooms = [];
+  for (let roomname in io.sockets.adapter.rooms ) {
+    if ( roomname.indexOf('AAA') === -1 ) {
+      activeRooms.push(roomname);
+    }
+  }
+
+  res.json({status: 'ok', rooms: activeRooms});
+});
 
 const reactRoutes = [{path: '/abc', auth: true}, {path: '/tryLogin', auth: false}];
 
@@ -139,10 +190,26 @@ app.use(function(err, req, res, next) {
   res.status(404).sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+io.on('connection', function (socket) {
+
+  socket.on('event2server', function(data) {
+    socket.to(data.room).emit('event', {data : data});
+  });
+
+  socket.on('room', function(data){
+    if(data.leaveRoom) {
+      socket.leave(data.leaveRoom);
+    }
+    socket.join(data.joinRoom);
+  });  
+});
+
 server.listen(port, '0.0.0.0', function onStart(err) {
   if (err) {
     console.log(err);
   }
   console.info('Listening on port %s.', port);
 });
-

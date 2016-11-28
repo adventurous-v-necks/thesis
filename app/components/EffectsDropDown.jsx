@@ -24,39 +24,45 @@ class EffectsDropDown extends React.Component {
       fontSize: '2em',
       height: '100%',
       padding: '.05em .1em 0 .1em',
-      border: '1px solid blue',
       display: 'block',
       height: 'auto',
+      marginTop: '-0.35em',
     };
-    const dropDownBorder = {
-      border: '1px solid green',
-    };
-    const listBorder = {
-      height: 'auto',
-      border: '1px solid orange',
+    let listDropDownStyle = {
+      maxHeight: '0px',
+      paddingRight: '0.5em',
+      paddingLeft: '0.5em',
+      backgroundColor: '#333',
+      borderRadius: '2px',
+      transition: 'all 0.3s ease',
     }
     const listItemStyle = {
       display: 'block',
       height: 'auto',
+      color: '#efefef',
+      cursor: 'pointer',
     }
 
-    let DropDownItems;
+    let DropDownItems = '';
     let ButtonDisplay;
-    let customEffects = this.props.customEffects;
+
     if (this.props.effectsMenuActive) {
       ButtonDisplay = 'fa fa-minus-square-o';
-      DropDownItems = customEffects.map((customEffect) => {
-        return <li key={customEffects.indexOf(customEffect)} value={customEffect} style={listItemStyle} onClick={this.addEffectToRack}>{customEffect}</li>
+
+      listDropDownStyle.maxHeight = '8em';
+      DropDownItems = this.props.customEffects.map((effect) => {
+        let effectName = effect.name;
+        return <li key={this.props.customEffects.indexOf(effect)} value={effectName} style={listItemStyle} onClick={this.addEffectToRack}>{effectName}</li>
       });
     } else {
       ButtonDisplay = 'fa fa-plus-square-o';
-      DropDownItems = '';
+      listDropDownStyle.maxHeight = '0px';
     }
 
     return (
-      <div className="effectsDropDown" style={dropDownBorder}>
+      <div className="effectsDropDown" style={{position: 'absolute', right: '0'}}>
           <i className={ButtonDisplay} aria-hidden="true" style={style} onClick={this.toggleMenu}></i>
-          <ul style={listBorder}>{DropDownItems}</ul>
+          <ul style={listDropDownStyle}>{DropDownItems}</ul>
       </div>
     );
   }

@@ -35,26 +35,58 @@ class Knob extends React.Component {
     transform = Math.max(-100, transform);
     transform = Math.min(100, transform);
     style.transform = 'rotate('+transform+'deg)';
+    let displayValue = myValue
+    if (this.props.id === 9 || this.props.id === 10) { 
+      displayValue = Math.round((displayValue - 127.5) * (200/255));
+    }
+
+
+    const labelFunc = (label) => {
+      const spanStyle = {
+        position: 'relative',
+        height: '50%',
+        fontSize: '90%',
+        bottom: '1.5em',
+        textAlign: 'center',
+        backgroundColor: '#efefef',
+        textTransform: 'uppercase',
+        left: '0em',
+        paddingLeft: '0.5em',
+        paddingRight: '0.5em',
+        marginRight: 'auto',
+        marginLeft: 'auto',
+      }
+      if (label) {
+        return (
+          <span style={spanStyle}>{label}</span>
+        );
+      } else {
+        return;
+      }
+    }
+
+    
 
     return (
-      <div title={this.props.title} onMouseDown={this.handleMouseDown.bind(this)} style={{cursor: 'crosshair', userSelect:'none', height:'auto'}}>
-
-      <div className="samplerVol">
-        <span className="knob-text">{myValue}</span>
-        <svg viewBox="-6 -6 12 12" className="dial">
-          <defs>
-          </defs>
-      <g  style={style}  className="knob">
-          <g className="knob_gfx" >
-            <circle cx="0" cy="0" r="5"/>
-              <line x1="0" y1="-1.5" x2="0" y2="-4.4"/>
-          </g>
-          <text className="knob_number"/>
-      </g>
-      </svg>
+      <div title={this.props.title} onMouseDown={this.handleMouseDown.bind(this)}
+        style={{cursor: 'crosshair', userSelect:'none', height:'auto'}}>
+        <div className="samplerVol">
+          <span className="knob-text">{displayValue}</span>
+          <div className="dialANDlabel"style={{align: 'center'}}>
+            <svg viewBox="-6 -6 12 12" className="dial">
+              <g  style={style}  className="knob">
+                <g className="knob_gfx" >
+                  <circle cx="0" cy="0" r="5"/>
+                    <line x1="0" y1="-0.6" x2="0" y2="-4.4"/>
+                </g>
+              <text className="knob_number"/>
+              </g>
+            </svg>
+            {labelFunc(this.props.label)}
+          </div>
+        </div>
       </div>
-      </div>
-      );
+    );
 }
 }
 

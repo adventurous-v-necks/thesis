@@ -2,10 +2,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import styles from '../App.scss';
 
-// NOTE: for historical reasons this is the login form but is called 'existingLogin'
-// whereas the signup form is called loginForm. idk
-
-class existingLogin extends React.Component {
+class loginForm extends React.Component {
 
   static contextTypes = {
     router: React.PropTypes.object
@@ -23,18 +20,19 @@ class existingLogin extends React.Component {
     let theHeaders = new Headers({ "Content-Type":"application/json" });
     let stringyForm = JSON.stringify({
       username: e.target.username.value,
+      email: e.target.email.value,
       password: e.target.password.value});
     this.setState({submitted: true});
-    fetch('/login', {credentials:'include',method:'POST', headers: theHeaders, body: stringyForm}).then(resp => {
+    fetch('/signup', {method:'POST', headers: theHeaders, body: stringyForm}).then(resp => {
       resp.json().then(r => {
         if (r.status === 'ok') {
           window.localStorage.setItem('com.rejuicy.user',JSON.stringify({
             username: r.username
           }));
           this.props.dispatch({type:'USER_LOGIN'});
-          this.context.router.replace('/player');
+          this.context.router.push('/player');
         } else {
-          alert('Sign in failed!');
+          alert('Sign up failed!');
           this.setState({submitted: false});
         }
       });
@@ -53,13 +51,19 @@ class existingLogin extends React.Component {
     else {
       return (
         <div style={{padding: '0em 3em', height:'10em'}}>
-          <h1 style={{height: '1em', display:'block', marginLeft:'auto', marginRight:'auto', width:'15em', marginTop:'4em'}}>Sign in to your ReJuicy account</h1>
-          <br/><p style={{height:'auto'}}>Welcome back, n00b</p><br/>
+          <h1 style={{height: '1em', display:'block', marginLeft:'auto', marginRight:'auto', width:'15em', marginTop:'4em'}}>Signup for an account at ReJuicy</h1>
+          <br/><p style={{height:'auto'}}>Signing up has many benefits, it's just awesome.</p><br/>
           <form onSubmit={this.handleSubmit.bind(this)} style={{padding:'2em 2em', lineHeight:'2em', height:'14em',overflow:'hidden',border:'1px solid black'}}>
             <div style={{height:'auto', display:'inline-block'}}>
               <label style={{paddingRight:'1em'}}>Username</label>
               <div style={{height:'auto'}}>
                 <input name="username" type="text" placeholder="Username" style={{borderBottom:'1px solid black'}}/>
+              </div>
+            </div><br/>
+            <div style={{height:'1em', display:'inline-block'}}>
+              <label style={{paddingRight:'1em'}}>Email</label>
+              <div style={{height:'auto'}}>
+                <input name="email" type="email" placeholder="Email Address" style={{borderBottom:'1px solid black'}}/>
               </div>
             </div><br/>
             <div style={{height:'auto'}}>
@@ -83,4 +87,4 @@ const mapStateToProps = function(state) {
   return {};
 }
 
-export default connect(mapStateToProps)(existingLogin);
+export default connect(mapStateToProps)(loginForm);

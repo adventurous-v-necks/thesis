@@ -28,6 +28,8 @@ html {
 body {
   width: 100%;
   background-color: #efefef;
+  height: auto;
+  min-height: 100%;
 }
 nav {
   width: 100%;
@@ -41,7 +43,7 @@ nav {
 nav > ul {
   width: 100%;
 }
-nav > ul > li {
+nav > ul > span > li {
   float: right;
 }
 .menu-item {
@@ -57,7 +59,10 @@ nav > ul > li {
 .menu-item:hover {
   background-color: rgba(130,11,44,0.8);
 }
-nav > ul > li > a {
+nav > ul > span {
+  float: right;
+}
+nav li > a {
   color: white;
   position: relative;
   line-height: 2.2em;
@@ -613,10 +618,14 @@ input[type=range]:focus::-ms-fill-upper {
 .knob-text {
   float: left;
   position: absolute;
-  top: 18%;
-  left: 18%;
+  top: 24%;
+  left: 28%;
   user-select: none;
-  color: rgba(0,0,0,0.4);
+  color: rgba(0,0,0,0.3);
+  float: none;
+  text-align: center;
+  font-size: 1.4em;
+  width:2em;
   height: auto;
 }
 .samplerSpan {
@@ -636,7 +645,7 @@ svg.dial {
 }
 .dial .knob line {
   stroke: black;
-  stroke-width: 0.5px;
+  stroke-width: 0.6px;
   stroke-linecap: round;
 }
 .dial .knob_number {
