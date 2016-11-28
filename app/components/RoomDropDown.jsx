@@ -28,23 +28,11 @@ class RoomDropDown extends React.Component {
     this.props.dispatch({type: 'NAVIGATE_ROOM', room: roomname});
   }
 
-  // <select name="midi-select" style={midiDropdownStyle} onChange={this.newMidi.bind(this)}>
-  //               {this.props.midiDevices.map((dev,i) => (
-  //                 <option key={dev} value={i}>{dev}</option>
-  //               ))}
-  //             </select>
 
-  // let midiDropdownStyle = {
-  //   color: 'white',
-  //   left: '5em',
-  //   position: 'relative',
-  //   padding: '0 1em',
-  //   border: '1px solid white',
-  //   height: '2em',
-  //   top: '1.5em',
-  // };
 
   render() {
+
+    // console.log('active rooms: ', this.props.activeRooms);
 
     let dropDownStyle = {
       maxHeight: '0px',
@@ -54,6 +42,16 @@ class RoomDropDown extends React.Component {
       borderRadius: '2px',
       transition: 'all 0.3s ease',
     }
+    let roomDropdownStyle = {
+      color: 'white',
+      left: '5em',
+      position: 'relative',
+      padding: '0 1em',
+      border: '1px solid white',
+      height: '2em',
+      top: '1.5em',
+    };
+    
     const style = {
       height: '100%',
       display: 'block',
@@ -68,30 +66,42 @@ class RoomDropDown extends React.Component {
       cursor: 'pointer',
     }
 
-    let ActiveRooms = '';
+    // let ActiveRooms = '';
 
-    if (this.props.roomsMenuActive) {
-      dropDownStyle.maxHeight = '8em';
-      ActiveRooms = this.props.activeRooms.map((roomname) => {
-        return <li key={this.props.activeRooms.indexOf(roomname)} value={roomname} style={listItemStyle} onClick={this.goToSelectedRoom}>{roomname}</li>
-      });
-    } else {
-      dropDownStyle.maxHeight = '0px';
-    }
+    // if (this.props.roomsMenuActive) {
+    //   dropDownStyle.maxHeight = '8em';
+    //   ActiveRooms = this.props.activeRooms.map((roomname) => {
+    //     return <li key={this.props.activeRooms.indexOf(roomname)} value={roomname} style={listItemStyle} onClick={this.goToSelectedRoom}>{roomname}</li>
+    //   });
+    // } else {
+    //   dropDownStyle.maxHeight = '0px';
+    // }
+
+    // let allActiveRooms = this.props.activeRooms;
+    let allActiveRooms = this.props.activeRooms.filter(roomname => roomname !== this.props.currentRoom);
+    allActiveRooms.unshift(this.props.currentRoom);
+    
+    console.log('allActiveRooms: ', allActiveRooms);
 
     return (
       <div className="roomDropDown">
-        <i className="joinRoom" aria-hidden="true" style={style} onClick={this.toggleMenu}>Rooms</i>
-        <ul style={dropDownStyle}>{ActiveRooms}</ul>
+        <select name="room-select" style={roomDropdownStyle} onChange={this.goToSelectedRoom}>
+          {allActiveRooms.map((roomname) => (
+            <option key={allActiveRooms.indexOf(roomname)} value={roomname}>{roomname}</option>
+          ))}
+        </select>
       </div>
     );
   }
 }
+        // <i className="joinRoom" aria-hidden="true" style={style} onClick={this.toggleMenu}>Rooms</i>
+        // <ul style={dropDownStyle}>{ActiveRooms}</ul>
 
 const mapStateToProps = function(state) {
   return {
     activeRooms: state.activeRooms,
     roomsMenuActive: state.roomsMenuActive,
+    currentRoom: state.currentRoom,
   };
 }
 
