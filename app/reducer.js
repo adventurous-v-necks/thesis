@@ -97,10 +97,10 @@ export default function reduce(state, action) {
       knobs[20+] are reserved for effects
       */
       knobs: [
-        100, 100, 100, 100, 100, 
-        100, 100, 100, 100, 127, 
-        127, 100, 100, 100, 100, 
-        100, 100, 100, 100, 100, 
+        100, 100, 100, 100, 100,
+        100, 100, 100, 100, 127,
+        127, 100, 100, 100, 100,
+        100, 100, 100, 100, 100,
         100, 100
       ],
       timeZero: 0,
@@ -403,7 +403,7 @@ export default function reduce(state, action) {
         temp2[action.id] = action.value;
         if (action.id === 7 || action.id === 8) {         // Oscillator Volume
           state.oscGainNodes[action.id - 7].gain.value = action.value / 100;
-        } 
+        }
       }
       if (action.id >= 13 && action.id <= 20) { // reserved for additional features
       }
