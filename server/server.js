@@ -141,6 +141,22 @@ app.get('/liveRooms', function response(req, res) {
   res.json({status: 'ok', rooms: activeRooms});
 });
 
+app.get('/savedSets', function(req,res) {
+  User.findOne({ username: req.user.username }, function (err, user) {
+    if (err) { return res.json({status: 'bad', message: 'You appear to not be logged in.'}); }
+    return res.json({sets: user.sets});
+  });
+});
+
+app.post('/saveState', function(req, res) {
+  User.findOne({ username: req.user.username }, function (err, user) {
+    if (err) { return res.json({status: 'bad', message: 'You appear to not be logged in.'}); }
+    user.sets.push(req.body);
+    user.save();
+    return res.json({status: 'ok', message: 'Saved the set'});
+  });
+});
+
 const reactRoutes = [{path: '/abc', auth: true}, {path: '/tryLogin', auth: false}];
 
 if (isDeveloping) {
@@ -204,7 +220,7 @@ io.on('connection', function (socket) {
       socket.leave(data.leaveRoom);
     }
     socket.join(data.joinRoom);
-  });  
+  });
 });
 
 server.listen(port, '0.0.0.0', function onStart(err) {

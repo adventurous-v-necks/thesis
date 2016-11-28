@@ -56,8 +56,8 @@ class App extends React.Component {
   }
   newMidi(e) {
     if (e.target.value != -1) {
-      let name = e.target.children[e.target.value].innerText;
-      this.props.dispatch({type:'CHANGE_MIDI', device: e.target.value, name});
+      let name = e.target.children[Number(e.target.value)+1].innerText;//plus one cos of dummy entry at top
+      this.props.dispatch({type:'CHANGE_MIDI', device: Number(e.target.value), name: name});
     }
   }
   render() {

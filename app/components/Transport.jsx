@@ -8,14 +8,50 @@ import Knob from './Knob.jsx';
 
 import {connect} from 'react-redux';
 
+import {store} from '../main.js';
+
 class Transport extends React.Component {
   constructor(props) {
     super(props);
   }
   componentDidMount() {
+    fetch('/savedSets', {credentials: 'include'}).then(resp => resp.json()).then(sets => {
+      this.props.dispatch({type:'GOT_SAVED_SETS', sets: sets});
+    });
   }
   syncToggle() {
     this.props.dispatch({type:'SYNC_TOGGLE'});
+  }
+  setList(e) {
+    // TODO: We're loading all the sets at once -- load names only, then load set when user clicks on it
+    let set = this.props.sets[e.target.value];
+    this.props.dispatch({type:'LOAD_SET', set: set.state});
+  }
+  saveSet() {
+    let state = Object.assign({}, store.getState());
+    delete state.audioContext;
+    delete state.currentRoom;
+    delete state.lastPlayed;
+    delete state.loggedIn;
+    delete state.markerTime;
+    delete state.masterOut; delete state.customEffects;
+    delete state.midi; delete state.activeRooms;
+    delete state.effectsMenuActive; delete state.midiOutput;
+    delete state.nodes; delete state.oscGainNodes;
+    delete state.midiDevices;
+    delete state.pitchShiftNode;
+    delete state.playing; delete state.recording;
+    delete state.sampleBuffers; delete state.savedSets;
+    delete state.socket; delete state.synthGainNode;
+    delete state.user;
+    state.name = new Date().toLocaleString();
+    let theHeaders = new Headers({ "Content-Type":"application/json" });
+    let stringyState = JSON.stringify({state: state});
+    fetch('/saveState', {credentials:'include',method:'POST', headers: theHeaders, body: stringyState}).then(resp => {
+      resp.json().then(r => {
+        console.log(r);
+      });
+    });
   }
 
   render() {
@@ -35,7 +71,24 @@ class Transport extends React.Component {
       position: 'relative',
       top: '-0.72em',
     };
-
+    let setDropdownStyle = {
+      color: 'black',
+      left: '5em',
+      position: 'relative',
+      padding: '0 1em',
+      border: '1px solid black',
+      height: '2em',
+      top: '50%',
+      transform: 'translateY(-50%)',
+    };
+    let cloudStyle = {
+      position: 'relative',
+      left: '2em',
+      fontSize: '2em',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      float: 'left',
+    };
     return (
       <span style={{display:'inline-block', height:'auto', width:'100%', marginTop:'0.2em'}}>
         <div className="transportContainer">
@@ -44,6 +97,14 @@ class Transport extends React.Component {
           <span style={syncStyle} onClick={this.syncToggle.bind(this)}>SYNC</span>
           <Marker />
           <Controls />
+          <div>
+            <i onClick={this.saveSet.bind(this)} style={cloudStyle} title="Save current set" className="fa fa-cloud-upload"></i>
+            <select name="set-select" style={setDropdownStyle} onChange={this.setList.bind(this)}>
+            <option value="-1">Load a Saved Set</option>
+            {this.props.sets.map((set,i) => (
+              <option key={'set'+i} value={i}>{set.state.name}</option>
+            ))}
+          </select></div>
           <span style={volumeSizing}>
             <Knob id="0" title="Adjust Volume" label='Master'/>
           </span>
@@ -57,7 +118,8 @@ class Transport extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    syncOn : state.syncOn
+    syncOn : state.syncOn,
+    sets: state.savedSets,
   };
 }
 

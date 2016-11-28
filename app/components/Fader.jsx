@@ -31,7 +31,7 @@ class Fader extends React.Component {
     }
 
     return (
-      <div className="fader" style={{height:'auto',position:'relative',top:'50%', cursor:'crosshair'}}>
+      <div className="fader" style={{height:'auto',position:'relative', top: this.props.noNeedToCenter ? 'initial' : '50%', cursor:'crosshair'}}>
         <input type="range" id={this.props.id} style={style} onChange={this.report.bind(this)}></input>
         <span style={labelStyle}>{this.props.id}</span>
       </div>
