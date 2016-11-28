@@ -134,8 +134,8 @@ export default function reduce(state, action) {
       activeEffects: [],
       syncOn: true,
       lastPlayed: 0, // time (audio time) the last sample was played
-      activeRooms: [],
-      currentRoom: '',
+      activeRooms: ['hans', 'aleks', 'tom'], // change back to [],
+      currentRoom: 'clark', //change back to '',
       roomsMenuActive: false,
       midi: null, // the midi object as a whole, if we got one
       midiDevices: [],
