@@ -149,6 +149,12 @@ app.post('/signup', function (req, res) {
   });
 });
 
+app.get('/auth/facebook', passport.authenticate('facebook', {scope: ['email', 'public_profile']}));
+
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { successRedirect: '/player',
+    failureRedirect: '/login' }));
+
 app.post('/upload', function (req, res) {
   let to = gfs.createWriteStream({filename: req.user.username+'___'+req.files.file.name});
   to.on('error',(e)=>console.log(e));
