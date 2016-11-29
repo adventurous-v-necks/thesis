@@ -8,6 +8,8 @@ const config = require('../webpack.config.js');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
+
 const User = require('../models/User.js');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
