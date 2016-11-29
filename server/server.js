@@ -145,7 +145,10 @@ app.post('/signup', function (req, res) {
   var newuser = new User({username:req.body.username, email: req.body.email});
   newuser.password = newuser.generateHash(req.body.password);
   newuser.save(function(err,data) {
-    res.json({status: 'ok', message: 'Successfully created user', username: req.body.username});
+    req.login(data, function(error) {
+      if (err) console.log(error); else 
+      res.json({status: 'ok', message: 'Successfully created user', username: req.body.username});
+    });
   });
 });
 
@@ -282,7 +285,7 @@ io.on('connection', function (socket) {
     // Purposely using both 'broadcast.emit' and 'emit'
     socket.broadcast.emit('roomJoin', {room: data.joinRoom});
     socket.emit('roomJoin', {room: data.joinRoom});
-  });  
+  });
 });
 
 server.listen(port, '0.0.0.0', function onStart(err) {
