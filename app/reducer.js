@@ -59,7 +59,6 @@ const fetchRooms = () => {
   fetch('/liveRooms', {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
     resp.json().then(r => {
       if (r.status === 'ok') {
-        console.log('step 6 open sockets fetched: ', r.rooms);
         store.dispatch({type: 'UPDATE_ACTIVE_ROOMS', allActiveRooms: r.rooms})
       } 
     });
@@ -165,11 +164,7 @@ export default function reduce(state, action) {
       state.socket.emit('room', { joinRoom: newUserRoom});
       fetchRooms();
 
-      // let allActiveRooms = state.activeRooms.slice();
-      // allActiveRooms.concat(newUserRoom)
-
       return Object.assign({}, state, {loggedIn: true, currentRoom: newUserRoom});
-      // return Object.assign({}, state, {loggedIn: true, activeRooms: allActiveRooms, currentRoom: newUserRoom});
     }
     case 'USER_LOGOUT': {
       return Object.assign({}, state, {loggedIn: false});
@@ -688,33 +683,13 @@ export default function reduce(state, action) {
       allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
       return Object.assign({}, state, {activeEffects: allActiveEffects});
     }
-    // case 'ROOM_MENU_TOGGLE': {
-    //   return Object.assign({}, state, {roomsMenuActive: !state.roomsMenuActive});
-    // }
     case 'NAVIGATE_ROOM': {
       let room = action.room;
-      // console.log('nav room: joinRoom: ', room);
-      // console.log('nav room: leaveRoom', state.currentRoom);
-      console.log('step 2: nav to room from reducer');
       state.socket.emit('room', { joinRoom: room,  leaveRoom: state.currentRoom});
-
-      // let allActiveRooms = state.activeRooms.slice();
-      // if (allActiveRooms.indexOf(room) === -1) {
-      //   allActiveRooms.push(room);
-      // }
 
       return Object.assign({}, state, {currentRoom: room});
     }
     case 'UPDATE_ACTIVE_ROOMS': {
-      // console.log('step 7 inside update active rooms reducer')
-      // console.log('new room: ', action.newRoom);
-      // console.log('=======', state.activeRooms);
-      // let allActiveRooms = state.activeRooms.slice();
-      // if (allActiveRooms.indexOf(action.newRoom) === -1) {
-      //   allActiveRooms.push(action.newRoom);
-      // }
-      // console.log('allActiveRooms: ', allActiveRooms);
-
       return Object.assign({}, state, {activeRooms: action.allActiveRooms});
     }
     default: {

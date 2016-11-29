@@ -6,30 +6,16 @@ import {connect} from 'react-redux';
 class RoomDropDown extends React.Component {
   constructor(props) {
     super(props);
-    // this.getActiveRooms = this.getActiveRooms.bind(this);
     this.goToSelectedRoom = this.goToSelectedRoom.bind(this);
   }
 
   componentDidMount() {
-    // this.getActiveRooms();
     if (this.props.currentRoom === '') {
       console.log('componentDidMount from roomDropDown');
       let userRoom = JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username;
       this.props.dispatch({type: 'NAVIGATE_ROOM', room: userRoom});
-      // this.props.dispatch({type: 'UPDATE_ACTIVE_ROOMS', addRoom: userRoom});
     }
   }
-
-  // getActiveRooms() {
-    // let theHeaders = new Headers({ "Content-Type": "application/json" });
-    // fetch('/liveRooms', {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
-    //   resp.json().then(r => {
-    //     if (r.status === 'ok') {
-    //       this.props.dispatch({type: 'UPDATE_ACTIVE_ROOMS', activeRooms: r.rooms})
-    //     } 
-    //   });
-    // });
-  // }
 
   goToSelectedRoom(e) {
     if (e.target.value !== 0) {
