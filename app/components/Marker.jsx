@@ -50,7 +50,8 @@ class Marker extends React.Component {
       top: '50%',
       transform: 'translateY(-50%)',
       fontFamily: '"Lucida Console", Monaco, monospace',
-      fontSize: '150%',
+      fontSize: '1.5em',
+      verticalAlign: 'middle',
     };
 
     return (

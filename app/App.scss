@@ -669,12 +669,25 @@ svg.dial {
   user-select: none;
 }
 select:hover {
-  background-color: rgba(0,0,0,0.1);
+  background-color: rgba(172,65,252,0.2);
+}
+select:active {
+  text-shadow: 1px -1px 2px black;
 }
 .controls > i:hover {
   color: #ac41fc;
 }
 .controls > i:active {
+  color: #ac41fc;
+  text-shadow: 1px -1px 2px black;
+}
+.fa-cloud-upload {
+  cursor: pointer;
+}
+.fa-cloud-upload:hover {
+  color: #ac41fc;
+}
+.fa-cloud-upload:active {
   color: #ac41fc;
   text-shadow: 1px -1px 2px black;
 }
