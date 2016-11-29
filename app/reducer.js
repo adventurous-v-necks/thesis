@@ -147,7 +147,6 @@ export default function reduce(state, action) {
       lastPlayed: 0, // time (audio time) the last sample was played
       activeRooms: [],
       currentRoom: '',
-      // roomsMenuActive: false,
       midi: null, // the midi object as a whole, if we got one
       midiDevices: [],
       midiDevice: 0, // an integer selection 0-n from the midi outputs available on midi object
@@ -305,10 +304,6 @@ export default function reduce(state, action) {
       });
 
       socket.on('roomJoin', function(data) {
-        console.log('roomJoin data: ', data)
-        console.log('step 4 roomJoin event emmited and heard in reducer')
-        // console.log('a room was joined');
-        console.log('step 5 current activeRooms: ', state.activeRooms);
         fetchRooms();
       });
 
@@ -504,6 +499,12 @@ export default function reduce(state, action) {
           let whichKnob = effect.knobs.indexOf(action.id);
           if (whichKnob === 0) {
             effect.node.curve = makeDistortionCurve(.5 * action.value);
+          }
+        }
+
+        if (effect.name === 'MOOG') {
+          let whichKnob = effect.knobs.indexOf(action.id);
+          if (whichKnob === 0) {
           }
         }
       }

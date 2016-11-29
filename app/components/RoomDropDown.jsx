@@ -11,7 +11,6 @@ class RoomDropDown extends React.Component {
 
   componentDidMount() {
     if (this.props.currentRoom === '') {
-      console.log('componentDidMount from roomDropDown');
       let userRoom = JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username;
       this.props.dispatch({type: 'NAVIGATE_ROOM', room: userRoom});
     }
@@ -19,7 +18,6 @@ class RoomDropDown extends React.Component {
 
   goToSelectedRoom(e) {
     if (e.target.value !== 0) {
-      console.log('goToSelectedRoom from roomDropDown');
       let roomname = e.target.children[e.target.value].innerText;
       this.props.dispatch({type: 'NAVIGATE_ROOM', room: roomname});
     }
