@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import styles from '../App.scss';
+import FbButton from './FbButton.jsx';
 
 class loginForm extends React.Component {
 
@@ -53,7 +54,8 @@ class loginForm extends React.Component {
         <div style={{padding: '0em 3em', height:'10em'}}>
           <h1 style={{height: '1em', display:'block', marginLeft:'auto', marginRight:'auto', width:'15em', marginTop:'4em'}}>Signup for an account at ReJuicy</h1>
           <br/><p style={{height:'auto'}}>Signing up has many benefits, it's just awesome.</p><br/>
-          <form onSubmit={this.handleSubmit.bind(this)} style={{padding:'2em 2em', lineHeight:'2em', height:'14em',overflow:'hidden',border:'1px solid black'}}>
+          <div style={{padding:'2em 2em', lineHeight:'2em', height:'14em',overflow:'hidden',border:'1px solid black'}}>
+          <form onSubmit={this.handleSubmit.bind(this)}>
             <div style={{height:'auto', display:'inline-block'}}>
               <label style={{paddingRight:'1em'}}>Username</label>
               <div style={{height:'auto'}}>
@@ -76,6 +78,8 @@ class loginForm extends React.Component {
               <button type="submit">Submit</button>
             </div>
           </form>
+          <FbButton />
+          </div>
         </div>
       )
     }
