@@ -63,8 +63,8 @@ class existingLogin extends React.Component {
           <h1 style={{height: '1em', display:'block', marginLeft:'auto', marginRight:'auto', width:'15em', marginTop:'4em'}}>Sign in to your ReJuicy account</h1>
           <br/><p style={{height:'5em'}}>Welcome back, n00b</p><br/>
           <div style={{border:'1px solid black'}}>
-          <form >
-            <div style={{height:'2em', width:'250px', display:'inline-block'}}>
+          <form style={{paddingTop:'2em'}}>
+            <div style={{height:'3em', width:'250px', display:'inline-block'}}>
               <label style={{paddingRight:'1em'}}>Username</label>
               <div style={{height:'auto'}}>
                 <input name="username" type="text" placeholder="Username" style={{borderBottom:'1px solid black'}}/>
@@ -80,7 +80,7 @@ class existingLogin extends React.Component {
               <button type="click" onClick={this.handleSubmit.bind(this)}>Submit</button>
             </div>
           </form>
-            <FbButton style={{float: 'left'}}/>
+            <FbButton style={{paddingTop:'3em'}}/>
             </div>
         </div>
       )
