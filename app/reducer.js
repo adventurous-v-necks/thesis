@@ -170,15 +170,10 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {savedSets: action.sets.sets});
     }
     case 'LOAD_SET': {
-      console.log(action.set);
       let set = action.set;
       for (let fader of Object.keys(set.faders)) {
-        console.log(fader, set.faders[fader]);
         document.getElementById(fader).value = Number(set.faders[fader]);
       }
-      // for (let sample of set.samples) {
-      //   console.log(sample);
-      // }
       return Object.assign({}, state, {
         BPM: set.BPM,
         activeEffects: set.activeEffects,
@@ -303,6 +298,29 @@ export default function reduce(state, action) {
 
       socket.on('roomJoin', function(data) {
         fetchRooms();
+      });
+
+      socket.on('get_state', function(data) {
+        let myState = Object.assign({}, store.getState());
+        delete myState.audioContext;
+        delete myState.currentRoom;
+        delete myState.lastPlayed;
+        delete myState.loggedIn;
+        delete myState.markerTime;
+        delete myState.masterOut; delete myState.customEffects;
+        delete myState.midi; delete myState.activeRooms;
+        delete myState.effectsMenuActive; delete myState.midiOutput;
+        delete myState.nodes; delete myState.oscGainNodes;
+        delete myState.midiDevices;
+        delete myState.pitchShiftNode;
+        delete myState.playing; delete myState.recording;
+        delete myState.sampleBuffers; delete myState.savedSets;
+        delete myState.socket; delete myState.synthGainNode;
+        delete myState.user;
+        myState.name = new Date().toLocaleString();
+        let theHeaders = new Headers({ "Content-Type":"application/json" });
+        let stringyState = JSON.stringify({state: myState});
+        socket.emit('my_state', { set: stringyState, room: JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username });
       });
 
       let audioCtx = new AudioContext();

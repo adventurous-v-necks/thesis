@@ -19,13 +19,20 @@ class RoomDropDown extends React.Component {
   goToSelectedRoom(e) {
     if (e.target.value !== 0) {
       let roomname = e.target.children[e.target.value].innerText;
-      this.props.dispatch({type: 'NAVIGATE_ROOM', room: roomname});
+      fetch('/getState/'+roomname, {credentials:'include'}).then(r => r.json()).then((s) => {
+        if (s.status==='ok') {
+          this.props.dispatch({type: 'LOAD_SET', set: JSON.parse(s.set).state});
+          this.props.dispatch({type: 'NAVIGATE_ROOM', room: roomname});
+        } else {
+          alert('Sorry, that set seems to be unavailable right now.');
+        }
+      });
     }
   }
 
   render() {
 
-    let roomContainer = {      
+    let roomContainer = {
       position: 'relative',
       top: '1.08em',
     }
