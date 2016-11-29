@@ -76,6 +76,50 @@ passport.use(new LocalStrategy(function(username, password, done) {
   });
 }));
 
+passport.use('facebook', new FacebookStrategy({
+  clientID: '1822673674615107',
+  clientSecret: '4f037d41a9acf46a01efc0f575dc1934',
+  callbackURL: 'http://localhost:3000/auth/facebook/callback',
+  profileFields: ['id', 'emails', 'name']
+},
+  function(accessToken, refreshToken, profile, done) {
+    process.nextTick(function() {
+
+        User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+
+          if (err)
+              return done(err);
+
+          if (user) {
+            currentUser = user;
+            io.sockets.emit('userLogin', {data: user})
+              return done(null, user); // user found, return that user
+          } 
+          else {
+
+            var newUser            = new User();
+            newUser.local.username = profile.name.givenName + ' ' + profile.name.familyName;
+            newUser.local.email = profile.emails[0].value
+            newUser.local.password    = profile.id;                
+            newUser.local.session = accessToken; 
+            
+            currentUser =   newUser;
+            io.sockets.emit('userLogin', {data: newUser})
+            
+            newUser.save(function(err, success) {
+              if (err)
+                console.error(err);
+
+              return done(null, newUser);
+            });
+          }
+
+        });
+    });
+  })
+)
+
+
 app.use(express.static('public'));
 
 let fileUpload = require('express-fileupload');
