@@ -50,6 +50,32 @@ nav > ul {
 nav > ul > span > li {
   float: right;
 }
+@media only screen
+and (max-width : 800px) {
+  nav > ul > span > li {
+    font-size: 0.5em;
+    line-height: 7em;
+  }
+}
+@media only screen
+and (max-width : 900px) {
+  .saver {
+    top: 2em;
+    left: -3em;
+    position: relative;
+  }
+}
+
+@media only screen
+and (max-width : 1200px) {
+  .marker {
+    width: 6em !important;
+  }
+  .timeSig {
+    width: 4em !important;
+  }
+}
+
 .menu-item {
   background-color: rgba(11,11,11,0.8);
   border-radius: 2px;
