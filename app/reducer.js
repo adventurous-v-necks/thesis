@@ -221,6 +221,8 @@ export default function reduce(state, action) {
       // TODO: optimize this -- use a hash table instead of an array
       // TODO: this is not working polyphonically - try pressing 2 keys at once
       let newNodes = [];
+      let tempPerf = [...state.performance];
+
       for (let i = 0; i < state.nodes.length; i++) {
         if (Math.round(state.nodes[i].frequency.value) === Math.round(action.frequency)) {
           state.nodes[i].stop(0);
@@ -229,33 +231,35 @@ export default function reduce(state, action) {
           newNodes.push(nodes[i]);
         }
       }
-      let temp = Object.assign([], state.performance);
+
       if (!action.synthetic) {
         state.socket.emit('event2server', { action: action, room: state.currentRoom });
-        temp.push({action: action, timestamp: state.audioContext.currentTime});
+        tempPerf.push({action: action, timestamp: state.audioContext.currentTime});
       }
-      return Object.assign({}, state, {nodes: newNodes, performance: temp});
+
+      return { ...state, nodes: newNodes, performance: tempPerf };
     }
     case 'KEY_DOWN': {
-      let temp = Object.assign([], state.nodes);
-      let temp2 = Object.assign([], state.performance);
+      let tempNodes = [...state.nodes];
+      let tempPerf = [...state.performance];
+
       for (let i = 0; i < 2; i++) {
         let oscillator = state.audioContext.createOscillator();
-        oscillator.type = state.oscwaves[i + 1]; //TODO: only works for one synth sound right now
+        oscillator.type = state.oscwaves[i + 1];
         oscillator.frequency.value = action.frequency;
-        // oscillator.detune.value = state.oscdetune[i + 1];
         oscillator.detune.value = (state.knobs[i + 9] - 127.5) * (200 / 255);
 
         oscillator.connect(state.oscGainNodes[i]);
         oscillator.start(0);
-        temp.push(oscillator);
+        tempNodes.push(oscillator);
+
         if (!action.synthetic) {
           state.socket.emit('event2server', { action: action, room: state.currentRoom });
-          temp2.push({action: action, timestamp: state.audioContext.currentTime});
+          tempPerf.push({action: action, timestamp: state.audioContext.currentTime});
         }
       }
 
-      return Object.assign({}, state, {nodes: temp, performance: temp2});
+      return { ...state, nodes: tempNodes, performance: tempPerf };
     }
     case 'MIDI_OK': {
       let devices = [];
