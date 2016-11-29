@@ -32,6 +32,8 @@ if (isDeveloping) {
 let gfs = new Grid(conn.db);
 var db = mongoose.connection;
 
+let states = {}; // for storing the states of different rooms (users) when received via websocket
+
 db.on('error',console.error);
 
 var gracefulExit = function() {
@@ -146,7 +148,7 @@ app.post('/signup', function (req, res) {
   newuser.password = newuser.generateHash(req.body.password);
   newuser.save(function(err,data) {
     req.login(data, function(error) {
-      if (err) console.log(error); else 
+      if (err) console.log(error); else
       res.json({status: 'ok', message: 'Successfully created user', username: req.body.username});
     });
   });
@@ -201,6 +203,24 @@ app.get('/savedSets', function(req,res) {
     if (err) { return res.json({status: 'bad', message: 'You appear to not be logged in.'}); }
     return res.json({sets: user.sets});
   });
+});
+
+app.get('/getState/:room', function(req, res) {
+  io.to(req.params.room).emit('get_state');
+  let called = {calls: 0};
+  let interval = setInterval((called) => {
+    if (states[req.params.room]) {
+      clearInterval(interval);
+      res.json({status:'ok', set: states[req.params.room]});
+      console.log(states[req.params.room]);
+      delete states[req.params.room];
+    }
+    called.calls += 1;
+    if (called.calls > 20) {
+      clearInterval(interval);
+      res.json({status:'bad', message:'Room did not respond within time limit'});
+    }
+  }, 100, called);
 });
 
 app.post('/saveState', function(req, res) {
@@ -286,6 +306,11 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('roomJoin', {room: data.joinRoom});
     socket.emit('roomJoin', {room: data.joinRoom});
   });
+
+  socket.on('my_state', function(data) {
+    states[data.room] = data.set;
+  });
+
 });
 
 server.listen(port, '0.0.0.0', function onStart(err) {
