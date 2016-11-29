@@ -98,10 +98,10 @@ passport.use('facebook', new FacebookStrategy({
           else {
 
             var newUser            = new User();
-            newUser.local.username = profile.name.givenName + ' ' + profile.name.familyName;
-            newUser.local.email = profile.emails[0].value
-            newUser.local.password    = profile.id;                
-            newUser.local.session = accessToken; 
+            newUser.username = profile.name.givenName + ' ' + profile.name.familyName;
+            newUser.email = profile.emails[0].value
+            newUser.password    = profile.id;                
+            newUser.session = accessToken; 
             
             currentUser =   newUser;
             io.sockets.emit('userLogin', {data: newUser})
