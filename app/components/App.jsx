@@ -49,6 +49,7 @@ class App extends React.Component {
       </span>
       ) : (
       <span>
+      <li className="menu-item" ><Link href={'/auth/facebook'}>facebook login</Link></li>
       <li className="menu-item"><Link to="/signup">Sign Up</Link></li>
       <li className="menu-item"><Link to="/signin">Sign In</Link></li>
       </span>
