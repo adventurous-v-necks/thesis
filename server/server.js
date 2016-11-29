@@ -85,7 +85,7 @@ passport.use('facebook', new FacebookStrategy({
   function(accessToken, refreshToken, profile, done) {
     process.nextTick(function() {
 
-        User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+        User.findOne({ 'local.id' : profile.id }, function(err, user) {
 
           if (err)
               return done(err);
@@ -260,6 +260,10 @@ io.on('connection', function (socket) {
   socket.on('event2server', function(data) {
     socket.to(data.room).emit('event', {data : data});
   });
+
+  socket.on('playerLoading', function () {
+    socket.emit('userLogin', {data: currentUser})
+  })
 
   socket.on('room', function(data){
     if(data.leaveRoom) {
