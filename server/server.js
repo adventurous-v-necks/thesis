@@ -277,7 +277,7 @@ io.on('connection', function (socket) {
     }
     socket.join(data.joinRoom);
 
-    // Purposely using 'broadcast.emit' and 'emit'
+    // Purposely using both 'broadcast.emit' and 'emit'
     socket.broadcast.emit('roomJoin', {room: data.joinRoom});
     socket.emit('roomJoin', {room: data.joinRoom});
   });  
