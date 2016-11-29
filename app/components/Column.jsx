@@ -24,7 +24,7 @@ class Column extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    samples: state.samples
+    samples: state.state.samples
   };
 }
 

@@ -84,7 +84,7 @@ class Oscillator extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    oscwaves: state.oscwaves,
+    oscwaves: state.state.oscwaves,
   };
 }
 

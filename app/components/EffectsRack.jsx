@@ -46,7 +46,7 @@ class EffectsRack extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    activeEffects: state.activeEffects,
+    activeEffects: state.state.activeEffects,
   };
 }
 

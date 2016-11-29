@@ -120,8 +120,8 @@ class Transport extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    syncOn : state.syncOn,
-    sets: state.savedSets,
+    syncOn : state.state.syncOn,
+    sets: state.state.savedSets,
   };
 }
 

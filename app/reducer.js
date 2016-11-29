@@ -1,8 +1,3 @@
-// "maybe just add a line of whitespace"
-
-let events = 0;
-let playTime = 0;
-
 // set up our samples grid - 5x5 boxes
 let COLUMNS = 5;
 let SAMPLES_PER_COLUMN = 5;
@@ -17,20 +12,9 @@ import {store} from './main.js';
 // DEPLOY: comment the following line out to deploy
 import IO from 'socket.io-client';
 
-const sched = function() {
-  let state = store.getState();
-  let nextEvent = state.performance[events];
-  if (!nextEvent) { return; }
-  window.requestAnimationFrame(sched);
-  let when = Math.abs(nextEvent.timestamp - state.recordStartTime);
-  let delta = playTime + when;
-  store.dispatch({type: 'MARKER_UPDATE'});
-  if (state.audioContext.currentTime - delta >= 0) {
-    // trigger the event
-    store.dispatch(Object.assign(nextEvent.action, {synthetic: true}));
-    events++;
-  }
-};
+import {incEvents} from './scheduler.js';
+import {sched} from './scheduler.js';
+import {setPlayTime} from './scheduler.js';
 
 const sampleUrls = [
   '/samples/100bpm_Hamir_Bass_1.wav.mp3',
@@ -452,8 +436,8 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {samples: temp});
     }
     case 'PLAY': {
-      events = 0;
-      playTime = state.audioContext.currentTime;
+      incEvents();
+      setPlayTime(state.audioContext.currentTime);
       window.requestAnimationFrame(sched);
       return Object.assign({}, state, {
         recording: false,

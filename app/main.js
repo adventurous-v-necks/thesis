@@ -9,12 +9,13 @@ import FourOhFour from './components/FourOhFour.jsx';
 import LoginForm from './components/LoginForm.jsx';
 import Landing from './components/Landing.jsx';
 import SignUp from './components/SignUp.jsx';
-import reducer from './reducer.js';
+import {rootReducer} from './reducers/index.js';
 import Sampler from './components/Sampler.jsx';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
-export const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+export const store = createStore(rootReducer);
+console.log(store.getState());
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 // note that when you add a top level route here e.g. / or abc, need to make corresponding changes in server/server.js

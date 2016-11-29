@@ -33,7 +33,7 @@ class Sampler extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    columns: state.numColumns
+    columns: state.state.numColumns
   };
 }
 

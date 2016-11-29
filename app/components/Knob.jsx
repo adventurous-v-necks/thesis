@@ -36,7 +36,7 @@ class Knob extends React.Component {
     transform = Math.min(100, transform);
     style.transform = 'rotate('+transform+'deg)';
     let displayValue = myValue
-    if (this.props.id === 9 || this.props.id === 10) { 
+    if (this.props.id === 9 || this.props.id === 10) {
       displayValue = Math.round((displayValue - 127.5) * (200/255));
     }
 
@@ -65,7 +65,7 @@ class Knob extends React.Component {
       }
     }
 
-    
+
 
     return (
       <div title={this.props.title} onMouseDown={this.handleMouseDown.bind(this)}
@@ -93,7 +93,7 @@ class Knob extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    allKnobs: state.knobs
+    allKnobs: state.state.knobs
   };
 }
 

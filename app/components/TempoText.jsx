@@ -20,7 +20,7 @@ class TempoText extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    BPM: state.BPM,
+    BPM: state.state.BPM,
   };
 }
 

@@ -18,13 +18,6 @@ class App extends React.Component {
     super(props);
   }
   componentWillMount() {
-    // no longer using this: now, if user is logged in, there's a cookie
-    // let xhr = new XMLHttpRequest();
-    //  xhr.open('get', '/getLoggedInUsername');
-    //  xhr.onload = () => {
-    //    this.props.dispatch({type: 'STORE_USER', who: this.response});
-    //  };
-    //  xhr.send();
      this.props.dispatch({type:'CREATE_AUDIO_CONTEXT'});
      if (navigator.requestMIDIAccess) {
        navigator.requestMIDIAccess({sysex: false}).then((accessObj)=> {
@@ -96,8 +89,8 @@ class App extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    loggedIn: state.loggedIn,
-    midiDevices: state.midiDevices,
+    loggedIn: state.state.loggedIn,
+    midiDevices: state.state.midiDevices,
   };
 }
 

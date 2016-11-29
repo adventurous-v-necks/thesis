@@ -73,9 +73,9 @@ class RoomDropDown extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    activeRooms: state.activeRooms,
-    roomsMenuActive: state.roomsMenuActive,
-    currentRoom: state.currentRoom,
+    activeRooms: state.state.activeRooms,
+    roomsMenuActive: state.state.roomsMenuActive,
+    currentRoom: state.state.currentRoom,
   };
 }
 

@@ -1,8 +1,11 @@
 import { combineReducers } from 'redux';
+import reduce from '../reducer.js';
 
-const rootReducer = combineReducers({
-//put new reducers here like this:
-//  reducerKey: reducerName 
+// let reducer2 = function(state = {}, action) {
+//   if (action.type==='DO_STH') return Object.assign({}, state);
+//   return Object.assign({}, state);
+// };
+
+export const rootReducer = combineReducers({
+  state: reduce
 });
-
-export default rootReducer;

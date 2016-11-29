@@ -95,7 +95,7 @@ class Sample extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    audioContext: state.audioContext
+    audioContext: state.state.audioContext
   };
 }
 

@@ -10,7 +10,7 @@ class Patch extends React.Component {
 
   handleChange(event) {
     this.props.dispatch({
-      type: 'PATCH_CHANGE', 
+      type: 'PATCH_CHANGE',
       patch: event.target.value,
     });
   }
@@ -49,7 +49,7 @@ class Patch extends React.Component {
       <div className="patch">
         <div style={style}>
         <span style={labelStyle}>Patch</span>
-        <select size={1} style={selectStyle} 
+        <select size={1} style={selectStyle}
           value={this.props.patch} onChange={this.handleChange}>
             <option value="sine">Sine Sounds</option>
             <option value="square">Square Sounds</option>
@@ -64,9 +64,8 @@ class Patch extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    patch: state.patch,
+    patch: state.state.patch,
   };
 }
 
 export default connect(mapStateToProps)(Patch);
-
