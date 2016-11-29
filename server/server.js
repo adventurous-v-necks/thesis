@@ -212,7 +212,6 @@ app.get('/getState/:room', function(req, res) {
     if (states[req.params.room]) {
       clearInterval(interval);
       res.json({status:'ok', set: states[req.params.room]});
-      console.log(states[req.params.room]);
       delete states[req.params.room];
     }
     called.calls += 1;
