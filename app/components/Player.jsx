@@ -6,11 +6,15 @@ import EffectsRack from './EffectsRack.jsx';
 import Sampler from './Sampler.jsx';
 import Synth from './Synth.jsx';
 import Fader from './Fader.jsx';
+import io from 'socket.io-client';
+
+let socket = io();
 
 class Player extends React.Component {
   constructor(props) {
     super(props);
   }
+  
   render() {
     return (
       <div className="player" style={{paddingLeft:'1%', paddingRight:'1%', height: '100%'}}>
