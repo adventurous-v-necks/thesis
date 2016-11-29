@@ -40,14 +40,6 @@ class App extends React.Component {
     this.context.router.push('/');
   }
 
-
-// Remove logged out drop down before submitting pull request
-      // <li className="menu-item"><RoomDropDown /></li>
-      // <li><select name="room-select" style={roomDropdownStyle} onChange={this.newMidi.bind(this)}>
-      //   {this.props.midiDevices.map((dev,i) => (
-      //     <option key={dev} value={i}>{dev}</option>
-      //   ))}
-      // </select></li>
   customNavbar() {
     return this.props.loggedIn ? (
       <span>
@@ -79,16 +71,6 @@ class App extends React.Component {
       height: '2em',
       top: '1.5em',
     };
-
-    // let roomDropdownStyle = {
-    //   color: 'white',
-    //   left: '5em',
-    //   position: 'relative',
-    //   padding: '0 1em',
-    //   border: '1px solid white',
-    //   height: '2em',
-    //   top: '1.5em',
-    // };
 
     return (
       <div id="app">

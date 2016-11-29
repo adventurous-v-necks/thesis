@@ -134,7 +134,7 @@ export default function reduce(state, action) {
       activeEffects: [],
       syncOn: true,
       lastPlayed: 0, // time (audio time) the last sample was played
-      activeRooms: [],
+      activeRooms: ['aleks', 'tom', 'hans'],//[],
       currentRoom: '',
       // roomsMenuActive: false,
       midi: null, // the midi object as a whole, if we got one
@@ -152,10 +152,12 @@ export default function reduce(state, action) {
 
       state.socket.emit('room', { joinRoom: newUserRoom});
 
-      let allActiveRooms = state.activeRooms.slice();
-      allActiveRooms.concat(newUserRoom)
 
-      return Object.assign({}, state, {loggedIn: true, activeRooms: allActiveRooms, currentRoom: newUserRoom});
+      // let allActiveRooms = state.activeRooms.slice();
+      // allActiveRooms.concat(newUserRoom)
+
+      return Object.assign({}, state, {loggedIn: true, currentRoom: newUserRoom});
+      // return Object.assign({}, state, {loggedIn: true, activeRooms: allActiveRooms, currentRoom: newUserRoom});
     }
     case 'USER_LOGOUT': {
       return Object.assign({}, state, {loggedIn: false});
@@ -293,6 +295,22 @@ export default function reduce(state, action) {
 
       socket.on('event', function (data) {
         store.dispatch(Object.assign(data.data.action, {synthetic: true}));
+      });
+
+      socket.on('roomJoin', function(data) {
+        console.log('roomJoin data: ', data)
+        console.log('step 4 roomJoin event emmited and heard in reducer')
+        // console.log('a room was joined');
+        console.log('step 5 current activeRooms: ', state.activeRooms);
+        let theHeaders = new Headers({ "Content-Type": "application/json" });
+        fetch('/liveRooms', {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
+          resp.json().then(r => {
+            if (r.status === 'ok') {
+              console.log('step 6 open sockets fetched: ', r.rooms);
+              store.dispatch({type: 'UPDATE_ACTIVE_ROOMS', newRoom: r.rooms})
+            } 
+          });
+        });
       });
 
       let audioCtx = new AudioContext();
@@ -671,13 +689,27 @@ export default function reduce(state, action) {
     // }
     case 'NAVIGATE_ROOM': {
       let room = action.room;
-      console.log('nav room: joinRoom: ', room);
-      console.log('nav room: leaveRoom', state.currentRoom);
+      // console.log('nav room: joinRoom: ', room);
+      // console.log('nav room: leaveRoom', state.currentRoom);
+      console.log('step 2: nav to room from reducer');
       state.socket.emit('room', { joinRoom: room,  leaveRoom: state.currentRoom});
+
+      // let allActiveRooms = state.activeRooms.slice();
+      // if (allActiveRooms.indexOf(room) === -1) {
+      //   allActiveRooms.push(room);
+      // }
+
       return Object.assign({}, state, {currentRoom: room});
     }
     case 'UPDATE_ACTIVE_ROOMS': {
-      return Object.assign({}, state, {activeRooms: action.activeRooms});
+      console.log('step 7 inside update active rooms reducer')
+      let allActiveRooms = state.activeRooms.slice();
+
+      if (allActiveRooms.indexOf(action.newRoom) === -1) {
+        allActiveRooms.push(action.newRoom);
+      }
+
+      return Object.assign({}, state, {activeRooms: allActiveRooms});
     }
     default: {
       console.error('Reducer Error: ', action);
