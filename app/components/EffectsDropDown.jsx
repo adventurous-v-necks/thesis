@@ -15,6 +15,7 @@ class EffectsDropDown extends React.Component {
   }
 
   addEffectToRack(e) {
+    console.log('effect to add: ', e.nativeEvent.target.attributes.value.value);
     this.props.dispatch({type: 'EFFECT_TO_RACK', effect: e.nativeEvent.target.attributes.value.value});
   }
 

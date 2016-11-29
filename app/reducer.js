@@ -108,7 +108,8 @@ export default function reduce(state, action) {
       knobs[20+] are reserved for effects
       */
       knobs: [
-        100, 100, 100, 100, 100,
+// change this back tho      
+        0, 100, 100, 100, 100,
         100, 100, 100, 100, 127,
         127, 100, 100, 100, 100,
         100, 100, 100, 100, 100,
@@ -123,6 +124,10 @@ export default function reduce(state, action) {
       recordTimeZero: false,
       customEffects: [
         {
+          name: 'MOOG',
+          node: MOOGFilter,
+        },
+        {
           name: 'BiquadFilterLo',
           node: BiquadFilterLo,
         },
@@ -135,13 +140,10 @@ export default function reduce(state, action) {
           node: BiquadFilterHi,
         },
         {
-          name: 'distortion',
+          name: 'Distortion',
           node: Distortion,
         },
-        {
-          name: 'MOOG',
-          node: MOOGFilter,
-        }],
+        ],
       activeEffects: [],
       syncOn: true,
       lastPlayed: 0, // time (audio time) the last sample was played
@@ -334,13 +336,12 @@ export default function reduce(state, action) {
       let BFLo = BiquadFilterLo(audioCtx);
       let BFMid = BiquadFilterMid(audioCtx);
       let BFHi = BiquadFilterHi(audioCtx);
+      // let MOOG = MOOGFilter(audioCtx);
 
       let oscGainNode1 = audioCtx.createGain();
       oscGainNode1.gain.value = 1;
       let oscGainNode2 = audioCtx.createGain();
       oscGainNode2.gain.value = 1;
-
-      let MOOG = MOOGFilter(audioCtx);
 
       let synthGainNode = audioCtx.createGain();
       synthGainNode.gain.value = 0.4;
@@ -511,7 +512,7 @@ export default function reduce(state, action) {
             effect.node.frequency.value = action.value * 15;
           }
         }
-        if (effect.name === 'distortion') {
+        if (effect.name === 'Distortion') {
           let whichKnob = effect.knobs.indexOf(action.id);
           if (whichKnob === 0) {
             effect.node.curve = makeDistortionCurve(.5 * action.value);
@@ -521,6 +522,7 @@ export default function reduce(state, action) {
         if (effect.name === 'MOOG') {
           let whichKnob = effect.knobs.indexOf(action.id);
           if (whichKnob === 0) {
+            console.log('moving the moog');
           }
         }
       }
@@ -617,7 +619,12 @@ export default function reduce(state, action) {
       let allActiveEffects = state.activeEffects.slice();
       let allKnobs = state.knobs.slice();
 
+      console.log('in EFFECT_TO_RACK')
       let newEffectNode = state.customEffects.filter(fx => fx.name === action.effect)[0].node(state.audioContext);
+     
+      // let newEffectNode = state.customEffects.filter(fx => fx.name === action.effect)[0].node;
+      console.log('newEffectNode: ', newEffectNode);
+
       if (allActiveEffects.length === 0) { // this is the first effect unit we're adding
         state.masterOut.disconnect();
         state.masterOut.connect(newEffectNode);
@@ -652,10 +659,10 @@ export default function reduce(state, action) {
         allKnobs.push(100);
       }
 
-      if(effect.name === 'MOOG') {
-        allKnobs.push(100);
-        allKnobs.push(100);
-      }
+      // if(effect.name === 'MOOG') {
+      //   allKnobs.push(100);
+      //   allKnobs.push(100);
+      // }
 
       return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
     }
