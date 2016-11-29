@@ -276,9 +276,10 @@ io.on('connection', function (socket) {
       socket.leave(data.leaveRoom);
     }
     socket.join(data.joinRoom);
-  });
 
     socket.broadcast.emit('roomJoin', {room: data.joinRoom});
+    socket.emit('roomJoin', {room: data.joinRoom});
+  });  
 });
 
 server.listen(port, '0.0.0.0', function onStart(err) {
