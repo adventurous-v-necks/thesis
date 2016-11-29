@@ -494,29 +494,16 @@ export default function reduce(state, action) {
             effect.node.frequency.value = action.value * 15;
           }
         }
-// double check against committed code
         if (effect.name === 'BiquadFilterHi') {
-
           let whichKnob = effect.knobs.indexOf(action.id);
           if (whichKnob === 0) {
             effect.node.frequency.value = action.value * 15;
           }
         }
         if (effect.name === 'distortion') {
-
           let whichKnob = effect.knobs.indexOf(action.id);
-
           if (whichKnob === 0) {
             effect.node.curve = makeDistortionCurve(.5 * action.value);
-          }
-        }
-
-        if (effect.name === 'MOOG') {
-
-          let whichKnob = effect.knobs.indexOf(action.id);
-
-          if (whichKnob === 0) {
-            console.log('twiddle moog knob');
           }
         }
       }
