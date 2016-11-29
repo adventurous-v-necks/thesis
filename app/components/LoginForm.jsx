@@ -72,6 +72,7 @@ class existingLogin extends React.Component {
               <button type="submit">Submit</button>
             </div>
           </form>
+          <a className="btn btn-primary" style={{paddingLeft:"25%"}}href={'/auth/facebook'}><button style={{height:'auto', backgroundColor: 'lightblue', borderRadius:'2px', border:'1px solid black', padding:'0.5em 1em'}} className="fa fa-facebook"> Facebook Login</button></a>
         </div>
       )
     }
