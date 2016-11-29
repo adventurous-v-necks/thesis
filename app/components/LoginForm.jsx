@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import styles from '../App.scss';
-
+import FbButton from './FbButton.jsx';
+import {browserHistory} from 'react-router';
 // NOTE: for historical reasons this is the login form but is called 'existingLogin'
 // whereas the signup form is called loginForm. idk
 
@@ -16,6 +17,12 @@ class existingLogin extends React.Component {
     this.state = {
       submitted: false
     };
+  }
+
+  handleClick(e) {
+    e.preventDefault()
+    browserHistory.push('/auth/facebook');
+    return;
   }
 
   handleSubmit(e) {
@@ -52,11 +59,12 @@ class existingLogin extends React.Component {
     }
     else {
       return (
-        <div style={{padding: '0em 3em', height:'10em'}}>
+        <div style={{padding: '0em 3em', height:'10em'}} >
           <h1 style={{height: '1em', display:'block', marginLeft:'auto', marginRight:'auto', width:'15em', marginTop:'4em'}}>Sign in to your ReJuicy account</h1>
-          <br/><p style={{height:'auto'}}>Welcome back, n00b</p><br/>
-          <form onSubmit={this.handleSubmit.bind(this)} style={{padding:'2em 2em', lineHeight:'2em', height:'14em',overflow:'hidden',border:'1px solid black'}}>
-            <div style={{height:'auto', display:'inline-block'}}>
+          <br/><p style={{height:'5em'}}>Welcome back, n00b</p><br/>
+          <div style={{border:'1px solid black'}}>
+          <form >
+            <div style={{height:'2em', width:'250px', display:'inline-block'}}>
               <label style={{paddingRight:'1em'}}>Username</label>
               <div style={{height:'auto'}}>
                 <input name="username" type="text" placeholder="Username" style={{borderBottom:'1px solid black'}}/>
@@ -69,10 +77,11 @@ class existingLogin extends React.Component {
               </div>
             </div><br/>
             <div style={{height:'auto', backgroundColor: 'green', borderRadius:'2px', border:'1px solid black', padding:'0.5em 1em'}}>
-              <button type="submit">Submit</button>
+              <button type="click" onClick={this.handleSubmit.bind(this)}>Submit</button>
             </div>
           </form>
-          <a className="btn btn-primary" style={{paddingLeft:"25%"}}href={'/auth/facebook'}><button style={{height:'auto', backgroundColor: 'lightblue', borderRadius:'2px', border:'1px solid black', padding:'0.5em 1em'}} className="fa fa-facebook"> Facebook Login</button></a>
+            <FbButton style={{float: 'left'}}/>
+            </div>
         </div>
       )
     }
