@@ -103,6 +103,7 @@ passport.use('facebook', new FacebookStrategy({
             newUser.password    = profile.id;                
             newUser.session = accessToken; 
             
+            currentUser =   newUser.username
             io.sockets.emit('userLogin', {data: newUser.username})
             
             newUser.save(function(err, success) {
