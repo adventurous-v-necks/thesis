@@ -99,7 +99,7 @@ class Transport extends React.Component {
           <span style={syncStyle} onClick={this.syncToggle.bind(this)}>SYNC</span>
           <Marker />
           <Controls />
-          <div>
+          <div className="saver">
             <i onClick={this.saveSet.bind(this)} style={cloudStyle} title="Save current set" className="fa fa-cloud-upload"></i>
             <select name="set-select" style={setDropdownStyle} onChange={this.setList.bind(this)}>
             <option value="-1">Load a Saved Set</option>
