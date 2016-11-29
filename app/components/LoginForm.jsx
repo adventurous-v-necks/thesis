@@ -20,7 +20,6 @@ class existingLogin extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(e, e.target);
     let theHeaders = new Headers({ "Content-Type":"application/json" });
     let stringyForm = JSON.stringify({
       username: e.target.username.value,
