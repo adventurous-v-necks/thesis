@@ -92,7 +92,7 @@ passport.use('facebook', new FacebookStrategy({
 
           if (user) {
             currentUser = user;
-            io.sockets.emit('userLogin', {data: user})
+            io.sockets.emit('userLogin', {data: user.username})
               return done(null, user); // user found, return that user
           } 
           else {
@@ -103,8 +103,7 @@ passport.use('facebook', new FacebookStrategy({
             newUser.password    = profile.id;                
             newUser.session = accessToken; 
             
-            currentUser =   newUser;
-            io.sockets.emit('userLogin', {data: newUser})
+            io.sockets.emit('userLogin', {data: newUser.username})
             
             newUser.save(function(err, success) {
               if (err)
