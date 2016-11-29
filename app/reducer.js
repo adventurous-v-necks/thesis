@@ -60,7 +60,7 @@ const fetchRooms = () => {
     resp.json().then(r => {
       if (r.status === 'ok') {
         store.dispatch({type: 'UPDATE_ACTIVE_ROOMS', allActiveRooms: r.rooms})
-      } 
+      }
     });
   });
 };
@@ -159,10 +159,8 @@ export default function reduce(state, action) {
   switch (action.type) {
     case 'USER_LOGIN': {
       let newUserRoom = JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username;
-
       state.socket.emit('room', { joinRoom: newUserRoom});
       fetchRooms();
-
       return Object.assign({}, state, {loggedIn: true, currentRoom: newUserRoom});
     }
     case 'USER_LOGOUT': {

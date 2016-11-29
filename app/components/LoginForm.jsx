@@ -20,6 +20,7 @@ class existingLogin extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    console.log(e, e.target);
     let theHeaders = new Headers({ "Content-Type":"application/json" });
     let stringyForm = JSON.stringify({
       username: e.target.username.value,
@@ -56,7 +57,7 @@ class existingLogin extends React.Component {
           <h1 style={{height: '1em', display:'block', marginLeft:'auto', marginRight:'auto', width:'15em', marginTop:'4em'}}>Sign in to your ReJuicy account</h1>
           <br/><p style={{height:'5em'}}>Welcome back, n00b</p><br/>
           <div style={{border:'1px solid black'}}>
-          <form style={{paddingTop:'2em'}}>
+          <form onSubmit={this.handleSubmit.bind(this)} style={{paddingTop:'2em'}}>
             <div style={{height:'3em', width:'250px', display:'inline-block'}}>
               <label style={{paddingRight:'1em'}}>Username</label>
               <div style={{height:'auto'}}>
@@ -70,7 +71,7 @@ class existingLogin extends React.Component {
               </div>
             </div><br/>
             <div style={{height:'auto', backgroundColor: 'green', borderRadius:'2px', border:'1px solid black', padding:'0.5em 1em'}}>
-              <button type="click" onClick={this.handleSubmit.bind(this)}>Submit</button>
+              <button type="submit">Submit</button>
             </div>
           </form>
             <FbButton style={{paddingTop:'3em'}}/>

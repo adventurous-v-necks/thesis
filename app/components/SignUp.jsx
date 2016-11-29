@@ -24,7 +24,7 @@ class loginForm extends React.Component {
       email: e.target.email.value,
       password: e.target.password.value});
     this.setState({submitted: true});
-    fetch('/signup', {method:'POST', headers: theHeaders, body: stringyForm}).then(resp => {
+    fetch('/signup', {credentials:'include', method:'POST', headers: theHeaders, body: stringyForm}).then(resp => {
       resp.json().then(r => {
         if (r.status === 'ok') {
           window.localStorage.setItem('com.rejuicy.user',JSON.stringify({
