@@ -184,7 +184,7 @@ app.get('/logout', function(req,res) {
 app.get('/liveRooms', function response(req, res) {
 
   let activeRooms = [];
-  for (let roomname in io.sockets.adapter.rooms ) {
+  for (let roomname in io.sockets.adapter.rooms) {
     if ( roomname.indexOf('AAA') === -1 ) {
       activeRooms.push(roomname);
     }
@@ -274,11 +274,11 @@ io.on('connection', function (socket) {
   socket.on('room', function(data){
     if(data.leaveRoom) {
       socket.leave(data.leaveRoom);
-      console.log('room ' + data.leaveRoom + ' was left');
     }
     socket.join(data.joinRoom);
   });
-    console.log('room ' + data.joinRoom + ' was joined');
+
+    socket.broadcast.emit('roomJoin', {room: data.joinRoom});
 });
 
 server.listen(port, '0.0.0.0', function onStart(err) {
