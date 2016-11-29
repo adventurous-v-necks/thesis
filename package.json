@@ -39,6 +39,7 @@
     "mongoose": "^4.5.9",
     "node-sass": "^3.8.0",
     "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",
     "qwerty-hancock": "^0.5.1",
     "react": "^15.3.1",
