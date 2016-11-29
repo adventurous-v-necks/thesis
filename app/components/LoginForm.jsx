@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import styles from '../App.scss';
 import FbButton from './FbButton.jsx';
-import {browserHistory} from 'react-router';
 // NOTE: for historical reasons this is the login form but is called 'existingLogin'
 // whereas the signup form is called loginForm. idk
 
@@ -17,12 +16,6 @@ class existingLogin extends React.Component {
     this.state = {
       submitted: false
     };
-  }
-
-  handleClick(e) {
-    e.preventDefault()
-    browserHistory.push('/auth/facebook');
-    return;
   }
 
   handleSubmit(e) {
