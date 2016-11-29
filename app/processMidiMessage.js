@@ -1,7 +1,7 @@
 import {store} from './main.js';
 
 export const processMidiMessage = function(evt) {
-  console.log(evt, evt.data[0] & 0xf0);
+  //console.log(evt, evt.data[0] & 0xf0);
   var data = evt.data;
   //var cmd = data[0] >> 4;
   //var channel = data[0] & 0xf;

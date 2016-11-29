@@ -60,6 +60,8 @@ class Transport extends React.Component {
       float: 'right',
       height: 'auto',
       textAlign: 'center',
+      position: 'relative',
+      top: '0.6em',
     };
     let syncStyle = {
       width:'auto',
