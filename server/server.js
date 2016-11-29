@@ -94,18 +94,18 @@ passport.use('facebook', new FacebookStrategy({
             currentUser = user;
             io.sockets.emit('userLogin', {data: user.username})
               return done(null, user); // user found, return that user
-          } 
+          }
           else {
 
             var newUser            = new User();
             newUser.username = profile.name.givenName + ' ' + profile.name.familyName;
             newUser.email = profile.emails[0].value
-            newUser.password    = profile.id;                
-            newUser.session = accessToken; 
-            
+            newUser.password    = profile.id;
+            newUser.session = accessToken;
+
             currentUser =   newUser.username
             io.sockets.emit('userLogin', {data: newUser.username})
-            
+
             newUser.save(function(err, success) {
               if (err)
                 console.error(err);
@@ -268,7 +268,7 @@ io.on('connection', function (socket) {
   });
 
   socket.on('playerLoading', function () {
-    socket.emit('userLogin', {data: currentUser})
+    socket.emit('userLogin', {data: currentUser || ''})
   })
 
   socket.on('room', function(data){
