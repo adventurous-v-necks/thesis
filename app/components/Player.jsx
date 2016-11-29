@@ -14,7 +14,20 @@ class Player extends React.Component {
   constructor(props) {
     super(props);
   }
-  
+
+   componentWillMount(){
+    let context = this;
+    socket.emit('playerLoading', {data: null});
+    socket.on('userLogin', function(data) {
+      console.log(data.data)
+      console.log('this.state', context.props)
+         window.localStorage.setItem('com.rejuicy.user',JSON.stringify({
+            username: data.data.facebook.name
+          }));
+          context.props.dispatch({type:'USER_LOGIN'});
+    })
+  }
+
   render() {
     return (
       <div className="player" style={{paddingLeft:'1%', paddingRight:'1%', height: '100%'}}>
