@@ -25,10 +25,13 @@ class EffectsUnit extends React.Component {
 
     const componentStyle = {
       fontSize: '1.2em',
-      height: '100%',
-      width: '25%',
-      border: '1px solid #383838',
-      backgroundColor: '#efefef',
+      height: 'calc(100% - 4px)',
+      width: '10em',
+      border: '2px solid #383838',
+      borderRadius: '2px',
+      textAlign: 'center',
+      backgroundColor: 'rgba(0,0,0,0.1)',
+      margin: '2px 2px',
       float: 'left',
     };
     const effectNameStyle = {
@@ -41,8 +44,10 @@ class EffectsUnit extends React.Component {
     };
     const knobStyle = {
       height: 'auto',
-      width: '50%',
+      width: 'auto',
       textAlign: 'center',
+      position: 'relative',
+      top: '30%',
     };
 
     return (
@@ -55,7 +60,7 @@ class EffectsUnit extends React.Component {
           <div style={knobStyle}>
             <Knob key={this.props.knobs.length - 2} id={this.state.knob1}/>
           </div>
-          <div style={knobStyle}>
+          <div style={Object.assign({}, knobStyle, {display: 'none'})}>
             <Knob key={this.props.knobs.length - 1} id={this.state.knob2}/>
           </div>
         </div>

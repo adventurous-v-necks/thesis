@@ -268,7 +268,9 @@ io.on('connection', function (socket) {
   });
 
   socket.on('playerLoading', function () {
-    socket.emit('userLogin', {data: currentUser || ''})
+    if (typeof currentUser !== 'undefined' && currentUser) {
+      socket.emit('userLogin', {data: currentUser});
+    }
   })
 
   socket.on('room', function(data){
