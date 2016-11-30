@@ -22,25 +22,6 @@ class EffectsUnit extends React.Component {
     this.props.dispatch({type: 'EFFECT_FROM_RACK', id: this.props.id});
   }
   customKnobBuild() {
-    // const knobContainerStyle = {
-    //   heigth: 'auto',
-    //   width: 'auto',
-    // };
-    // const singleKnobStyle = {
-    //   height: 'auto',
-    //   width: 'auto',
-    //   textAlign: 'center',
-    //   position: 'relative',
-    //   top: '30%',
-    // };
-    // const doubleKnobStyle = {
-    //   height: 'auto',
-    //   width: '50%',
-    //   textAlign: 'center',
-    //   position: 'relative',
-    //   top: '30%',
-    // };
-
     return this.props.id.includes('MOOG') ? (
       <div className="knob-container">
         <div className="double-knob">
@@ -85,9 +66,6 @@ class EffectsUnit extends React.Component {
         </div>
           {this.customKnobBuild.call(this)}
       </div>
-        // <div className="knobContainer" style={knobContainerStyle}>
-          // <div style={Object.assign({}, knobStyle, {display: 'none'})}>
-        // </div>
     );
   }
 }

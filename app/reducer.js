@@ -490,17 +490,10 @@ export default function reduce(state, action) {
       }
       if (action.id > 20) { // one of the effect knobs
         // find which effect it is in our array of active effects
-        // let effectName = state.activeEffects.filter(fx => )
-        console.log('action id: ', action.id);
-        console.log('inside knob KNOB_TWIDDLE: ', state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1));
         let effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id) !== -1)[0];
-        console.log('effect: ', effect);
         if (effect === undefined) {
-          console.log('inside the if')
           effect = state.activeEffects.filter(fx => fx.knobs.indexOf(action.id - 1) !== -1)[0];
-          console.log('effect: ', effect);
         }
-        console.log('post effect: ', effect);
         if (effect.name === 'BiquadFilterLo') {
           // inside that effect component, which knob was tweaked?
           let whichKnob = effect.knobs.indexOf(action.id);
@@ -530,18 +523,13 @@ export default function reduce(state, action) {
         if (effect.name === 'MOOG') {
           let whichKnob = effect.knobs.indexOf(action.id);
           if (whichKnob === 0) {
-            console.log('moving the moog, cutoff');
-            let cutoffValue = 0.065 * 2 * action.value / 100;
-            effect.node.cutoff = cutoffValue;
+            effect.node.cutoff = 0.065 * 2 * action.value / 100;
           } else {
-            console.log('moving the moog, resonance');
-            let resonanceValue = 6 * action.value / 256;
-            effect.node.resonance = resonanceValue;
+            effect.node.resonance = 6 * action.value / 256;
           }
         }
       }
-      // let overkill = state.knobs.filter(knob => knob > 1000);
-      console.log('overkill: ', state.knobs);
+
       return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
     case 'PLAY_SAMPLE': {
@@ -675,11 +663,10 @@ export default function reduce(state, action) {
         allKnobs.push(100);
       }
 
-      if(effect.name === 'MOOG') {
-        console.log('extra knob');
-        allKnobs.push(100);
+      // if(effect.name === 'MOOG') {
       //   allKnobs.push(100);
-      }
+      // //   allKnobs.push(100);
+      // }
 
       return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
     }
