@@ -12,6 +12,7 @@ import SignUp from './components/SignUp.jsx';
 import reducer from './reducer.js';
 import Sampler from './components/Sampler.jsx';
 import About from './components/About.jsx';
+import Profile from './components/Profile.jsx';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
