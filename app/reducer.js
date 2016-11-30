@@ -97,7 +97,7 @@ export default function reduce(state, action) {
       patch: 'sine',
       masterOut: null, // if you're making stuff that makes noise, connect it to this
       audioContext: null, // first set when page loads
-      nodes: [], // notes of the keyboard which are playing,
+      keys: [], // notes of the keyboard which are playing,
       /*
       array of values for all knobs in our app.
       knobs[0] is reserved for globalVolume
@@ -220,15 +220,15 @@ export default function reduce(state, action) {
     case 'KEY_UP': {
       // TODO: optimize this -- use a hash table instead of an array
       // TODO: this is not working polyphonically - try pressing 2 keys at once
-      let newNodes = [];
+      let tempKeys = [];
       let tempPerf = [...state.performance];
 
-      for (let i = 0; i < state.nodes.length; i++) {
-        if (Math.round(state.nodes[i].frequency.value) === Math.round(action.frequency)) {
-          state.nodes[i].stop(0);
-          state.nodes[i].disconnect();
+      for (let i = 0; i < 2; i++) {
+        if (Math.round(state.keys[i].frequency.value) === Math.round(action.frequency)) {
+          state.keys[i].stop(0);
+          state.keys[i].disconnect();
         } else {
-          newNodes.push(nodes[i]);
+          tempKeys.push(keys[i]);
         }
       }
 
@@ -237,10 +237,10 @@ export default function reduce(state, action) {
         tempPerf.push({action: action, timestamp: state.audioContext.currentTime});
       }
 
-      return { ...state, nodes: newNodes, performance: tempPerf };
+      return { ...state, keys: tempKeys, performance: tempPerf };
     }
     case 'KEY_DOWN': {
-      let tempNodes = [...state.nodes];
+      let tempKeys = [...state.keys];
       let tempPerf = [...state.performance];
 
       for (let i = 0; i < 2; i++) {
@@ -251,7 +251,7 @@ export default function reduce(state, action) {
 
         oscillator.connect(state.oscGainNodes[i]);
         oscillator.start(0);
-        tempNodes.push(oscillator);
+        tempKeys.push(oscillator);
 
         if (!action.synthetic) {
           state.socket.emit('event2server', { action: action, room: state.currentRoom });
@@ -259,7 +259,7 @@ export default function reduce(state, action) {
         }
       }
 
-      return { ...state, nodes: tempNodes, performance: tempPerf };
+      return { ...state, keys: tempKeys, performance: tempPerf };
     }
     case 'MIDI_OK': {
       let devices = [];
