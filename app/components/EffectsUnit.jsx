@@ -44,7 +44,8 @@ class EffectsUnit extends React.Component {
     };
     const knobStyle = {
       height: 'auto',
-      width: 'auto',
+      // width: 'auto',
+      width: '50%',
       textAlign: 'center',
       position: 'relative',
       top: '30%',
@@ -60,11 +61,12 @@ class EffectsUnit extends React.Component {
           <div style={knobStyle}>
             <Knob key={this.props.knobs.length - 2} id={this.state.knob1}/>
           </div>
-          <div style={Object.assign({}, knobStyle, {display: 'none'})}>
+          <div style={knobStyle}>
             <Knob key={this.props.knobs.length - 1} id={this.state.knob2}/>
           </div>
         </div>
       </div>
+          // <div style={Object.assign({}, knobStyle, {display: 'none'})}>
     );
   }
 }
