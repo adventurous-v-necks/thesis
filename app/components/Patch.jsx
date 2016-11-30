@@ -9,9 +9,18 @@ class Patch extends React.Component {
   }
 
   handleChange(event) {
+    const patches = {
+      //    [wave1, wave2, vol1, vol2, detune1, detune2]
+      sine: ['sine', 'sine', 100, 100, 127, 127],
+      square: ['square', 'square', 100, 100, 127, 127],
+      sawtooth: ['sawtooth', 'sawtooth', 100, 100, 127, 127],
+      snake: ['square', 'sawtooth', 100, 60, 127, 140],
+    };
+
     this.props.dispatch({
       type: 'PATCH_CHANGE', 
-      patch: event.target.value,
+      patchName: event.target.value,
+      patch: patches[event.target.value],
     });
   }
 
@@ -53,7 +62,8 @@ class Patch extends React.Component {
           value={this.props.patch} onChange={this.handleChange}>
             <option value="sine">Sine Sounds</option>
             <option value="square">Square Sounds</option>
-            <option value="sawtooth">Sawtooth </option>
+            <option value="sawtooth">Sawtooth</option>
+            <option value="snake">Snake Charmer</option>
           </select>
         </div>
       </div>
