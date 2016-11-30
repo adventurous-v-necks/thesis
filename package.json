@@ -28,6 +28,7 @@
     "jscs": "jscs ."
   },
   "dependencies": {
+    "babel": "^6.5.2",
     "babel-cli": "^6.4.0",
     "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",

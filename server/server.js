@@ -198,8 +198,8 @@ app.get('/liveRooms', function response(req, res) {
 });
 
 app.get('/savedSets', function(req,res) {
+
   User.findOne({ username: req.user.username }, function (err, user) {
-    console.log('user inside the server205', user)
     if (err) {
       console.error(err)
       return res.json({status: 'bad', message: 'You appear to not be logged in.'}); }
