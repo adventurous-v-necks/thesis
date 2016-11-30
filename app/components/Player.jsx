@@ -31,10 +31,10 @@ class Player extends React.Component {
     return (
       <div className="player" style={{paddingLeft:'1%', paddingRight:'1%', height: '100%'}}>
         <div style={{width: '100%', height: '4em'}}></div>
-          <Transport />
-          <Sampler />
-          <EffectsRack />
-          <Synth />
+        <Transport />
+        <Sampler />
+        <EffectsRack />
+        <Synth />
       </div>
     );
   }
