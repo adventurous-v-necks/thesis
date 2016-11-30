@@ -62,6 +62,7 @@ app.use(expressSession({ secret: 'mysecret', resave:true, saveUninitialized:true
 app.use(passport.initialize());
 app.use(passport.session());
 passport.serializeUser(function(user, done) {
+  console.log('user', user)
   done(null, user._id);
 });
 passport.deserializeUser(function(id, done) {
@@ -216,16 +217,16 @@ app.get('/savedSets', function(req,res) {
 })
 
 app.get('/profile', function(req,res) {
-
-  User.findOne({ username: req.user.username }, function (err, user) {
-    if (err) {
-      console.error(err)
-      return res.json({status: 'bad', message: 'No profile available.'}); 
-    }
-      if(user){
-        return res.json({user: user});
-      }
-    });
+console.log('req', req.user)
+  // User.findOne({ username: req.user.username }, function (err, user) {
+  //   if (err) {
+  //     console.error(err)
+  //     return res.json({status: 'bad', message: 'No profile available.'}); 
+  //   }
+  //     if(user){
+  //       return res.json({user: user});
+  //     }
+  //   });
 })
 
 app.get('/getState/:room', function(req, res) {
