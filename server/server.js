@@ -88,8 +88,9 @@ function(accessToken, refreshToken, profile, done) {
   process.nextTick(function() {
     User.findOne({ 'email' : profile.emails[0].value }, function(err, user) {
 
-      if (err)
-        return done(err);
+      if (err){
+        return done(err)
+      }
 
       if (user) {
         currentUser = user;
@@ -108,9 +109,9 @@ function(accessToken, refreshToken, profile, done) {
           io.sockets.emit('userLogin', {data: newUser.username})
 
           newUser.save(function(err, success) {
-            if (err)
+            if (err){
               console.error(err);
-
+            }
             return done(null, newUser);
           });
         }
@@ -136,7 +137,9 @@ app.post('/login',
     return res.json({status: 'ok', username: req.user.username, user:req.user});
   },
   function(err, req, res, next) {
-    console.log(err);
+  if(err){
+    console.error(err);
+  }
     return res.json({status: 'bad', message: 'Login failed, incorrect username or password'});
   }
 );
@@ -146,7 +149,10 @@ app.post('/signup', function (req, res) {
   newuser.password = newuser.generateHash(req.body.password);
   newuser.save(function(err,data) {
     req.login(data, function(error) {
-      if (err) console.log(error); else
+      if (err) {
+        console.log(error)
+      }
+      
       res.json({status: 'ok', message: 'Successfully created user', username: req.body.username});
     });
   });
@@ -201,7 +207,8 @@ app.get('/savedSets', function(req,res) {
   User.findOne({ username: req.user.username }, function (err, user) {
     if (err) {
       console.error(err)
-      return res.json({status: 'bad', message: 'You appear to not be logged in.'}); }
+      return res.json({status: 'bad', message: 'You appear to not be logged in.'}); 
+    }
       if(user){
         return res.json({sets: user.sets});
       }
