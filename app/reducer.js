@@ -97,7 +97,7 @@ export default function reduce(state, action) {
       patch: 'sine',
       masterOut: null, // if you're making stuff that makes noise, connect it to this
       audioContext: null, // first set when page loads
-      keys: [], // notes of the keyboard which are playing,
+      keys: {'0': {}, '1': {}}, // notes of the keyboard which are playing,
       /*
       array of values for all knobs in our app.
       knobs[0] is reserved for globalVolume
@@ -218,19 +218,16 @@ export default function reduce(state, action) {
       }
     }
     case 'KEY_UP': {
-      // TODO: optimize this -- use a hash table instead of an array
-      // TODO: this is not working polyphonically - try pressing 2 keys at once
-      let tempKeys = [];
+      let tempKeys;
       let tempPerf = [...state.performance];
 
-      for (let i = 0; i < 2; i++) {
-        if (Math.round(state.keys[i].frequency.value) === Math.round(action.frequency)) {
-          state.keys[i].stop(0);
-          state.keys[i].disconnect();
-        } else {
-          tempKeys.push(keys[i]);
-        }
+      for (let oscNum = 0; oscNum < 2; oscNum++) {
+        let ind = Math.round(action.frequency).toString();
+        state.keys[oscNum][ind].stop(0);
+        state.keys[oscNum][ind].disconnect();
       }
+
+      tempKeys = { ...state.keys };
 
       if (!action.synthetic) {
         state.socket.emit('event2server', { action: action, room: state.currentRoom });
@@ -240,18 +237,21 @@ export default function reduce(state, action) {
       return { ...state, keys: tempKeys, performance: tempPerf };
     }
     case 'KEY_DOWN': {
-      let tempKeys = [...state.keys];
+      let tempKeys = { ...state.keys };
       let tempPerf = [...state.performance];
 
-      for (let i = 0; i < 2; i++) {
+      for (let oscNum = 0; oscNum < 2; oscNum++) {
         let oscillator = state.audioContext.createOscillator();
-        oscillator.type = state.oscwaves[i + 1];
-        oscillator.frequency.value = action.frequency;
-        oscillator.detune.value = (state.knobs[i + 9] - 127.5) * (200 / 255);
+        let ind = Math.round(action.frequency).toString();
 
-        oscillator.connect(state.oscGainNodes[i]);
+        oscillator.type = state.oscwaves[oscNum + 1];
+        oscillator.frequency.value = action.frequency;
+        oscillator.detune.value = (state.knobs[oscNum + 9] - 127.5) * (200 / 255);
+
+        oscillator.connect(state.oscGainNodes[oscNum]);
         oscillator.start(0);
-        tempKeys.push(oscillator);
+
+        tempKeys[oscNum][ind] = oscillator;
 
         if (!action.synthetic) {
           state.socket.emit('event2server', { action: action, room: state.currentRoom });
