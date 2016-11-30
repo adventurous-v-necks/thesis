@@ -717,3 +717,22 @@ select:active {
   color: #ac41fc;
   text-shadow: 1px -1px 2px black;
 }
+
+.knob-container {
+  height: auto;
+  width: auto;
+}
+.single-knob {
+  height: auto;
+  width: auto;
+  textAlign: center;
+  position: relative;
+  top: 30%;
+}
+.double-knob {
+  height: auto;
+  width: 50%;
+  textAlign: center;
+  position: relative;
+  top: 30%;
+}

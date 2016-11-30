@@ -21,6 +21,44 @@ class EffectsUnit extends React.Component {
   removeEffect(e) {
     this.props.dispatch({type: 'EFFECT_FROM_RACK', id: this.props.id});
   }
+  customKnobBuild() {
+    // const knobContainerStyle = {
+    //   heigth: 'auto',
+    //   width: 'auto',
+    // };
+    // const singleKnobStyle = {
+    //   height: 'auto',
+    //   width: 'auto',
+    //   textAlign: 'center',
+    //   position: 'relative',
+    //   top: '30%',
+    // };
+    // const doubleKnobStyle = {
+    //   height: 'auto',
+    //   width: '50%',
+    //   textAlign: 'center',
+    //   position: 'relative',
+    //   top: '30%',
+    // };
+
+    return this.props.id.includes('MOOG') ? (
+      <div className="knob-container">
+        <div className="double-knob">
+          <Knob key={this.props.knobs.length - 2} id={this.state.knob1}/>
+        </div>
+        <div className="double-knob">
+          <Knob key={this.props.knobs.length - 1} id={this.state.knob2}/>
+        </div>
+      </div>
+      ) : (
+      <div className="knob-container">
+        <div className="single-knob">
+          <Knob key={this.props.knobs.length - 2} id={this.state.knob1}/>
+        </div>
+      </div>
+    );
+  }
+
   render() {
 
     const componentStyle = {
@@ -38,18 +76,6 @@ class EffectsUnit extends React.Component {
       height: 'auto',
       width: '100%',
     };
-    const knobContainerStyle = {
-      heigth: 'auto',
-      width: 'auto',
-    };
-    const knobStyle = {
-      height: 'auto',
-      // width: 'auto',
-      width: '50%',
-      textAlign: 'center',
-      position: 'relative',
-      top: '30%',
-    };
 
     return (
       <div style={componentStyle}>
@@ -57,16 +83,11 @@ class EffectsUnit extends React.Component {
           <i className="fa fa-minus-square-o" aria-hidden="true" style={{float: 'left', paddingLeft: '.02em'}} onClick={this.removeEffect}></i>
           {this.props.id}
         </div>
-        <div className="knobContainer" style={knobContainerStyle}>
-          <div style={knobStyle}>
-            <Knob key={this.props.knobs.length - 2} id={this.state.knob1}/>
-          </div>
-          <div style={knobStyle}>
-            <Knob key={this.props.knobs.length - 1} id={this.state.knob2}/>
-          </div>
-        </div>
+          {this.customKnobBuild.call(this)}
       </div>
+        // <div className="knobContainer" style={knobContainerStyle}>
           // <div style={Object.assign({}, knobStyle, {display: 'none'})}>
+        // </div>
     );
   }
 }
