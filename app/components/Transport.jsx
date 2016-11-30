@@ -15,18 +15,21 @@ class Transport extends React.Component {
     super(props);
   }
   componentDidMount() {
-    fetch('/savedSets', {credentials: 'include'}).then(resp => resp.json()).then(sets => {
+    fetch('/savedSets', {credentials: 'include'}).then(resp => resp.json().then(sets => {
       this.props.dispatch({type:'GOT_SAVED_SETS', sets: sets});
-    });
+    }))
   }
+
   syncToggle() {
     this.props.dispatch({type:'SYNC_TOGGLE'});
   }
+
   setList(e) {
     // TODO: We're loading all the sets at once -- load names only, then load set when user clicks on it
     let set = this.props.sets[e.target.value];
     this.props.dispatch({type:'LOAD_SET', set: set.state});
   }
+
   saveSet() {
     let state = Object.assign({}, store.getState());
     delete state.audioContext;
@@ -63,6 +66,7 @@ class Transport extends React.Component {
       position: 'relative',
       top: '0.6em',
     };
+
     let syncStyle = {
       width:'auto',
       height:'auto',
@@ -73,6 +77,7 @@ class Transport extends React.Component {
       position: 'relative',
       top: '-0.72em',
     };
+
     let setDropdownStyle = {
       color: 'black',
       left: '5em',
@@ -83,6 +88,7 @@ class Transport extends React.Component {
       top: '50%',
       transform: 'translateY(-50%)',
     };
+
     let cloudStyle = {
       position: 'relative',
       left: '2em',
@@ -91,6 +97,7 @@ class Transport extends React.Component {
       transform: 'translateY(-50%)',
       float: 'left',
     };
+    
     return (
       <span style={{display:'inline-block', height:'auto', width:'100%', marginTop:'0.2em'}}>
         <div className="transportContainer">
