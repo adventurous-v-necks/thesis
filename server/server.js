@@ -197,12 +197,16 @@ app.get('/liveRooms', function response(req, res) {
 });
 
 app.get('/savedSets', function(req,res) {
-  User.findOne({ username: req.user.username }, function (err, user) {
-    if (err) { return res.json({status: 'bad', message: 'You appear to not be logged in.'}); }
-    return res.json({sets: user.sets});
-  });
-});
 
+  User.findOne({ username: req.user.username }, function (err, user) {
+    if (err) {
+      console.error(err)
+      return res.json({status: 'bad', message: 'You appear to not be logged in.'}); }
+      if(user){
+        return res.json({sets: user.sets});
+      }
+    });
+})
 app.get('/getState/:room', function(req, res) {
   io.to(req.params.room).emit('get_state');
   let called = {calls: 0};
