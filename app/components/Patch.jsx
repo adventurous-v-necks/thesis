@@ -10,11 +10,12 @@ class Patch extends React.Component {
 
   handleChange(event) {
     const patches = {
-      //    [wave1, wave2, vol1, vol2, detune1, detune2]
+      // patch_value: [wave1, wave2, vol1, vol2, detune1, detune2]
       sine: ['sine', 'sine', 100, 100, 127, 127],
       square: ['square', 'square', 100, 100, 127, 127],
       sawtooth: ['sawtooth', 'sawtooth', 100, 100, 127, 127],
       snake: ['square', 'sawtooth', 100, 60, 127, 140],
+      spooky: ['sine', 'square', 100, 20, 0, 255],
     };
 
     this.props.dispatch({
@@ -64,6 +65,7 @@ class Patch extends React.Component {
             <option value="square">Square Sounds</option>
             <option value="sawtooth">Sawtooth</option>
             <option value="snake">Snake Charmer</option>
+            <option value="spooky">Spooky</option>
           </select>
         </div>
       </div>
