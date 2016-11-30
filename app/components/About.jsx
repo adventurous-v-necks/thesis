@@ -22,6 +22,10 @@ export default class About extends React.Component {
     return (      
       <div style={{height:'100em', marginTop:'5em'}}>
         <div style={legalDisplay}>
+          <h2 style={legalText}>Contact</h2>
+          <p style={legalText}>Email us at <strong>adventurousvnecks@gmail.com</strong>.</p>
+        </div>
+        <div style={legalDisplay}>
           <h2 style={legalText}>About</h2>
           <p style={legalText}>This application was made in November 2016 as part of HackReactor cohort 49.</p>
         </div>
@@ -45,5 +49,4 @@ export default class About extends React.Component {
       </div>
     );
   }
-
 }
