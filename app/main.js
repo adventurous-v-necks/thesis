@@ -11,6 +11,8 @@ import Landing from './components/Landing.jsx';
 import SignUp from './components/SignUp.jsx';
 import reducer from './reducer.js';
 import Sampler from './components/Sampler.jsx';
+import Contact from './components/Contact.jsx';
+import About from './components/About.jsx';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
@@ -26,6 +28,8 @@ render(
           <Route path="/player" component={Player} />
           <Route path="/signUp" component={SignUp} />
           <Route path="/signin" component={LoginForm} />
+          <Route path="/contact" component={Contact} />
+          <Route path="/about" component={About} />
           <Route path="*" component={FourOhFour}/>
       </Route>
     </Router>
