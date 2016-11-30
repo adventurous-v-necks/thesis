@@ -9,9 +9,10 @@ export default class Landing extends React.Component {
   componentDidMount() {
   }
   render() {
+
     return (
       <div style={{height:'100em'}}>
-        <div className="hero" style={{height:'100%'}}>
+        <div className="hero">
           <span className="hello">Online, social DJing</span>
           <Link to="/player"><button>Try a demo</button></Link>
         </div>
@@ -21,108 +22,88 @@ export default class Landing extends React.Component {
             <div className="screenshot">
             </div>
             <div className="app-info-text">
-              Here's a screenshot of something amazing our app can do,
-              you will definitely love our app as much as we have loved
-              building it. Always use Oxford commas. The end.
+              Make your own music
             </div>
           </div>
           <div className="app-info-box">
             <div className="screenshot">
             </div>
             <div className="app-info-text">
-              Lorem ipsum sit dolor amet something blah blah.
+              Live collaboration
             </div>
           </div>
           <div className="app-info-box">
             <div className="screenshot">
             </div>
-            <div className="app-info-text">
-              Lorem ipsum sit dolor amet something blah blah.
+            <div className="app-info-text" style={{textAlign: 'center'}}>
+              Anywhere with an internet connection
             </div>
           </div>
         </div>
         <div className="hero2">
-          <div className="hello" style={{width:'15em', top: '45%'}}>
-            We need a better copywriter.
-          </div>
         </div>
         <div className="team-info">
 
-
-          <section id="cd-timeline" className="cd-container">
-              <div className="cd-timeline-block">
-                <div className="cd-timeline-img cd-picture">
-                  <img src="http://placehold.it/160x160" />
-                </div>
-
-                <div className="cd-timeline-content">
-                  <h2>Title of section 1</h2>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus veritatis qui ut.</p>
-                  <span className="cd-date">Jan 14</span>
-                </div>
+        <section id="cd-timeline" className="cd-container">
+            <div className="cd-timeline-block">
+              <div className="cd-timeline-img cd-picture">
+                <img src="https://avatars3.githubusercontent.com/u/2245347?v=3&s=400" />
               </div>
 
-              <div className="cd-timeline-block">
-                <div className="cd-timeline-img cd-movie">
-                  <img src="http://placehold.it/160x160" />
-                </div>
+              <div className="cd-timeline-content">
+                <h2>The Group Assembled</h2>
+                <p>Aleks, Clark, Hans, and Tom joined forces for a four-week project under the name 'Adventurous V-Necks'. The only direction was to build a full-stack JavaScript application.</p>
+                <span className="cd-date">Nov 8</span>
+              </div>
+            </div>
 
-                <div className="cd-timeline-content">
-                  <h2>Title of section 2</h2>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde?</p>
-                  <span className="cd-date">Jan 18</span>
-                </div>
+            <div className="cd-timeline-block">
+              <div className="cd-timeline-img cd-movie">
+                <img src="https://avatars2.githubusercontent.com/u/3580169?v=3&s=400" />
               </div>
 
-              <div className="cd-timeline-block">
-                <div className="cd-timeline-img cd-picture">
-                  <img src="http://placehold.it/160x160" />
-                </div>
+              <div className="cd-timeline-content">
+                <h2>Direction Set</h2>
+                <p>After much deliberation and many bad ideas, they decided to save the world with dance. Actually, music was an idea that persisted from the beginning of ideation and the V-Necks decided they would an Ableton-like product that would allow DJs to collaborate in the browser.</p>
+                <span className="cd-date">Nov 10</span>
+              </div>
+            </div>
 
-                <div className="cd-timeline-content">
-                  <h2>Title of section 3</h2>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi, obcaecati, quisquam id molestias eaque asperiores voluptatibus cupiditate error assumenda delectus odit similique earum voluptatem doloremque dolorem ipsam quae rerum quis. Odit, itaque, deserunt corporis vero ipsum nisi eius odio natus ullam provident pariatur temporibus quia eos repellat consequuntur perferendis enim amet quae quasi repudiandae sed quod veniam dolore possimus rem voluptatum eveniet eligendi quis fugiat aliquam sunt similique aut adipisci.</p>
-                  <span className="cd-date">Jan 24</span>
-                </div>
+            <div className="cd-timeline-block">
+              <div className="cd-timeline-img cd-location">
+                <img src="https://avatars1.githubusercontent.com/u/10526835?v=3&s=460" />
               </div>
 
-              <div className="cd-timeline-block">
-                <div className="cd-timeline-img cd-location">
-                  <img src="http://placehold.it/160x160" />
-                </div>
-
-                <div className="cd-timeline-content">
-                  <h2>Title of section 4</h2>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus veritatis qui ut.</p>
-                  <span className="cd-date">November 10th</span>
-                </div>
+              <div className="cd-timeline-content">
+                <h2>ReJuicy was Born</h2>
+                <p>The app was presented to those who would listen. The V-Necks presented their Ableton-like application to the Seniors of HackReactor cohort 49 as their senior thesis.</p>
+                <span className="cd-date">Dec 2</span>
               </div>
 
-              <div className="cd-timeline-block">
-                <div className="cd-timeline-img cd-movie">
-                  <img src="http://placehold.it/160x160" />
-                </div>
-
-                <div className="cd-timeline-content">
-                  <h2>The Beginning</h2>
-                  <p>The team was formed</p>
-                  <span className="cd-date">November 8th, 2016</span>
-                </div>
+            <div className="cd-timeline-block">
+              <div className="cd-timeline-img cd-location">
+                <img src="https://avatars3.githubusercontent.com/u/15370140?v=3&s=400" />
               </div>
-            </section>
 
-
+              <div className="cd-timeline-content">
+                <h2>Music is Made</h2>
+                <p>Click the "Try a Demo" button above to make your own beats seemlessly in the browser. You can also Sign Up or Log In to collaborate instantly with friends and create music together.</p>
+                <span className="cd-date">Today</span>
+              </div>
+            </div>
+          </div>
+        </section>
 
         </div>
         <div className="footer">
           <div className="footer-info">
             <div className="col-1">
               <ul>
-                <li>Contact</li>
-                <li>About</li>
-                <li>Privacy Policy</li>
-                <li>Intellectual Property</li>
-                <li>Terms & Conditions</li>
+                <li><Link to="/contact">Contact</Link></li><br/>
+                <li><Link to="/about">About</Link></li><br/>
+                <li><Link to="/about">Privacy Policy</Link></li><br/>
+                <li><Link to="/about">Intellectual Property</Link></li><br/>
+                <li><Link to="/about">Terms & Conditions</Link></li><br/>
               </ul>
             </div>
             <div className="col-2">
@@ -130,7 +111,7 @@ export default class Landing extends React.Component {
               Hack Reactor Seniors<br/>
               944 Market Street<br/>
               San Francisco<br/>
-              California 9xxxx<br/>
+              California 94102<br/>
               <img src="images/GitHub-Mark-120px-plus.png"/>
             </div>
           </div>

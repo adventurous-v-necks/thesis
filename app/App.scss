@@ -135,6 +135,8 @@ nav li > a {
   color: #efefef;
   text-shadow: 3px -3px 10px #000;
   cursor: default;
+  text-align: center;
+  max-width: 70%;
 }
 .hero > a {
   width: 100%;
@@ -167,9 +169,9 @@ nav li > a {
 .app-info {
   width: 100%;
   min-height: 40%;
-  max-height: 800px;
+  max-height: 600px;
   display: block;
-  padding: 10% 5%;
+  padding: 5%;
   border-bottom: 1px solid black;
 }
 .app-info h1 {
@@ -735,4 +737,26 @@ select:active {
   text-align: center;
   position: relative;
   top: 30%;
+}
+
+.contact-email {
+  width: 10em;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  font-size: 5em;
+  font-family: 'Permanent Marker', cursive;
+  height: 1em;
+  display: block;
+  top: 20%;
+  color: #efefef;
+  text-shadow: 3px -3px 10px #000;
+  cursor: default;
+}
+
+.group-email {
+  font-family: 'Exo', sans-serif;
+  color: white;
+  width: auto;
+  text-align: center;
 }
