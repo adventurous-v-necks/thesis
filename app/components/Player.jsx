@@ -16,14 +16,14 @@ class Player extends React.Component {
   }
 
  componentDidMount(){
-    let context = this;
-    socket.emit('playerLoading');
-    socket.on('userLogin', function(data) {
-         window.localStorage.setItem('com.rejuicy.user',JSON.stringify({
-            username: data.data.username
-          }));
-          context.props.dispatch({type:'USER_LOGIN'});
-          context.forceUpdate()
+   let context = this;
+   socket.emit('playerLoading');
+   socket.on('userLogin', function(data) {
+     window.localStorage.setItem('com.rejuicy.user',JSON.stringify({
+       username: data.data.username
+     }));
+     context.props.dispatch({type:'USER_LOGIN'});
+     context.forceUpdate()
     })
   }
 
@@ -31,10 +31,10 @@ class Player extends React.Component {
     return (
       <div className="player" style={{paddingLeft:'1%', paddingRight:'1%', height: '100%'}}>
         <div style={{width: '100%', height: '4em'}}></div>
-        <Transport />
-        <Sampler />
-        <EffectsRack />
-        <Synth />
+          <Transport />
+          <Sampler />
+          <EffectsRack />
+          <Synth />
       </div>
     );
   }
