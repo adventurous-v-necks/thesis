@@ -11,6 +11,7 @@ import Landing from './components/Landing.jsx';
 import SignUp from './components/SignUp.jsx';
 import reducer from './reducer.js';
 import Sampler from './components/Sampler.jsx';
+import Profile from './components/Profile.jsx';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
