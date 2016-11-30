@@ -28,6 +28,7 @@ render(
           <Route path="/signUp" component={SignUp} />
           <Route path="/signin" component={LoginForm} />
           <Route path="/about" component={About} />
+          <Route path="/profile" component={Profile} />
           <Route path="*" component={FourOhFour}/>
       </Route>
     </Router>
