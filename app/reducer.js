@@ -112,7 +112,7 @@ export default function reduce(state, action) {
         100, 100, 100, 100, 127,
         127, 100, 100, 100, 100,
         100, 100, 100, 100, 100,
-        100, 100
+        100, 100,
       ],
       timeZero: 0,
       suspended: false,
@@ -612,10 +612,22 @@ export default function reduce(state, action) {
       };
     }
     case 'PATCH_CHANGE': {
-      const newOscWaves = [null, action.patch, action.patch];
+      let newOscWaves = [...state.oscwaves];
+      let newKnobs = [...state.knobs];
+
+      // set the wave type from the patch for both oscs
+      newOscWaves[1] = action.patch[0];
+      newOscWaves[2] = action.patch[1];
+
+      // set detune/volume for both oscs
+      newKnobs[7] = action.patch[2];
+      newKnobs[8] = action.patch[3];
+      newKnobs[9] = action.patch[4];
+      newKnobs[10] = action.patch[5];
 
       return Object.assign({}, state, {
-        patch: action.patch,
+        patch: action.patchName,
+        knobs: newKnobs,
         oscwaves: newOscWaves,
       });
     }
