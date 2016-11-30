@@ -27,11 +27,10 @@ export let BiquadFilterHi = (audioCtx) => {
 export let MOOGFilter = (audioCtx) => {
   // Mostly taken from: noisehack.com/custom-audio-effects-javascript-web-audio-api/
   let bufferSize = 4096;
-  console.log('inside effects MOOGFilter')
   let filter = audioCtx.createScriptProcessor(bufferSize, 1, 1);
   let in1, in2, in3, in4, out1, out2, out3, out4;
   in1 = in2 = in3 = in4 = out1 = out2 = out3 = out4 = 0.0;
-  filter.cutoff = 0.065 * 2;
+  filter.cutoff = 0.13;
   filter.resonance = 6 * 100 / 256 // 6 * default knob value * max knob value
   filter.onaudioprocess = function(e) {
     let input = e.inputBuffer.getChannelData(0);

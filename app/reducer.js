@@ -523,7 +523,7 @@ export default function reduce(state, action) {
         if (effect.name === 'MOOG') {
           let whichKnob = effect.knobs.indexOf(action.id);
           if (whichKnob === 0) {
-            effect.node.cutoff = 0.065 * 2 * action.value / 100;
+            effect.node.cutoff = 0.13 * action.value / 100;
           } else {
             effect.node.resonance = 6 * action.value / 256;
           }
@@ -622,13 +622,9 @@ export default function reduce(state, action) {
       let effect = action.effect;
       let allActiveEffects = state.activeEffects.slice();
       let allKnobs = state.knobs.slice();
-      console.log('activeEffects length: ', allActiveEffects.length);
-      console.log('in EFFECT_TO_RACK')
+
       let newEffectNode = state.customEffects.filter(fx => fx.name === action.effect)[0].node(state.audioContext);
      
-      // let newEffectNode = state.customEffects.filter(fx => fx.name === action.effect)[0].node;
-      console.log('newEffectNode: ', newEffectNode);
-
       if (allActiveEffects.length === 0) { // this is the first effect unit we're adding
         state.masterOut.disconnect();
         state.masterOut.connect(newEffectNode);
@@ -662,11 +658,6 @@ export default function reduce(state, action) {
         allKnobs.push(100);
         allKnobs.push(100);
       }
-
-      // if(effect.name === 'MOOG') {
-      //   allKnobs.push(100);
-      // //   allKnobs.push(100);
-      // }
 
       return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
     }
