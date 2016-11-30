@@ -158,7 +158,7 @@ export default function reduce(state, action) {
   }
 
   switch (action.type) {
-    case 'USER_LOGIN': {
+   case 'USER_LOGIN': {
       let newUserRoom = JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username;
       state.socket.emit('room', { joinRoom: newUserRoom});
       fetchRooms();

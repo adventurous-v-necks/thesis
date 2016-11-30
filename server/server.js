@@ -84,41 +84,39 @@ passport.use('facebook', new FacebookStrategy({
   callbackURL: 'http://localhost:3000/auth/facebook/callback',
   profileFields: ['id', 'emails', 'name']
 },
-  function(accessToken, refreshToken, profile, done) {
-    process.nextTick(function() {
+function(accessToken, refreshToken, profile, done) {
+  process.nextTick(function() {
+    User.findOne({ 'email' : profile.emails[0].value }, function(err, user) {
 
-        User.findOne({ 'local.id' : profile.id }, function(err, user) {
+      if (err)
+        return done(err);
 
-          if (err)
-              return done(err);
-
-          if (user) {
-            currentUser = user;
-            io.sockets.emit('userLogin', {data: user.username})
+      if (user) {
+        currentUser = user;
+        io.sockets.emit('userLogin', {data: user.username})
               return done(null, user); // user found, return that user
-          }
-          else {
+      }
+        else {
 
-            var newUser            = new User();
-            newUser.username = profile.name.givenName + ' ' + profile.name.familyName;
-            newUser.email = profile.emails[0].value
-            newUser.password    = profile.id;
-            newUser.session = accessToken;
+          var newUser            = new User();
+          newUser.username = profile.name.givenName + ' ' + profile.name.familyName;
+          newUser.email = profile.emails[0].value
+          newUser.password    = profile.id;
+          newUser.session = accessToken;
 
-            currentUser =   newUser.username
-            io.sockets.emit('userLogin', {data: newUser.username})
+          currentUser =   newUser.username
+          io.sockets.emit('userLogin', {data: newUser.username})
 
-            newUser.save(function(err, success) {
-              if (err)
-                console.error(err);
+          newUser.save(function(err, success) {
+            if (err)
+              console.error(err);
 
-              return done(null, newUser);
-            });
-          }
-
-        });
+            return done(null, newUser);
+          });
+        }
     });
-  })
+  });
+})
 )
 
 
@@ -199,11 +197,16 @@ app.get('/liveRooms', function response(req, res) {
 });
 
 app.get('/savedSets', function(req,res) {
+
   User.findOne({ username: req.user.username }, function (err, user) {
-    if (err) { return res.json({status: 'bad', message: 'You appear to not be logged in.'}); }
-    return res.json({sets: user.sets});
-  });
-});
+    if (err) {
+      console.error(err)
+      return res.json({status: 'bad', message: 'You appear to not be logged in.'}); }
+      if(user){
+        return res.json({sets: user.sets});
+      }
+    });
+})
 
 app.get('/getState/:room', function(req, res) {
   io.to(req.params.room).emit('get_state');
