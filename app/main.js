@@ -26,6 +26,7 @@ render(
           <Route path="/player" component={Player} />
           <Route path="/signUp" component={SignUp} />
           <Route path="/signin" component={LoginForm} />
+          <Route path="/profile" component={Profile} />
           <Route path="*" component={FourOhFour}/>
       </Route>
     </Router>
