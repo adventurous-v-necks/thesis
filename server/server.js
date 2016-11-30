@@ -93,7 +93,6 @@ function(accessToken, refreshToken, profile, done) {
 
       if (user) {
         currentUser = user;
-        console.log('current user inside server', currentUser);
         io.sockets.emit('userLogin', {data: user.username})
               return done(null, user); // user found, return that user
       }
