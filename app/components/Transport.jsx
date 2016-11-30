@@ -14,10 +14,11 @@ class Transport extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount() {
-    fetch('/savedSets', {credentials: 'include'}).then(resp => resp.json()).then(sets => {
+
+ componentDidMount() {
+    fetch('/savedSets', {credentials: 'include'}).then(resp => resp.json().then(sets => {
       this.props.dispatch({type:'GOT_SAVED_SETS', sets: sets});
-    });
+    }))
   }
   syncToggle() {
     this.props.dispatch({type:'SYNC_TOGGLE'});
