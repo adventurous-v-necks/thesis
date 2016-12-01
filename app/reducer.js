@@ -108,11 +108,11 @@ export default function reduce(state, action) {
       knobs[20+] are reserved for effects
       */
       knobs: [
-        100, 100, 100, 100, 100,
-        100, 100, 100, 100, 127,
-        127, 100, 100, 100, 100,
-        100, 100, 100, 100, 100,
-        100, 100,
+      100, 100, 100, 100, 100,
+      100, 100, 100, 100, 127,
+      127, 100, 100, 100, 100,
+      100, 100, 100, 100, 100,
+      100, 100,
       100, 100, 100, 100, 100,
       100, 100, 100, 100, 127,
       127, 100, 100, 100, 100,
@@ -159,6 +159,7 @@ export default function reduce(state, action) {
       midiOutput: null, // the actual midi output object to send messages on
       savedSets: [],
       faders: {}, // each fader - global BPM then column BPM
+      profile: null,
     };
   }
 
@@ -471,12 +472,7 @@ export default function reduce(state, action) {
     }
 
     case 'FETCH_PROFILE': {
-      let theHeaders = new Headers({ "Content-Type": "application/json" });
-      fetch('/profile', {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
-        resp.json().then(r => {
-          console.log('r', r)
-          })
-      })
+          return Object.assign({}, state, {profile: action.profile});
     }
 
     case 'KNOB_TWIDDLE': {
