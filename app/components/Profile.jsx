@@ -27,11 +27,20 @@ class Profile extends React.Component {
   
   return this.props.profile.sets.map((set,i) => (
     <h4 key={'set'+i} value={i}>{set.state.name}</h4>
-            ))
+    ))
  }
 
  renderProfile() {
-  console.log('props', this.props)
+    const buttonStyle = {
+      backgroundColor: "rgba(11,11,11,0.8)",
+      borderRadius: "2px",
+      marginRight: "1em",
+      padding: "0 1em",
+      height: "80%",
+      top: "10%",
+      position: "relative",
+      }
+  
   return this.props.profile ? (
     <div>
     <br/>
@@ -51,13 +60,12 @@ class Profile extends React.Component {
               </div>
             </div><br/>
             <div style={{height:'auto'}}>
-              <h3 style={{paddingRight:'1em'}}>Saved Patches: {this.props.profile.patches}</h3>
               <div style={{height:'auto'}}>
               </div>
             </div><br/>
+            <li style={{buttonStyle}} ><Link to="/player">Back to the music!</Link></li>
           </div>
         </div>
-
     </span>
     </div>
     ) : (
@@ -71,7 +79,7 @@ class Profile extends React.Component {
 
     return (
       <div>
-      <div> {this.renderProfile.call(this)} </div>
+        <div> {this.renderProfile.call(this)} </div>
       </div>
       );
   }
