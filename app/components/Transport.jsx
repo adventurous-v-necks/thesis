@@ -97,9 +97,9 @@ class Transport extends React.Component {
       transform: 'translateY(-50%)',
       float: 'left',
     };
-    
+
     return (
-      <span style={{display:'inline-block', height:'auto', width:'100%', marginTop:'0.2em'}}>
+      <span style={{display:'inline-block', height:'auto', width:'100%', marginTop:'0.2em', position:'relative'}}>
         <div className="transportContainer">
           <TimeSig />
           <Tempo />

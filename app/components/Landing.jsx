@@ -11,7 +11,7 @@ export default class Landing extends React.Component {
   render() {
 
     return (
-      <div style={{height:'100em'}}>
+      <div style={{height:'calc(100% + 5em)', width:'100%'}}>
         <div className="hero">
           <span className="hello">Online, social DJing</span>
           <Link to="/player"><button>Try a demo</button></Link>

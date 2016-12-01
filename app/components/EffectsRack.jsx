@@ -31,7 +31,7 @@ class EffectsRack extends React.Component {
       });
 
     return (
-    <div style={{display:'inline-block', height:'15%', width:'100%', marginTop:'0.5em'}}>
+    <div style={{display:'inline-block', height:'15%', width:'100%', marginTop:'0.5em', position:'relative'}}>
       <div className="effectsContainer" style={effectsContainerStyle}>
         <div style={{width: '90%', float: 'left'}}>
          {EffectsUnits}
