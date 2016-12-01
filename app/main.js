@@ -16,7 +16,8 @@ import Profile from './components/Profile.jsx';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
-export const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+// for debugging: export const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+export const store = createStore(reducer);
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 // note that when you add a top level route here e.g. / or abc, need to make corresponding changes in server/server.js

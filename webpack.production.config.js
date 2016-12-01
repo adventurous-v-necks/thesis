@@ -18,7 +18,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'socket.io-client': path.join(__dirname, 'node_modules', 'socket.io-client', 'socket.io.js')
+      'socket.io-client': path.join(__dirname, 'node_modules', 'socket.io-client', 'dist', 'socket.io.min.js')
     }
   },
   plugins: [
@@ -59,6 +59,9 @@ module.exports = {
     }, {
       test: /\.css$/,
       loader: ExtractTextPlugin.extract('style', 'css?modules&localIdentName=[name]---[local]---[hash:base64:5]!postcss')
+    }, {
+      test   : /\.(png|jpg)$/,
+      loader : 'url-loader?limit=8192'
     }, {
       test: /\.scss$/,
       loader: ExtractTextPlugin.extract('css!sass!postcss')
