@@ -475,26 +475,10 @@ export default function reduce(state, action) {
     }
 
     case 'FETCH_PROFILE': {
-      console.log('3')
-      console.log('action', action)
-      let theHeaders = new Headers({ "Content-Type": "application/json" });
-      fetch('/profile', {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
-        resp.json().then(r => {
-          console.log('~~~~~~~~~~~~~~r', r.user)
-          console.log('action', action)
             return Object.assign({}, state, {
-              profile: r.user,
+              profile: action.profile,
             });
-        });
-      });
-    }
-
-    case 'RETURN_PROFILE': {
-      console.log('action inside return prof', action)
-      return Object.assign({}, state, {
-        profile: action.profile,
-      });
-    }
+        }
 
     case 'KNOB_TWIDDLE': {
       let temp = Object.assign([], state.performance);
