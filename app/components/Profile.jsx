@@ -63,7 +63,7 @@ class Profile extends React.Component {
             <div style={{height:'auto'}}>
               <div style={{height:'auto'}}>
               </div>
-            </div><br/>
+            </div>
             <Link className="menu-item" style={{color:'#fff', fontFamily: 'Permanent Marker'}}to="/player">Back to the music!</Link>
             </div><br/>
           </div>
@@ -87,7 +87,6 @@ class Profile extends React.Component {
 }
 
 const mapStateToProps = function(state) {
-  console.log('state', state)
   return  {
     profile: state.profile
   };

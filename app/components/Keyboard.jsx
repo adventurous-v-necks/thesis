@@ -12,8 +12,8 @@ class Keyboard extends React.Component {
 
     let keyboard = new QwertyHancock({
        id: 'keyboard',
-       width: 500,
-       height: 125,
+       width: 800,
+       height: 180,
        octaves: 2,
        startNote: 'C3',
        whiteNotesColour: 'white',
