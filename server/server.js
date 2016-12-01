@@ -1,6 +1,7 @@
 
 const path = require('path');
 const express = require('express');
+const compression = require('compression');
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -49,7 +50,7 @@ process.on('SIGINT', gracefulExit).on('SIGTERM', gracefulExit);
 const port = isDeveloping ? 3000 : process.env.PORT;
 
 const app = express();
-
+app.use(compression());
 
 app.use(express.static('public'));
 
@@ -152,7 +153,7 @@ app.post('/signup', function (req, res) {
       if (err) {
         console.log(error)
       }
-      
+
       res.json({status: 'ok', message: 'Successfully created user', username: req.body.username});
     });
   });
@@ -207,7 +208,7 @@ app.get('/savedSets', function(req,res) {
   User.findOne({ username: req.user.username }, function (err, user) {
     if (err) {
       console.error(err)
-      return res.json({status: 'bad', message: 'You appear to not be logged in.'}); 
+      return res.json({status: 'bad', message: 'You appear to not be logged in.'});
     }
       if(user){
         return res.json({sets: user.sets});

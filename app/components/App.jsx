@@ -49,7 +49,6 @@ class App extends React.Component {
       </span>
       ) : (
       <span>
-      <li className="menu-item"><Link href={'/auth/facebook'}>facebook login</Link></li>
       <li className="menu-item"><Link to="/signup">Sign Up</Link></li>
       <li className="menu-item"><Link to="/signin">Sign In</Link></li>
       </span>
@@ -86,7 +85,7 @@ class App extends React.Component {
             {this.customNavbar.call(this)}
           </ul>
         </nav>
-        <ReactCSSTransitionGroup component="div" transitionName="page-transition" transitionEnterTimeout={100} transitionLeaveTimeout={100}>
+        <ReactCSSTransitionGroup style={{height:'calc(100% - 4em)', marginLeft:'auto', marginRight:'auto', position:'relative', display:'block'}} component="div" transitionName="page-transition" transitionEnterTimeout={800} transitionLeaveTimeout={300}>
           {React.cloneElement(this.props.children, {key: this.props.location.key})}
         </ReactCSSTransitionGroup>
       </div>

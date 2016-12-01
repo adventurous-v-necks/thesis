@@ -60,7 +60,7 @@ class Transport extends React.Component {
   render() {
     const volumeSizing = {
       width: 'auto',
-      float: 'right',
+      float: 'left',
       height: 'auto',
       textAlign: 'center',
       position: 'relative',
@@ -80,26 +80,26 @@ class Transport extends React.Component {
 
     let setDropdownStyle = {
       color: 'black',
-      left: '5em',
       position: 'relative',
       padding: '0 1em',
       border: '1px solid black',
       height: '2em',
       top: '50%',
       transform: 'translateY(-50%)',
+      marginLeft: '1em',
     };
 
     let cloudStyle = {
       position: 'relative',
-      left: '2em',
       fontSize: '2em',
       top: '50%',
       transform: 'translateY(-50%)',
       float: 'left',
+      marginLeft: '1em',
     };
-    
+
     return (
-      <span style={{display:'inline-block', height:'auto', width:'100%', marginTop:'0.2em'}}>
+      <span style={{display:'inline-block', height:'auto', width:'100%', marginTop:'0.2em', position:'relative'}}>
         <div className="transportContainer">
           <TimeSig />
           <Tempo />

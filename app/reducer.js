@@ -43,7 +43,7 @@ const sampleUrls = [
   '/samples/100bpm_Hamir_DrumLoop_(No_kick)_01.wav.mp3',
   '/samples/100bpm_Hamir_Fx_Noise.wav.mp3',
   '/samples/100bpm_Hamir_Fx_Riseup.wav.mp3',
-  '/samples/100bpm_Hamir_Hithat.wav.mp3',
+  '/samples/100bpm_Hamir_Hihat.wav.mp3',
   '/samples/100bpm_Hamir_Perc.wav.mp3',
   '/samples/100bpm_Hamir_Ride_1.wav.mp3',
   '/samples/100bpm_Hamir_Ride_2.wav.mp3',
@@ -71,10 +71,10 @@ export default function reduce(state, action) {
     for (let col = 0; col < COLUMNS; col++) {
       let column = [];
       for (let sample = 0; sample < SAMPLES_PER_COLUMN; sample++) {
-        column.push({sampleUrl: sampleUrls[(col * 5 + sample) % 18],
+        column.push({sampleUrl: sampleUrls[(col * 5 + sample) % 19],
           index: sample,
           column: col,
-          sampleName: sampleUrls[(col * 5 + sample) % 18].split('/')[2].split('_')[2].split('.')[0],
+          sampleName: sampleUrls[(col * 5 + sample) % 19].split('/')[2].split('_')[2].split('.')[0],
           playing: false,
           loaded: false,
           buffer: null
@@ -640,7 +640,7 @@ export default function reduce(state, action) {
       let allKnobs = state.knobs.slice();
 
       let newEffectNode = state.customEffects.filter(fx => fx.name === action.effect)[0].node(state.audioContext);
-     
+
       if (allActiveEffects.length === 0) { // this is the first effect unit we're adding
         state.masterOut.disconnect();
         state.masterOut.connect(newEffectNode);
