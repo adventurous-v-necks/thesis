@@ -655,9 +655,9 @@ export default function reduce(state, action) {
       let newEffectNode = state.customEffects.filter(fx => fx.name === action.effect)[0].node(state.audioContext);
 
       if (allActiveEffects.length === 0) { // this is the first effect unit we're adding
-        state.masterOut.disconnect();
-      state.masterOut.connect(newEffectNode);
-      newEffectNode.connect(state.audioContext.destination);
+       state.masterOut.disconnect();
+       state.masterOut.connect(newEffectNode);
+       newEffectNode.connect(state.audioContext.destination);
     } else {
       allActiveEffects[allActiveEffects.length - 1].node.disconnect();
       allActiveEffects[allActiveEffects.length - 1].node.connect(newEffectNode);
@@ -719,10 +719,9 @@ export default function reduce(state, action) {
     return Object.assign({}, state, {activeEffects: allActiveEffects});
   }
   case 'NAVIGATE_ROOM': {
-    let room = action.room;
-    state.socket.emit('room', { joinRoom: room,  leaveRoom: state.currentRoom});
-
-    return Object.assign({}, state, {currentRoom: room});
+   let room = action.room;
+   state.socket.emit('room', { joinRoom: room,  leaveRoom: state.currentRoom});
+   return Object.assign({}, state, {currentRoom: room});
   }
   case 'UPDATE_ACTIVE_ROOMS': {
     return Object.assign({}, state, {activeRooms: action.allActiveRooms});
