@@ -8,8 +8,11 @@ export default class FbButton extends React.Component {
   render() {
     return (
 
-      <div>
-      <a className="btn btn-primary" href={'/auth/facebook'}><button style={{height:'50px', width:'auto', backgroundColor: 'lightblue', borderRadius:'2px', border:'1px solid black'}} className="fa fa-facebook"> Facebook Login</button></a>
+      <div className="login-button" style={{display:'block',height:'auto'}}>
+      <a href={'/auth/facebook'} style={{width:'100%'}}>
+        <button style={{height:'2.1em', lineHeight:'2.1em', fontSize:'1.4em', color:'white', width:'100%', backgroundColor: '#3b5998', borderRadius:'2px', border:'1px solid black'}}>
+          <i className="fa fa-facebook" style={{color: 'white', marginRight:'1em'}}></i>Login with facebook
+        </button></a>
       </div>
     )
   }
