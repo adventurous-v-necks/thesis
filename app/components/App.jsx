@@ -44,7 +44,7 @@ class App extends React.Component {
     return this.props.loggedIn ? (
       <span>
       <li className="menu-item"><Link to="/signout" onClick={this.logOut.bind(this)}>Sign Out</Link></li>
-      <li className="menu-item"><Link to="/profile">{JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username}</Link></li>
+      <li className="menu-item"><Link to="/profile">{JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username || 'Profile'}</Link></li>
       <li className="room-select"><RoomDropDown /></li>
       </span>
       ) : (

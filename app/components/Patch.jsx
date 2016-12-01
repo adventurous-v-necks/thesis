@@ -67,9 +67,9 @@ class Patch extends React.Component {
         <span style={labelStyle}>Patch</span>
         <select size={1} style={selectStyle}
           value={this.props.patch} onChange={this.handleChange}>
+            <option value="sawtooth">Sawtooth</option>
             <option value="sine">Constant Waves</option>
             <option value="square">Harsh Waves</option>
-            <option value="sawtooth">Sawtooth</option>
             <option value="snake">Snake Charmer</option>
             <option value="spooky">Spooky</option>
           </select>
