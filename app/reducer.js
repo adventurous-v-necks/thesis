@@ -679,7 +679,7 @@ export default function reduce(state, action) {
     }
 
     case 'FETCH_PROFILE': {
-      eturn Object.assign({}, state, {profile: action.profile});
+      return Object.assign({}, state, {profile: action.profile});
     }
 
     case 'EFFECT_FROM_RACK': {

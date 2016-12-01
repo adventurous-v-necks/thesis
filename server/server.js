@@ -109,6 +109,7 @@ function(accessToken, refreshToken, profile, done) {
           io.sockets.emit('userLogin', {data: newUser.username})
 
           newUser.save(function(err, success) {
+
             if (err){
               console.error(err);
             }
