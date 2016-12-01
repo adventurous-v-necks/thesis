@@ -80,13 +80,14 @@ class Sample extends React.Component {
     let style = {
       backgroundColor: `hsl(${(((this.props.sample.column+1)*8)*8)%500},${60-(this.props.sample.index*10)}%,80%)`,
       cursor: 'pointer',
-      height:'calc(20% - 0.6em)',
+      height:'15%',
+      fontSize: '0.6em',
       borderBottom: '2px solid white',
       width:'100%',
       animation: this.props.playing ? 'play-anim 1s infinite' : 'none',
     };
     return (
-      <div onDragOver={this.preventDefault} onDrop={this.onDrop.bind(this)} title="Click to Play Loop or Drop a New Sample" ref={'1loop'} key={this.props.sample.sampleName} id={`sample${this.props.sample.column}-${this.props.sample.index}`} style={style} onClick={this.playSample.bind(this)}><span style={{userSelect:'none',height:'auto',maxHeight:'1em', cursor:'text',fontSize:'1.8em'}} contentEditable suppressContentEditableWarning>{this.props.sampleName}</span><br/>
+      <div className="sample" onDragOver={this.preventDefault} onDrop={this.onDrop.bind(this)} title="Click to Play Loop or Drop a New Sample" ref={'1loop'} key={this.props.sample.sampleName} id={`sample${this.props.sample.column}-${this.props.sample.index}`} style={style} onClick={this.playSample.bind(this)}><span style={{userSelect:'none',height:'auto',maxHeight:'1em', cursor:'text',fontSize:'1.8em'}} contentEditable suppressContentEditableWarning>{this.props.sampleName}</span>
         {!this.props.playing ? (<i className="fa fa-play" id={`sample${this.props.sample.column}-${this.props.sample.index}`}></i>) : (<i id={`playbt${this.props.sample.column}-${this.props.sample.index}`}className="fa fa-square"></i>)}
       </div>
     );
