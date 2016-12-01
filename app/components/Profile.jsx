@@ -15,35 +15,38 @@ class Profile extends React.Component {
   }
 
   componentWillMount() {
-     this.props.dispatch({type:'FETCH_PROFILE'});
-  }
+   console.log('1')
+   this.props.dispatch({type:'FETCH_PROFILE', profile: null});
+   console.log('2')
+ }
 
-
-
-  customNavbar() {
-    return this.props.profile ? (
-      <span>
-      The newest stuff on the block
-      </span>
-      ) : (
-      <span>
-      The oldest stuff on earth
-      </span>
-      );
+ renderProfile() {
+  console.log('this.props', this.props)
+  return this.props.profile ? (
+    <span>
+    {this.props.profile.username}
+    </span>
+    ) : (
+    <span>
+    {this.props.profile}
+    </span>
+    );
   }
 
   render(){
 
     return (
       <div>
-        <div> {this.customNavbar.call(this)} </div>
-        </div>
-    );
+      <div> {this.renderProfile.call(this)} </div>
+      </div>
+      );
   }
 }
 
 const mapStateToProps = function(state) {
-  return  {};
+  return  {
+    profile: state.profile
+  };
 }
 
 export default connect(mapStateToProps)(Profile);
