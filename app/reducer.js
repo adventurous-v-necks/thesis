@@ -677,6 +677,11 @@ export default function reduce(state, action) {
 
       return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
     }
+
+    case 'FETCH_PROFILE': {
+      eturn Object.assign({}, state, {profile: action.profile});
+    }
+
     case 'EFFECT_FROM_RACK': {
       let allActiveEffects = state.activeEffects.slice();
       let knobPos = action.id.search(/[0-9]/g);

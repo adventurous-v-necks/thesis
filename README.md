@@ -1,6 +1,10 @@
 # Project Name
 
-> Pithy project description
+> Collaborative DJing in your browser
+
+Begin making your own beats leveraging the built in sampler, effects, and fully-additive synthesizer. You can upload your own samples by simply dragging and dropping with in the sampler, as well as mix across channels by manipulating gain and tempo.
+
+Most importantly, you can record your sesssions and share with friends or join the same room and mix together in real time from anywhere with an internet connection.
 
 ## Team
 
@@ -18,16 +22,10 @@
 1. [Team](#team)
 1. [Contributing](#contributing)
 
-## Usage
-
-> Some usage instructions
-
 ## Requirements
 
-- Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
+- Node 6.9.x
+- Mongod 3.2.x
 
 ## Development
 
@@ -36,9 +34,16 @@
 From within the root directory:
 
 ```sh
-#probably an npm install...
+npm install
 ```
 
+## Usage
+
+> 
+```sh
+npm run start_dev
+```
+from within the root directory with a Mongo instance running.
 
 ### Roadmap
 

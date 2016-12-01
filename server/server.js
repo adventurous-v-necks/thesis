@@ -215,6 +215,19 @@ app.get('/savedSets', function(req,res) {
       }
     });
 })
+
+app.get('/profile', function(req,res) {
+  User.findOne({ username: req.user.username }, function (err, user) {
+    if (err) {
+      console.error(err)
+      return res.json({status: 'bad', message: 'No profile available.'}); 
+    }
+      if(user){
+        return res.json({user: user});
+      }
+    });
+})
+
 app.get('/getState/:room', function(req, res) {
   io.to(req.params.room).emit('get_state');
   let called = {calls: 0};
