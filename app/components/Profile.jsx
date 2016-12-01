@@ -60,12 +60,10 @@ class Profile extends React.Component {
               <div style={{height:'auto'}}>
               </div>
             </div><br/>
-            <div style={{height:'auto'}}>
-              <div style={{height:'auto'}}>
-              </div>
-            </div>
+            <div style={{height:'auto'}}><br/>
             <Link className="menu-item" style={{color:'#fff', fontFamily: 'Permanent Marker'}}to="/player">Back to the music!</Link>
-            </div><br/>
+            </div>
+            </div>
           </div>
     </span>
     </div>
