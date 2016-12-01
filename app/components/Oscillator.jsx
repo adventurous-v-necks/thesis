@@ -21,23 +21,29 @@ class Oscillator extends React.Component {
       width: '48%',
       height: '100%',
       border: '2px solid #383838',
-      marginRight: '1%'
+      marginRight: '1%',
     }
 
     const h5w1 = {
       width: "100%",
       height: "50%",
     };
+
     const knobStyle = {
       width: '100%',
       height: 'auto',
       textAlign: 'center',
     };
 
+    const formStyle = {
+      position: 'relative',
+      top: '-60%',
+    };
+
     const radioLabelStyle = {
       position: 'relative',
-      left: '15%'
-    }
+      left: '15%',
+    };
 
     const oscNum = `osc${this.props.number}`;
     const num = this.props.number;
@@ -63,7 +69,7 @@ class Oscillator extends React.Component {
             <tr style={h5w1}>
               <td colSpan="2">
                 <div>
-                  <form action="" style={{position: 'relative', top: '-15%'}}>
+                  <form action="" style={formStyle}>
                     <input type="radio" style={radioLabelStyle} name={oscNum} value="sine"
                       checked={oscwaves[num] === 'sine'} onChange={this.handleWaveChange}/>Sine
                     <input type="radio" style={radioLabelStyle} name={oscNum} value="square"
