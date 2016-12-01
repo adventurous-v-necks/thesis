@@ -475,20 +475,24 @@ export default function reduce(state, action) {
     }
 
     case 'FETCH_PROFILE': {
+      console.log('3')
+      console.log('action', action)
       let theHeaders = new Headers({ "Content-Type": "application/json" });
       fetch('/profile', {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
         resp.json().then(r => {
-          if (r.username) {
-            console.log('~~~~~~~~~~~~~~r', r)
-            store.dispatch({type: 'RETURN_PROFILE', profile: r})
-          }
+          console.log('~~~~~~~~~~~~~~r', r.user)
+          console.log('action', action)
+            return Object.assign({}, state, {
+              profile: r.user,
+            });
         });
       });
     }
 
     case 'RETURN_PROFILE': {
+      console.log('action inside return prof', action)
       return Object.assign({}, state, {
-        profile: state.profile,
+        profile: action.profile,
       });
     }
 
