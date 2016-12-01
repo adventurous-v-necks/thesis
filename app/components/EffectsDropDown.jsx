@@ -29,12 +29,14 @@ class EffectsDropDown extends React.Component {
       marginTop: '-0.35em',
     };
     let listDropDownStyle = {
-      maxHeight: '0px',
+      maxHeight: 'auto',
       paddingRight: '0.5em',
       paddingLeft: '0.5em',
       backgroundColor: '#333',
       borderRadius: '2px',
       transition: 'all 0.3s ease',
+      position: 'relative',
+      zIndex: '99',
     }
     const listItemStyle = {
       display: 'block',
