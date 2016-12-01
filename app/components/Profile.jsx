@@ -26,7 +26,7 @@ class Profile extends React.Component {
  renderSets() {
   
   return this.props.profile.sets.map((set,i) => (
-    <h6 key={'set'+i} value={i}>{set.state.name}</h6>
+    <h4 key={'set'+i} value={i}>{set.state.name}</h4>
             ))
  }
 
@@ -38,20 +38,20 @@ class Profile extends React.Component {
     <span>
         <div style={{padding: '0em 3em', height:'10em'}}>
           <h1 style={{height: '1em', display:'block', marginLeft:'auto', marginRight:'auto', width:'15em', marginTop:'4em'}}>Your ReJuicy Profile</h1>
-          <div style={{padding:'2em 2em', lineHeight:'2em', height:'14em',overflow:'hidden',border:'1px solid black'}}>
+          <div style={{padding:'0em 2em', lineHeight:'2em', height:'14em',overflow:'hidden',border:'1px solid black'}}>
             <div style={{height:'auto', display:'inline-block'}}>
-          <br/><h2 style={{height:'auto'}}>Username: {this.props.profile.username}</h2><br/>
-              <label style={{paddingRight:'1em'}}>Email: {this.props.profile.email}</label>
+          <br/><h3 style={{height:'auto'}}>Username: {this.props.profile.username}</h3><br/>
+              <h3 style={{paddingRight:'1em'}}>Email: {this.props.profile.email}</h3>
               <div style={{height:'auto'}}>
               </div>
             </div><br/>
             <div style={{height:'1em', display:'inline-block'}}>
-              <label style={{paddingRight:'1em'}}>Saved Sets: {this.renderSets()}</label>
+              <h3 style={{paddingRight:'1em'}}>Saved Sets: {this.renderSets()}</h3>
               <div style={{height:'auto'}}>
               </div>
             </div><br/>
             <div style={{height:'auto'}}>
-              <label style={{paddingRight:'1em'}}>Saved Patches: {this.props.profile.patches}</label>
+              <h3 style={{paddingRight:'1em'}}>Saved Patches: {this.props.profile.patches}</h3>
               <div style={{height:'auto'}}>
               </div>
             </div><br/>
