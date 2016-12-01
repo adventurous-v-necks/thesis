@@ -70,8 +70,8 @@ class EffectsDropDown extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    effectsMenuActive: state.effectsMenuActive,
-    customEffects: state.customEffects,
+    effectsMenuActive: state.state.effectsMenuActive,
+    customEffects: state.state.customEffects,
   };
 }
 

@@ -1,0 +1,21 @@
+export const sampleUrls = [
+  '/samples/100bpm_Hamir_Bass_1.wav.mp3',
+  '/samples/100bpm_Hamir_Bass_2.wav.mp3',
+  '/samples/100bpm_Hamir_Sub.wav.mp3',
+  '/samples/100bpm_Hamir_Fx_Noise.wav.mp3',
+  '/samples/100bpm_Hamir_Fx_Riseup.wav.mp3',
+  '/samples/100bpm_Hamir_Kick.mp3',
+  '/samples/100bpm_Hamir_Snare.wav.mp3',
+  '/samples/100bpm_Hamir_Clap.mp3',
+  '/samples/100bpm_Hamir_Hithat.wav.mp3',
+  '/samples/100bpm_Hamir_Perc.wav.mp3',
+  '/samples/100bpm_Hamir_Ride_1.wav.mp3',
+  '/samples/100bpm_Hamir_Ride_2.wav.mp3',
+  '/samples/100bpm_Hamir_Drop_1.wav.mp3',
+  '/samples/100bpm_Hamir_Drop_2.wav.mp3',
+  '/samples/100bpm_Hamir_DrumLoop_01.wav.mp3',
+  '/samples/100bpm_Hamir_DrumLoop_02.wav.mp3',
+  '/samples/100bpm_Hamir_DrumLoop_(No_kick)_01.wav.mp3',
+  '/samples/100bpm_Hamir_Synth_1.wav.mp3',
+  '/samples/100bpm_Hamir_Synth_2.wav.mp3'
+];

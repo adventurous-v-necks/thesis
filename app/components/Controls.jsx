@@ -53,7 +53,7 @@ class Controls extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    recording: state.recording
+    recording: state.state.recording
   };
 }
 

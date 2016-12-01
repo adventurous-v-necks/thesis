@@ -1,7 +1,7 @@
 import React from 'react';
 import {render} from 'react-dom';
 
-import { Router, Route, browserHistory } from 'react-router';
+import { Router, Route, browserHistory} from 'react-router';
 
 import App from './components/App.jsx';
 import Player from './components/Player.jsx';
@@ -15,7 +15,6 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
 export const store = createStore(rootReducer);
-console.log(store.getState());
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 // note that when you add a top level route here e.g. / or abc, need to make corresponding changes in server/server.js

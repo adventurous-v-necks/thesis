@@ -7,6 +7,9 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import {connect} from 'react-redux';
 
+import {fetchRooms} from '../fetchRooms.js';
+import {store} from '../main.js';
+
 // To get the leaveHook for React Router, links must be <Link to=> not <a href=>
 import {Link} from 'react-router';
 
@@ -24,6 +27,11 @@ class App extends React.Component {
          this.props.dispatch({type: 'MIDI_OK', midiObj: accessObj});
        }, (err) => console.log(err));
      }
+  }
+  componentDidMount() {
+    let newUserRoom = JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username;
+    store.getState().state.socket.emit('room', { joinRoom: newUserRoom});
+    fetchRooms();
   }
   logOut(e) {
     e.preventDefault();
@@ -89,7 +97,7 @@ class App extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    loggedIn: state.state.loggedIn,
+    loggedIn: state.user.loggedIn,
     midiDevices: state.state.midiDevices,
   };
 }

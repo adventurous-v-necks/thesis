@@ -71,7 +71,7 @@ class EffectsUnit extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    knobs: state.knobs,
+    knobs: state.state.knobs,
   };
 }
 

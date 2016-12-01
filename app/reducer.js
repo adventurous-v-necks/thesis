@@ -16,38 +16,9 @@ import {incEvents} from './scheduler.js';
 import {sched} from './scheduler.js';
 import {setPlayTime} from './scheduler.js';
 
-const sampleUrls = [
-  '/samples/100bpm_Hamir_Bass_1.wav.mp3',
-  '/samples/100bpm_Hamir_Bass_2.wav.mp3',
-  '/samples/100bpm_Hamir_Clap.mp3',
-  '/samples/100bpm_Hamir_Drop_1.wav.mp3',
-  '/samples/100bpm_Hamir_Drop_2.wav.mp3',
-  '/samples/100bpm_Hamir_DrumLoop_01.wav.mp3',
-  '/samples/100bpm_Hamir_DrumLoop_02.wav.mp3',
-  '/samples/100bpm_Hamir_DrumLoop_(No_kick)_01.wav.mp3',
-  '/samples/100bpm_Hamir_Fx_Noise.wav.mp3',
-  '/samples/100bpm_Hamir_Fx_Riseup.wav.mp3',
-  '/samples/100bpm_Hamir_Hithat.wav.mp3',
-  '/samples/100bpm_Hamir_Perc.wav.mp3',
-  '/samples/100bpm_Hamir_Ride_1.wav.mp3',
-  '/samples/100bpm_Hamir_Ride_2.wav.mp3',
-  '/samples/100bpm_Hamir_Snare.wav.mp3',
-  '/samples/100bpm_Hamir_Kick.mp3',
-  '/samples/100bpm_Hamir_Sub.wav.mp3',
-  '/samples/100bpm_Hamir_Synth_1.wav.mp3',
-  '/samples/100bpm_Hamir_Synth_2.wav.mp3'
-];
+import {fetchRooms} from './fetchRooms.js';
 
-const fetchRooms = () => {
-  let theHeaders = new Headers({ "Content-Type": "application/json" });
-  fetch('/liveRooms', {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
-    resp.json().then(r => {
-      if (r.status === 'ok') {
-        store.dispatch({type: 'UPDATE_ACTIVE_ROOMS', allActiveRooms: r.rooms})
-      }
-    });
-  });
-};
+import {sampleUrls} from './sampleUrls.js';
 
 export default function reduce(state, action) {
   if (state === undefined) {
@@ -55,10 +26,10 @@ export default function reduce(state, action) {
     for (let col = 0; col < COLUMNS; col++) {
       let column = [];
       for (let sample = 0; sample < SAMPLES_PER_COLUMN; sample++) {
-        column.push({sampleUrl: sampleUrls[(col * 5 + sample) % 18],
+        column.push({sampleUrl: sampleUrls[(col * 5 + sample) % 19],
           index: sample,
           column: col,
-          sampleName: sampleUrls[(col * 5 + sample) % 18].split('/')[2].split('_')[2].split('.')[0],
+          sampleName: sampleUrls[(col * 5 + sample) % 19].split('/')[2].split('_')[2].split('.')[0],
           playing: false,
           loaded: false,
           buffer: null
@@ -67,11 +38,9 @@ export default function reduce(state, action) {
       samples.push(column);
     }
     return {
-      loggedIn: !!window.localStorage.getItem('com.rejuicy.user'),
       performance: [],
       recording: false,
       playing: false,
-      user: 'none',
       BPM: 120,
       minTempo: 60,
       maxTempo: 180,
@@ -130,7 +99,6 @@ export default function reduce(state, action) {
       syncOn: true,
       lastPlayed: 0, // time (audio time) the last sample was played
       activeRooms: [],
-      currentRoom: '',
       midi: null, // the midi object as a whole, if we got one
       midiDevices: [],
       midiDevice: 0, // an integer selection 0-n from the midi outputs available on midi object
@@ -141,22 +109,15 @@ export default function reduce(state, action) {
   }
 
   switch (action.type) {
-    case 'USER_LOGIN': {
-      let newUserRoom = JSON.parse(window.localStorage.getItem('com.rejuicy.user')).username;
-      state.socket.emit('room', { joinRoom: newUserRoom});
-      fetchRooms();
-      return Object.assign({}, state, {loggedIn: true, currentRoom: newUserRoom});
-    }
-    case 'USER_LOGOUT': {
-      return Object.assign({}, state, {loggedIn: false});
-    }
     case 'GOT_SAVED_SETS': {
       return Object.assign({}, state, {savedSets: action.sets.sets});
     }
     case 'LOAD_SET': {
-      let set = action.set;
-      for (let fader of Object.keys(set.faders)) {
-        document.getElementById(fader).value = Number(set.faders[fader]);
+      let set = action.set.state;
+      if (set.faders && Object.keys(set.faders).length !== 0) {
+        for (let fader of Object.keys(set.faders)) {
+          document.getElementById(fader).value = Number(set.faders[fader]);
+        }
       }
       return Object.assign({}, state, {
         BPM: set.BPM,
@@ -214,7 +175,7 @@ export default function reduce(state, action) {
       }
       let temp = Object.assign([], state.performance);
       if (!action.synthetic) {
-        state.socket.emit('event2server', { action: action, room: state.currentRoom });
+        state.socket.emit('event2server', { action: action, room: store.getState().user.currentRoom });
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
       return Object.assign({}, state, {nodes: newNodes, performance: temp});
@@ -233,7 +194,7 @@ export default function reduce(state, action) {
         oscillator.start(0);
         temp.push(oscillator);
         if (!action.synthetic) {
-          state.socket.emit('event2server', { action: action, room: state.currentRoom });
+          state.socket.emit('event2server', { action: action, room: store.getState().user.currentRoom });
           temp2.push({action: action, timestamp: state.audioContext.currentTime});
         }
       }
@@ -253,7 +214,6 @@ export default function reduce(state, action) {
     case 'CHANGE_MIDI': {
       let output = 0;
       let midiout = state.midi.outputs.values();
-      console.log(action);
       while (output < action.device) { output++; midiout.next(); }
       output = midiout.next().value;
 
@@ -281,26 +241,28 @@ export default function reduce(state, action) {
       });
 
       socket.on('roomJoin', function(data) {
-        fetchRooms();
+        //if (store.getState().user.currentRoom !== data.room)
+          fetchRooms();
       });
 
       socket.on('get_state', function(data) {
+        // this here craziness is cos with combinereducers the state is now state.state, and if
+        // you clone it, the second level state.state object isn't cloned but remains the original object!
         let myState = Object.assign({}, store.getState());
-        delete myState.audioContext;
-        delete myState.currentRoom;
-        delete myState.lastPlayed;
-        delete myState.loggedIn;
-        delete myState.markerTime;
-        delete myState.masterOut; delete myState.customEffects;
-        delete myState.midi; delete myState.activeRooms;
-        delete myState.effectsMenuActive; delete myState.midiOutput;
-        delete myState.nodes; delete myState.oscGainNodes;
-        delete myState.midiDevices;
-        delete myState.pitchShiftNode;
-        delete myState.playing; delete myState.recording;
-        delete myState.sampleBuffers; delete myState.savedSets;
-        delete myState.socket; delete myState.synthGainNode;
-        delete myState.user;
+        let myStateState = Object.assign({}, myState.state);
+        myState = Object.assign({}, {}, {state: myStateState});
+        delete myState.state.audioContext;
+        delete myState.state.lastPlayed;
+        delete myState.state.markerTime;
+        delete myState.state.masterOut; delete myState.state.customEffects;
+        delete myState.state.midi; delete myState.state.activeRooms;
+        delete myState.state.effectsMenuActive; delete myState.state.midiOutput;
+        delete myState.state.nodes; delete myState.state.oscGainNodes;
+        delete myState.state.midiDevices;
+        delete myState.state.pitchShiftNode;
+        delete myState.state.playing; delete myState.state.recording;
+        delete myState.state.sampleBuffers; delete myState.state.savedSets;
+        delete myState.state.socket; delete myState.state.synthGainNode;
         myState.name = new Date().toLocaleString();
         let theHeaders = new Headers({ "Content-Type":"application/json" });
         let stringyState = JSON.stringify({state: myState});
@@ -388,7 +350,7 @@ export default function reduce(state, action) {
       document.getElementById(action.id).value = action.value;
       let temp = Object.assign([], state.performance);
       if (!action.synthetic) {
-        state.socket.emit('event2server', { action: action, room: state.currentRoom });
+        state.socket.emit('event2server', { action: action, room: store.getState().user.currentRoom });
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
       let bpm = state.BPM;
@@ -450,7 +412,7 @@ export default function reduce(state, action) {
       temp2[action.id] = action.value;
       if (!action.synthetic) {
         temp.push({action: action, timestamp: state.audioContext.currentTime});
-        state.socket.emit('event2server', { action: action, room: state.currentRoom });
+        state.socket.emit('event2server', { action: action, room: store.getState().user.currentRoom });
       }
       if (action.id === '0') { // Global Volume
         state.masterOut.gain.value = action.value / 100;
@@ -511,8 +473,10 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
     case 'PLAY_SAMPLE': {
+      console.log(action);
+
       if (!action.synthetic) {
-        state.socket.emit('event2server', { action: action, room: state.currentRoom });
+        state.socket.emit('event2server', { action: action, room: store.getState().user.currentRoom });
       }
 
       let allSamples = Object.assign([], state.samples); //clone to avoid mutation
@@ -572,7 +536,7 @@ export default function reduce(state, action) {
     case 'OSC_WAVE_CHANGE': {
       let temp = Object.assign([], state.performance);
       if (!action.synthetic) {
-        state.socket.emit('event2server', { action: action, room: state.currentRoom });
+        state.socket.emit('event2server', { action: action, room: store.getState().user.currentRoom });
         temp.push({action: action, timestamp: state.audioContext.currentTime});
       }
 
@@ -671,17 +635,12 @@ export default function reduce(state, action) {
       allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
       return Object.assign({}, state, {activeEffects: allActiveEffects});
     }
-    case 'NAVIGATE_ROOM': {
-      let room = action.room;
-      state.socket.emit('room', { joinRoom: room,  leaveRoom: state.currentRoom});
 
-      return Object.assign({}, state, {currentRoom: room});
-    }
     case 'UPDATE_ACTIVE_ROOMS': {
       return Object.assign({}, state, {activeRooms: action.allActiveRooms});
     }
     default: {
-      console.error('Reducer Error: ', action);
+      // no longer necessarily an error here - maybe just another reducer took care of it
       return Object.assign({}, state);
     }
   }

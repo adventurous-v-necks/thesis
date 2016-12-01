@@ -19,14 +19,16 @@ class RoomDropDown extends React.Component {
   goToSelectedRoom(e) {
     if (e.target.value !== 0) {
       let roomname = e.target.children[e.target.value].innerText;
-      fetch('/getState/'+roomname, {credentials:'include'}).then(r => r.json()).then((s) => {
-        if (s.status==='ok') {
-          this.props.dispatch({type: 'LOAD_SET', set: JSON.parse(s.set).state});
-          this.props.dispatch({type: 'NAVIGATE_ROOM', room: roomname});
-        } else {
-          alert('Sorry, that set seems to be unavailable right now.');
-        }
-      });
+      if (roomname !== this.props.currentRoom) {
+        fetch('/getState/'+roomname, {credentials:'include'}).then(r => r.json()).then((s) => {
+          if (s.status==='ok') {
+            this.props.dispatch({type: 'LOAD_SET', set: JSON.parse(s.set).state});
+            this.props.dispatch({type: 'NAVIGATE_ROOM', room: roomname});
+          } else {
+            alert('Sorry, that set seems to be unavailable right now.');
+          }
+        });
+      }
     }
   }
 
@@ -54,7 +56,7 @@ class RoomDropDown extends React.Component {
     };
 
     let allActiveRooms = this.props.activeRooms.filter(roomname => roomname !== this.props.currentRoom);
-    if (this.props.currentRoom !== '' && this.props.currentRoom !== 'Select a Room') {
+    if (this.props.currentRoom && this.props.currentRoom !== '' && this.props.currentRoom !== 'Select a Room') {
       allActiveRooms.unshift(this.props.currentRoom);
     }
 
@@ -75,7 +77,7 @@ const mapStateToProps = function(state) {
   return {
     activeRooms: state.state.activeRooms,
     roomsMenuActive: state.state.roomsMenuActive,
-    currentRoom: state.state.currentRoom,
+    currentRoom: state.user.currentRoom,
   };
 }
 

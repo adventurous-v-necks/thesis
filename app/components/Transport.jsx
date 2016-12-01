@@ -29,27 +29,27 @@ class Transport extends React.Component {
   }
   saveSet() {
     let state = Object.assign({}, store.getState());
-    delete state.audioContext;
-    delete state.currentRoom;
-    delete state.lastPlayed;
-    delete state.loggedIn;
-    delete state.markerTime;
-    delete state.masterOut; delete state.customEffects;
-    delete state.midi; delete state.activeRooms;
-    delete state.effectsMenuActive; delete state.midiOutput;
-    delete state.nodes; delete state.oscGainNodes;
-    delete state.midiDevices;
-    delete state.pitchShiftNode;
-    delete state.playing; delete state.recording;
-    delete state.sampleBuffers; delete state.savedSets;
-    delete state.socket; delete state.synthGainNode;
-    delete state.user;
+    delete state.state.audioContext;
+    delete state.user.currentRoom;
+    delete state.state.lastPlayed;
+    delete state.user.loggedIn;
+    delete state.state.markerTime;
+    delete state.state.masterOut; delete state.state.customEffects;
+    delete state.state.midi; delete state.state.activeRooms;
+    delete state.state.effectsMenuActive; delete state.state.midiOutput;
+    delete state.state.nodes; delete state.state.oscGainNodes;
+    delete state.state.midiDevices;
+    delete state.state.pitchShiftNode;
+    delete state.state.playing; delete state.state.recording;
+    delete state.state.sampleBuffers; delete state.state.savedSets;
+    delete state.state.socket; delete state.state.synthGainNode;
+    delete state.user.user;
     state.name = new Date().toLocaleString();
     let theHeaders = new Headers({ "Content-Type":"application/json" });
     let stringyState = JSON.stringify({state: state});
     fetch('/saveState', {credentials:'include',method:'POST', headers: theHeaders, body: stringyState}).then(resp => {
       resp.json().then(r => {
-        console.log(r);
+        alert('Your set was saved.');
       });
     });
   }
@@ -91,6 +91,7 @@ class Transport extends React.Component {
       transform: 'translateY(-50%)',
       float: 'left',
     };
+    console.log('transport, sets is',this.props.sets);
     return (
       <span style={{display:'inline-block', height:'auto', width:'100%', marginTop:'0.2em'}}>
         <div className="transportContainer">

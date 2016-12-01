@@ -19,10 +19,10 @@ class Player extends React.Component {
     let context = this;
     socket.emit('playerLoading', {data: null});
     socket.on('userLogin', function(data) {
-         window.localStorage.setItem('com.rejuicy.user',JSON.stringify({
-            username: data.data
-          }));
-          context.props.dispatch({type:'USER_LOGIN'});
+      window.localStorage.setItem('com.rejuicy.user',JSON.stringify({
+        username: data.data
+      }));
+      context.props.dispatch({type:'USER_LOGIN'});
     })
   }
 
