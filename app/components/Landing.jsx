@@ -123,11 +123,11 @@ export default class Landing extends React.Component {
           <div className="footer-info">
             <div className="col-1">
               <ul>
-                <li><Link to="/contact" style={{color: '#bbb'}}>Contact</Link></li><br/>
-                <li><Link to="/contact" style={{color: '#bbb'}}>About</Link></li><br/>
-                <li><Link to="/contact" style={{color: '#bbb'}}>Privacy Policy</Link></li><br/>
-                <li><Link to="/contact" style={{color: '#bbb'}}>Intellectual Property</Link></li><br/>
-                <li><Link to="/contact" style={{color: '#bbb'}}>Terms & Conditions</Link></li><br/>
+                <li><Link to="/about" style={{color: '#bbb'}}>about</Link></li><br/>
+                <li><Link to="/about" style={{color: '#bbb'}}>About</Link></li><br/>
+                <li><Link to="/about" style={{color: '#bbb'}}>Privacy Policy</Link></li><br/>
+                <li><Link to="/about" style={{color: '#bbb'}}>Intellectual Property</Link></li><br/>
+                <li><Link to="/about" style={{color: '#bbb'}}>Terms & Conditions</Link></li><br/>
               </ul>
             </div>
             <div className="col-2">
