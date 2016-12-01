@@ -33,25 +33,25 @@ const sched = function() {
 };
 
 const sampleUrls = [
-'/samples/100bpm_Hamir_Bass_1.wav.mp3',
-'/samples/100bpm_Hamir_Bass_2.wav.mp3',
-'/samples/100bpm_Hamir_Clap.mp3',
-'/samples/100bpm_Hamir_Drop_1.wav.mp3',
-'/samples/100bpm_Hamir_Drop_2.wav.mp3',
-'/samples/100bpm_Hamir_DrumLoop_01.wav.mp3',
-'/samples/100bpm_Hamir_DrumLoop_02.wav.mp3',
-'/samples/100bpm_Hamir_DrumLoop_(No_kick)_01.wav.mp3',
-'/samples/100bpm_Hamir_Fx_Noise.wav.mp3',
-'/samples/100bpm_Hamir_Fx_Riseup.wav.mp3',
-'/samples/100bpm_Hamir_Hithat.wav.mp3',
-'/samples/100bpm_Hamir_Perc.wav.mp3',
-'/samples/100bpm_Hamir_Ride_1.wav.mp3',
-'/samples/100bpm_Hamir_Ride_2.wav.mp3',
-'/samples/100bpm_Hamir_Snare.wav.mp3',
-'/samples/100bpm_Hamir_Kick.mp3',
-'/samples/100bpm_Hamir_Sub.wav.mp3',
-'/samples/100bpm_Hamir_Synth_1.wav.mp3',
-'/samples/100bpm_Hamir_Synth_2.wav.mp3'
+  '/samples/100bpm_Hamir_Bass_1.wav.mp3',
+  '/samples/100bpm_Hamir_Bass_2.wav.mp3',
+  '/samples/100bpm_Hamir_Clap.mp3',
+  '/samples/100bpm_Hamir_Drop_1.wav.mp3',
+  '/samples/100bpm_Hamir_Drop_2.wav.mp3',
+  '/samples/100bpm_Hamir_DrumLoop_01.wav.mp3',
+  '/samples/100bpm_Hamir_DrumLoop_02.wav.mp3',
+  '/samples/100bpm_Hamir_DrumLoop_(No_kick)_01.wav.mp3',
+  '/samples/100bpm_Hamir_Fx_Noise.wav.mp3',
+  '/samples/100bpm_Hamir_Fx_Riseup.wav.mp3',
+  '/samples/100bpm_Hamir_Hithat.wav.mp3',
+  '/samples/100bpm_Hamir_Perc.wav.mp3',
+  '/samples/100bpm_Hamir_Ride_1.wav.mp3',
+  '/samples/100bpm_Hamir_Ride_2.wav.mp3',
+  '/samples/100bpm_Hamir_Snare.wav.mp3',
+  '/samples/100bpm_Hamir_Kick.mp3',
+  '/samples/100bpm_Hamir_Sub.wav.mp3',
+  '/samples/100bpm_Hamir_Synth_1.wav.mp3',
+  '/samples/100bpm_Hamir_Synth_2.wav.mp3'
 ];
 
 const fetchRooms = () => {
@@ -108,19 +108,16 @@ export default function reduce(state, action) {
       knobs[20+] are reserved for effects
       */
       knobs: [
-<<<<<<< 7e5a49000860e02cb7f285ae6e05a0b6a344177d
         100, 100, 100, 100, 100,
         100, 100, 100, 100, 127,
         127, 100, 100, 100, 100,
         100, 100, 100, 100, 100,
         100, 100,
-=======
       100, 100, 100, 100, 100,
       100, 100, 100, 100, 127,
       127, 100, 100, 100, 100,
       100, 100, 100, 100, 100,
       100, 100
->>>>>>> configure, implement and confirm FETCH_PROFILE reducer
       ],
       timeZero: 0,
       suspended: false,
@@ -475,10 +472,10 @@ export default function reduce(state, action) {
     }
 
     case 'FETCH_PROFILE': {
-            return Object.assign({}, state, {
-              profile: action.profile,
-            });
-        }
+      return Object.assign({}, state, {
+         profile: action.profile,
+       });
+     }
 
     case 'KNOB_TWIDDLE': {
       let temp = Object.assign([], state.performance);
