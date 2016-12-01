@@ -23,6 +23,13 @@ class Profile extends React.Component {
   });
  }
 
+ renderSets() {
+  
+  return this.props.profile.sets.map((set,i) => (
+    <h6 key={'set'+i} value={i}>{set.state.name}</h6>
+            ))
+ }
+
  renderProfile() {
   console.log('props', this.props)
   return this.props.profile ? (
@@ -33,13 +40,13 @@ class Profile extends React.Component {
           <h1 style={{height: '1em', display:'block', marginLeft:'auto', marginRight:'auto', width:'15em', marginTop:'4em'}}>Your ReJuicy Profile</h1>
           <div style={{padding:'2em 2em', lineHeight:'2em', height:'14em',overflow:'hidden',border:'1px solid black'}}>
             <div style={{height:'auto', display:'inline-block'}}>
-          <br/><p style={{height:'auto'}}>Username: {this.props.profile.username}</p><br/>
+          <br/><h2 style={{height:'auto'}}>Username: {this.props.profile.username}</h2><br/>
               <label style={{paddingRight:'1em'}}>Email: {this.props.profile.email}</label>
               <div style={{height:'auto'}}>
               </div>
             </div><br/>
             <div style={{height:'1em', display:'inline-block'}}>
-              <label style={{paddingRight:'1em'}}>Saved Sets: {this.props.profile.sets}</label>
+              <label style={{paddingRight:'1em'}}>Saved Sets: {this.renderSets()}</label>
               <div style={{height:'auto'}}>
               </div>
             </div><br/>
