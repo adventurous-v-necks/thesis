@@ -96,23 +96,22 @@ export default class Landing extends React.Component {
 
         <section>
           <div className="blurb">
-            <div className="blurb-info">Built in three weeks with React/Redux, Mongo, and Node/Express.</div>
+            <div className="blurb-info">Built in three weeks with React/Redux, MongoDB, and Node/Express.</div>
 
-            <div className="blurb-info">React was chosen for it's performant rendering of the many interrelated components 
-            and paired with a Redux store to manage state and emit updates.</div>
+            <div className="blurb-info">React was chosen for it's performant rendering of the many interrelated 
+            components and paired with a Redux store to manage state and emit updates.</div>
 
-            <div className="blurb-info">Mongo was also chosen for speed and flexibility - schema-less documents are preferential 
-            to relational data when storing performances which we store as a series of time-stamped 
-            events, essentially recreating a performance, instead of recording, storing, and retreiving 
+            <div className="blurb-info">MongoDB was also chosen for speed and flexibility. We store as a series of 
+            time-stamped events, essentially recreating a performance, instead of recording, storing, and retreiving 
             the audio itself.</div>
 
-            <div className="blurb-info">Music is composed by leveraging the open source Web Audio API to generate an audio context 
-            upon which we attach, remove or fine-tune effects as the user desires. For example, the 
+            <div className="blurb-info">Music is composed by leveraging the open source Web Audio API to generate an 
+            audio context upon which we attach, remove or fine-tune effects as the user desires. For example, the 
             audio effects and synth oscillators are individual nodes attached to the audio 
             context to manipulate the sound waves produced.</div>
 
-            <div className="blurb-info">Sockets connect our users in realtime. Anytime a user logs in, a room is created via 
-            a Socket.io connection. Users can join other performance rooms to mix together in realtime 
+            <div className="blurb-info">Sockets connect our users in realtime. Anytime a user logs in, a room is 
+            created via a Socket.io connection. Users can join other performance rooms to mix together in realtime 
             with the sockets broadcasting all relevant events within those rooms.</div>
 
             <div className="blurb-info">The app is fully containerized with Docker and deployed on Linode running Ubuntu 16.</div>
@@ -124,20 +123,22 @@ export default class Landing extends React.Component {
           <div className="footer-info">
             <div className="col-1">
               <ul>
-                <li><Link to="/contact">Contact</Link></li><br/>
-                <li><Link to="/about">About</Link></li><br/>
-                <li><Link to="/about">Privacy Policy</Link></li><br/>
-                <li><Link to="/about">Intellectual Property</Link></li><br/>
-                <li><Link to="/about">Terms & Conditions</Link></li><br/>
+                <li><Link to="/contact" style={{color: '#bbb'}}>Contact</Link></li><br/>
+                <li><Link to="/contact" style={{color: '#bbb'}}>About</Link></li><br/>
+                <li><Link to="/contact" style={{color: '#bbb'}}>Privacy Policy</Link></li><br/>
+                <li><Link to="/contact" style={{color: '#bbb'}}>Intellectual Property</Link></li><br/>
+                <li><Link to="/contact" style={{color: '#bbb'}}>Terms & Conditions</Link></li><br/>
               </ul>
             </div>
             <div className="col-2">
+              <img src="images/GitHub-Mark-120px-plus.png"/>
+            </div>
+            <div className="col-3">
               Adventurous V-Necks<br/>
               Hack Reactor Seniors<br/>
               944 Market Street<br/>
               San Francisco<br/>
               California 94102<br/>
-              <img src="images/GitHub-Mark-120px-plus.png"/>
             </div>
           </div>
         </div>

@@ -294,30 +294,29 @@ nav li > a {
   height: 100%;
 }
 .footer-info li {
-  color: #bbbbbb;
-  font-size: 1.5em;
   height: auto;
   line-height: 1.6em;
+  color: #bbbbbb;
 }
 .footer-info .col-1 {
   width: 30%;
-  height: 100%;
-  float: left;
   padding: 5% 5%;
+  float: left;
   clear: both;
+  font-size: 1em;
 }
 .footer-info .col-2 {
-  width: 70%;
+  width: 40%;
+  text-align: center;
+  max-height: 4em;
+}
+.footer-info .col-3 {
+  width: 30%;
   padding: 5% 5%;
   color: #bbbbbb;
-  font-size: 1.5em;
   line-height: 1.6em;
   text-align: right;
-}
-.footer-info .col-2 img {
-  height: 80px;
-  position: relative;
-  top: 50%;
+  font-size: 1em;
 }
 
 // Keyboard Component
