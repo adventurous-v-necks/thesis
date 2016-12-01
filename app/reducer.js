@@ -162,6 +162,7 @@ export default function reduce(state, action) {
       midiOutput: null, // the actual midi output object to send messages on
       savedSets: [],
       faders: {}, // each fader - global BPM then column BPM
+      profile: null,
     };
   }
 
@@ -477,9 +478,18 @@ export default function reduce(state, action) {
       let theHeaders = new Headers({ "Content-Type": "application/json" });
       fetch('/profile', {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
         resp.json().then(r => {
-          console.log('r', r)
-          })
-      })
+          if (r.username) {
+            console.log('~~~~~~~~~~~~~~r', r)
+            store.dispatch({type: 'RETURN_PROFILE', profile: r})
+          }
+        });
+      });
+    }
+
+    case 'RETURN_PROFILE': {
+      return Object.assign({}, state, {
+        profile: state.profile,
+      });
     }
 
     case 'KNOB_TWIDDLE': {

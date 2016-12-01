@@ -1,40 +1,49 @@
+// you need these two imports minimum
 import React from 'react';
 import styles from '../App.scss';
-import { connect } from 'react-redux';
-import ReactDOM from 'react-dom';
+import {connect} from 'react-redux';
+
+// To get the leaveHook for React Router, links must be <Link to=> not <a href=>
+import {Link} from 'react-router';
 
 class Profile extends React.Component {
-  constructor(props){
+  static contextTypes = {
+    router: React.PropTypes.object
+  };
+  constructor(props) {
     super(props);
-
   }
 
-  componentDidMount() {
-    console.log('this.state', this.state);
-    console.log('this.props', this.props);    
-    this.props.dispatch({type:'FETCH_PROFILE'});
+  componentWillMount() {
+     this.props.dispatch({type:'FETCH_PROFILE'});
+  }
 
- }
 
- render() {
 
-  return (
-    <div>
-    <h4></h4>
-    <h4></h4>
-    <h4></h4>
-    <h4></h4>
-    <h4></h4>
-    </div>
+  customNavbar() {
+    return this.props.profile ? (
+      <span>
+      The newest stuff on the block
+      </span>
+      ) : (
+      <span>
+      The oldest stuff on earth
+      </span>
+      );
+  }
 
-    )
+  render(){
+
+    return (
+      <div>
+        <div> {this.customNavbar.call(this)} </div>
+        </div>
+    );
+  }
 }
-}
 
-function mapStateToProps(state) {
-  return {
-    user: state.user
-  };
+const mapStateToProps = function(state) {
+  return  {};
 }
 
 export default connect(mapStateToProps)(Profile);
