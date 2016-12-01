@@ -664,30 +664,29 @@ export default function reduce(state, action) {
       newEffectNode.connect(state.audioContext.destination);
     }
       // add new effect to list of active effects, including refs to its knobs
-      allActiveEffects.push({
-        name: effect,
-        node: newEffectNode,
-        knobs: [allKnobs.length, allKnobs + 1],
-        faders: [],
-      });
+    allActiveEffects.push({
+      name: effect,
+      node: newEffectNode,
+      knobs: [allKnobs.length, allKnobs + 1],
+      faders: [],
+    });
+    allKnobs.push(100);
+    allKnobs.push(100); // different effects will need different numbers of knobs.
+
+    if(effect.name === 'BiquadFilterLo') {
       allKnobs.push(100);
-      allKnobs.push(100); // different effects will need different numbers of knobs.
+      allKnobs.push(100);
+    }
 
-      if(effect.name === 'BiquadFilterLo') {
-        allKnobs.push(100);
-        allKnobs.push(100);
-      }
+    if(effect.name === 'BiquadFilterMid') {
+      allKnobs.push(100);
+      allKnobs.push(100);
+    }
 
-      if(effect.name === 'BiquadFilterMid') {
-        allKnobs.push(100);
-        allKnobs.push(100);
-      }
-
-      if(effect.name === 'BiquadFilterHi') {
-        allKnobs.push(100);
-        allKnobs.push(100);
-      }
-
+    if(effect.name === 'BiquadFilterHi') {
+      allKnobs.push(100);
+      allKnobs.push(100);
+    }
       return Object.assign({}, state, {activeEffects: allActiveEffects, knobs: allKnobs});
     }
     case 'EFFECT_FROM_RACK': {
