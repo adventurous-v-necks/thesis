@@ -24,7 +24,7 @@ class Profile extends React.Component {
  }
 
  renderProfile() {
-  let now = new Date();
+  console.log('props', this.props)
   return this.props.profile ? (
     <div>
     <br/>
@@ -71,6 +71,7 @@ class Profile extends React.Component {
 }
 
 const mapStateToProps = function(state) {
+  console.log('state', state)
   return  {
     profile: state.profile
   };
