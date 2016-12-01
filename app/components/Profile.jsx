@@ -39,6 +39,7 @@ class Profile extends React.Component {
       height: "80%",
       top: "10%",
       position: "relative",
+      color:'#FFF',
       }
   
   return this.props.profile ? (
@@ -63,9 +64,9 @@ class Profile extends React.Component {
               <div style={{height:'auto'}}>
               </div>
             </div><br/>
-            <li style={{buttonStyle}} ><Link to="/player">Back to the music!</Link></li>
+            <Link className="menu-item" style={{color:'#fff', fontFamily: 'Permanent Marker'}}to="/player">Back to the music!</Link>
+            </div><br/>
           </div>
-        </div>
     </span>
     </div>
     ) : (
