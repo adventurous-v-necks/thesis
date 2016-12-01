@@ -113,11 +113,11 @@ export default function reduce(state, action) {
         127, 100, 100, 100, 100,
         100, 100, 100, 100, 100,
         100, 100,
-      100, 100, 100, 100, 100,
-      100, 100, 100, 100, 127,
-      127, 100, 100, 100, 100,
-      100, 100, 100, 100, 100,
-      100, 100
+        100, 100, 100, 100, 100,
+        100, 100, 100, 100, 127,
+        127, 100, 100, 100, 100,
+        100, 100, 100, 100, 100,
+        100, 100
       ],
       timeZero: 0,
       suspended: false,
@@ -127,26 +127,26 @@ export default function reduce(state, action) {
       suspended: false,
       recordTimeZero: false,
       customEffects: [
-      {
-        name: 'MOOG',
-        node: MOOGFilter,
-      },
-      {
-        name: 'BiquadFilterLo',
-        node: BiquadFilterLo,
-      },
-      {
-        name: 'BiquadFilterMid',
-        node: BiquadFilterMid,
-      },
-      {
-        name: 'BiquadFilterHi',
-        node: BiquadFilterHi,
-      },
-      {
-        name: 'Distortion',
-        node: Distortion,
-      },
+        {
+          name: 'MOOG',
+          node: MOOGFilter,
+        },
+        {
+          name: 'BiquadFilterLo',
+          node: BiquadFilterLo,
+        },
+        {
+          name: 'BiquadFilterMid',
+          node: BiquadFilterMid,
+        },
+        {
+          name: 'BiquadFilterHi',
+          node: BiquadFilterHi,
+        },
+        {
+          name: 'Distortion',
+          node: Distortion,
+        },
       ],
       activeEffects: [],
       syncOn: true,
