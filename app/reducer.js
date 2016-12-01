@@ -33,25 +33,25 @@ const sched = function() {
 };
 
 const sampleUrls = [
-  '/samples/100bpm_Hamir_Bass_1.wav.mp3',
-  '/samples/100bpm_Hamir_Bass_2.wav.mp3',
-  '/samples/100bpm_Hamir_Clap.mp3',
-  '/samples/100bpm_Hamir_Drop_1.wav.mp3',
-  '/samples/100bpm_Hamir_Drop_2.wav.mp3',
-  '/samples/100bpm_Hamir_DrumLoop_01.wav.mp3',
-  '/samples/100bpm_Hamir_DrumLoop_02.wav.mp3',
-  '/samples/100bpm_Hamir_DrumLoop_(No_kick)_01.wav.mp3',
-  '/samples/100bpm_Hamir_Fx_Noise.wav.mp3',
-  '/samples/100bpm_Hamir_Fx_Riseup.wav.mp3',
-  '/samples/100bpm_Hamir_Hithat.wav.mp3',
-  '/samples/100bpm_Hamir_Perc.wav.mp3',
-  '/samples/100bpm_Hamir_Ride_1.wav.mp3',
-  '/samples/100bpm_Hamir_Ride_2.wav.mp3',
-  '/samples/100bpm_Hamir_Snare.wav.mp3',
-  '/samples/100bpm_Hamir_Kick.mp3',
-  '/samples/100bpm_Hamir_Sub.wav.mp3',
-  '/samples/100bpm_Hamir_Synth_1.wav.mp3',
-  '/samples/100bpm_Hamir_Synth_2.wav.mp3'
+'/samples/100bpm_Hamir_Bass_1.wav.mp3',
+'/samples/100bpm_Hamir_Bass_2.wav.mp3',
+'/samples/100bpm_Hamir_Clap.mp3',
+'/samples/100bpm_Hamir_Drop_1.wav.mp3',
+'/samples/100bpm_Hamir_Drop_2.wav.mp3',
+'/samples/100bpm_Hamir_DrumLoop_01.wav.mp3',
+'/samples/100bpm_Hamir_DrumLoop_02.wav.mp3',
+'/samples/100bpm_Hamir_DrumLoop_(No_kick)_01.wav.mp3',
+'/samples/100bpm_Hamir_Fx_Noise.wav.mp3',
+'/samples/100bpm_Hamir_Fx_Riseup.wav.mp3',
+'/samples/100bpm_Hamir_Hithat.wav.mp3',
+'/samples/100bpm_Hamir_Perc.wav.mp3',
+'/samples/100bpm_Hamir_Ride_1.wav.mp3',
+'/samples/100bpm_Hamir_Ride_2.wav.mp3',
+'/samples/100bpm_Hamir_Snare.wav.mp3',
+'/samples/100bpm_Hamir_Kick.mp3',
+'/samples/100bpm_Hamir_Sub.wav.mp3',
+'/samples/100bpm_Hamir_Synth_1.wav.mp3',
+'/samples/100bpm_Hamir_Synth_2.wav.mp3'
 ];
 
 const fetchRooms = () => {
@@ -108,11 +108,19 @@ export default function reduce(state, action) {
       knobs[20+] are reserved for effects
       */
       knobs: [
+<<<<<<< 7e5a49000860e02cb7f285ae6e05a0b6a344177d
         100, 100, 100, 100, 100,
         100, 100, 100, 100, 127,
         127, 100, 100, 100, 100,
         100, 100, 100, 100, 100,
         100, 100,
+=======
+      100, 100, 100, 100, 100,
+      100, 100, 100, 100, 127,
+      127, 100, 100, 100, 100,
+      100, 100, 100, 100, 100,
+      100, 100
+>>>>>>> configure, implement and confirm FETCH_PROFILE reducer
       ],
       timeZero: 0,
       suspended: false,
@@ -122,27 +130,27 @@ export default function reduce(state, action) {
       suspended: false,
       recordTimeZero: false,
       customEffects: [
-        {
-          name: 'MOOG',
-          node: MOOGFilter,
-        },
-        {
-          name: 'BiquadFilterLo',
-          node: BiquadFilterLo,
-        },
-        {
-          name: 'BiquadFilterMid',
-          node: BiquadFilterMid,
-        },
-        {
-          name: 'BiquadFilterHi',
-          node: BiquadFilterHi,
-        },
-        {
-          name: 'Distortion',
-          node: Distortion,
-        },
-        ],
+      {
+        name: 'MOOG',
+        node: MOOGFilter,
+      },
+      {
+        name: 'BiquadFilterLo',
+        node: BiquadFilterLo,
+      },
+      {
+        name: 'BiquadFilterMid',
+        node: BiquadFilterMid,
+      },
+      {
+        name: 'BiquadFilterHi',
+        node: BiquadFilterHi,
+      },
+      {
+        name: 'Distortion',
+        node: Distortion,
+      },
+      ],
       activeEffects: [],
       syncOn: true,
       lastPlayed: 0, // time (audio time) the last sample was played
@@ -274,7 +282,6 @@ export default function reduce(state, action) {
     case 'CHANGE_MIDI': {
       let output = 0;
       let midiout = state.midi.outputs.values();
-      console.log(action);
       while (output < action.device) { output++; midiout.next(); }
       output = midiout.next().value;
 
@@ -455,6 +462,7 @@ export default function reduce(state, action) {
       // console.log(temp[action.col][action.index]);
       return Object.assign({}, state, {samples: temp});
     }
+
     case 'PLAY': {
       events = 0;
       playTime = state.audioContext.currentTime;
@@ -464,6 +472,16 @@ export default function reduce(state, action) {
         recordStartTime: state.audioContext.currentTime,
       });
     }
+
+    case 'FETCH_PROFILE': {
+      let theHeaders = new Headers({ "Content-Type": "application/json" });
+      fetch('/profile', {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
+        resp.json().then(r => {
+          console.log('r', r)
+          })
+      })
+    }
+
     case 'KNOB_TWIDDLE': {
       let temp = Object.assign([], state.performance);
       let temp2 = Object.assign([], state.knobs);
@@ -640,16 +658,16 @@ export default function reduce(state, action) {
       let allKnobs = state.knobs.slice();
 
       let newEffectNode = state.customEffects.filter(fx => fx.name === action.effect)[0].node(state.audioContext);
-     
+
       if (allActiveEffects.length === 0) { // this is the first effect unit we're adding
         state.masterOut.disconnect();
-        state.masterOut.connect(newEffectNode);
-        newEffectNode.connect(state.audioContext.destination);
-      } else {
-        allActiveEffects[allActiveEffects.length - 1].node.disconnect();
-        allActiveEffects[allActiveEffects.length - 1].node.connect(newEffectNode);
-        newEffectNode.connect(state.audioContext.destination);
-      }
+      state.masterOut.connect(newEffectNode);
+      newEffectNode.connect(state.audioContext.destination);
+    } else {
+      allActiveEffects[allActiveEffects.length - 1].node.disconnect();
+      allActiveEffects[allActiveEffects.length - 1].node.connect(newEffectNode);
+      newEffectNode.connect(state.audioContext.destination);
+    }
       // add new effect to list of active effects, including refs to its knobs
       allActiveEffects.push({
         name: effect,
@@ -691,32 +709,32 @@ export default function reduce(state, action) {
             if (allActiveEffects[i + 1]) { // and there's one after it
               allActiveEffects[i - 1].node.connect(allActiveEffects[i + 1].node);
             } else { // there's an effect before it, but not after it
-              allActiveEffects[i - 1].node.connect(state.audioContext.destination);
-            }
+            allActiveEffects[i - 1].node.connect(state.audioContext.destination);
+          }
           } else { // there's no effect before it
-            if (allActiveEffects[i + 1]) {
-              state.masterOut.connect(allActiveEffects[i + 1].node);
+          if (allActiveEffects[i + 1]) {
+            state.masterOut.connect(allActiveEffects[i + 1].node);
             } else { // there are no effects left once it's been removed
-              state.masterOut.connect(state.audioContext.destination);
-            }
+            state.masterOut.connect(state.audioContext.destination);
           }
         }
       }
-      allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
-      return Object.assign({}, state, {activeEffects: allActiveEffects});
     }
-    case 'NAVIGATE_ROOM': {
-      let room = action.room;
-      state.socket.emit('room', { joinRoom: room,  leaveRoom: state.currentRoom});
-
-      return Object.assign({}, state, {currentRoom: room});
-    }
-    case 'UPDATE_ACTIVE_ROOMS': {
-      return Object.assign({}, state, {activeRooms: action.allActiveRooms});
-    }
-    default: {
-      console.error('Reducer Error: ', action);
-      return Object.assign({}, state);
-    }
+    allActiveEffects = allActiveEffects.filter((effect) => effect.name !== 'to be deleted');
+    return Object.assign({}, state, {activeEffects: allActiveEffects});
   }
+  case 'NAVIGATE_ROOM': {
+    let room = action.room;
+    state.socket.emit('room', { joinRoom: room,  leaveRoom: state.currentRoom});
+
+    return Object.assign({}, state, {currentRoom: room});
+  }
+  case 'UPDATE_ACTIVE_ROOMS': {
+    return Object.assign({}, state, {activeRooms: action.allActiveRooms});
+  }
+  default: {
+    console.error('Reducer Error: ', action);
+    return Object.assign({}, state);
+  }
+}
 }
