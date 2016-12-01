@@ -18,7 +18,7 @@ class Sampler extends React.Component {
       return columns;
     }
     return (
-      <div style={{display:'inline-block', height:'28%', width:'100%', marginTop:'0.2em'}}>
+      <div style={{display:'inline-block', height:'28%', width:'100%', marginTop:'0.2em', position:'relative'}}>
         <div style={{border: '2px solid #383838', paddingLeft:'0.2em', paddingTop:'0.5em', width: '100%', position:'relative', borderRadius:'2px', backgroundColor: '#efefef'}}>
           {columns()}
         </div>

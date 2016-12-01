@@ -143,6 +143,8 @@ nav li > a {
 }
 .hero > a {
   width: 100%;
+  height: auto;
+  margin-top: 50%;
 }
 .hero > a > button {
   background-color: rgba(0,0,0,0.5);
@@ -171,10 +173,10 @@ nav li > a {
   text-shadow: 3px -3px 10px rgba(249,63,25,1);
   box-shadow: 3px -3px 20px rgba(0,0,0,1);
 }
-.hero > button:hover {
+.hero > a > button:hover {
   background-color: rgba(70,70,70,0.5);
 }
-.hero > button:active {
+.hero > a > button:active {
   background-color: rgba(150,150,150,0.5);
 }
 .app-info {

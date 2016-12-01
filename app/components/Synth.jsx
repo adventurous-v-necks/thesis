@@ -43,7 +43,7 @@ class Synth extends React.Component {
     }
 
     return (
-      <div style={{display:'inline-block', height:'36%', width:'100%', marginTop:'0.5em'}}>
+      <div style={{display:'inline-block', height:'36%', width:'100%', marginTop:'0.5em', position:'relative'}}>
         <div className="synth" style={synthStyle}>
           <Oscillators />
           <div className="synthVolume" style={synthVolumeStyle}>
