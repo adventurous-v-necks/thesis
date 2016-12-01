@@ -39,16 +39,18 @@ class Patch extends React.Component {
     const selectStyle = {
       fontSize: '111%',
       position: 'relative',
-      bottom: '28%',
+      bottom: '20%',
       left: '3%',
     }
 
     const labelStyle = {
+      display: 'block',
       backgroundColor: '#efefef',
       marginTop: '-0.5em',
       position: 'relative',
       clear: 'both',
-      top: '-0.8em',
+      top: '-0.1em',
+      width: '3.5em',
       left:'0.3em',
       height:'1em',
       paddingLeft:'0.5em',
