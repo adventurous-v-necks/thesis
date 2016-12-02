@@ -1,5 +1,5 @@
 {
-  "name": "dj-controller",
+  "name": "reactorSound",
   "version": "0.1.0",
   "description": "Online, social DJing. A DAW in the browser. Hack Reactor Thesis Project.",
   "main": "server.js",
