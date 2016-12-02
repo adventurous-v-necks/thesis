@@ -44,42 +44,43 @@ class loginForm extends React.Component {
   render() {
     if (this.state.submitted) {
       return (
-        <div style={{padding: '0em 3em', height:'10em', marginTop: '8em'}}>
-          PLEASE WAIT LOGGING YOU IN
+        <div style={{fontSize:'2em', textAlign:'center', top:'50%', position:'relative',display:'block', transform:'translateY(-50%)', padding: '0em 3em', height:'auto'}}>
+          PLEASE WAIT, LOGGING YOU IN...
         </div>
       );
     }
     else {
       return (
-        <div style={{padding: '0em 3em', height:'10em'}}>
-          <h1 style={{height: '1em', display:'block', marginLeft:'auto', marginRight:'auto', width:'15em', marginTop:'4em'}}>Signup for an account at ReJuicy</h1>
-          <br/><p style={{height:'auto'}}>Signing up has many benefits, it's just awesome.</p><br/>
-          <div style={{padding:'2em 2em', lineHeight:'2em', height:'14em',overflow:'hidden',border:'1px solid black'}}>
-          <form onSubmit={this.handleSubmit.bind(this)}>
-            <div style={{height:'auto', display:'inline-block'}}>
+        <div style={{width:'100%',padding: '0em 3em', height:'auto', display: 'block', textAlign:'center',overflow:'hidden', position:'absolute',marginLeft:'auto',marginRight:'auto'}} >
+          <h1 style={{height: '1em', display:'block', marginLeft:'auto', marginRight:'auto', width:'15em', marginTop:'4em'}}>Sign in to your ReJuicy account</h1>
+          <p style={{height:'auto', display:'block',fontSize:'1.4em',marginTop:'2em', marginBottom:'2em'}}>
+            Welcome back to ReJuicy!</p>
+          <div style={{border:'2px solid black', borderRadius:'2px', padding:'1em 1em', fontSize:'1.2em'}}>
+          <form onSubmit={this.handleSubmit.bind(this)} style={{paddingTop:'2em', height:'auto'}}>
+            <div style={{height:'3em', display:'inline-block'}}>
               <label style={{paddingRight:'1em'}}>Username</label>
               <div style={{height:'auto'}}>
-                <input name="username" type="text" placeholder="Username" style={{borderBottom:'1px solid black'}}/>
-              </div>
-            </div><br/>
-            <div style={{height:'1em', display:'inline-block'}}>
-              <label style={{paddingRight:'1em'}}>Email</label>
-              <div style={{height:'auto'}}>
-                <input name="email" type="email" placeholder="Email Address" style={{borderBottom:'1px solid black'}}/>
+                <input name="username" type="text" placeholder="Username" style={{borderBottom:'1px solid black', fontSize:'1.2em'}}/>
               </div>
             </div><br/>
             <div style={{height:'auto'}}>
+              <label style={{paddingRight:'1em'}}>Email</label>
+              <div style={{height:'auto', marginBottom:'2em'}}>
+                <input name="password" type="text" placeholder="Email" style={{borderBottom:'1px solid black', fontSize:'1.2em'}}/>
+              </div>
+            </div><br/>            
+            <div style={{height:'auto'}}>
               <label style={{paddingRight:'1em'}}>Password</label>
-              <div style={{height:'auto'}}>
-                <input name="password" type="text" placeholder="Password" style={{borderBottom:'1px solid black'}}/>
+              <div style={{height:'auto', marginBottom:'2em'}}>
+                <input name="password" type="text" placeholder="Password" style={{borderBottom:'1px solid black', fontSize:'1.2em'}}/>
               </div>
             </div><br/>
-            <div style={{height:'auto', backgroundColor: 'green', borderRadius:'2px', border:'1px solid black', padding:'0.5em 1em'}}>
-              <button type="submit">Submit</button>
+          <div className="login-button" style={{marginBottom:'1.4em', height:'auto', backgroundColor: 'rgba(249,63,25,1)', width:'100%', borderRadius:'2px', border:'1px solid black', padding:'0.5em 1em'}}>
+              <button type="submit" style={{fontSize:'1.4em', color:'white', fontWeight:'900'}}>GO</button>
             </div>
           </form>
-          <FbButton />
-          </div>
+            <FbButton/>
+            </div>
         </div>
       )
     }

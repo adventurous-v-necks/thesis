@@ -9,7 +9,6 @@ class Sampler extends React.Component {
   }
 
   componentWillMount() {
-    console.log('state', this.state, 'props', this.props)
   }
 
   render() {
