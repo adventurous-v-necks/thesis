@@ -26,7 +26,7 @@ class Profile extends React.Component {
  renderSets() {
   
   return this.props.profile.sets.map((set,i) => (
-    <h4 key={'set'+i} value={i}>{set.state.name}</h4>
+    <button key={'set'+i} value={i}>{set.state.name}</button>
     ))
  }
 
@@ -47,7 +47,7 @@ class Profile extends React.Component {
     <br/>
     <span>
         <div style={{padding: '0em 3em', height:'10em'}}>
-          <h1 style={{height: '1em', display:'block', marginLeft:'auto', marginRight:'auto', width:'15em', marginTop:'4em'}}>Your ReJuicy Profile</h1>
+          <h1 style={{height: '1em', display:'block', marginLeft:'auto', marginRight:'auto', width:'15em', marginTop:'4em'}}>Your ReactorSound Profile</h1>
           <div style={{padding:'0em 2em', lineHeight:'2em', height:'14em',overflow:'hidden',border:'1px solid black'}}>
             <div style={{height:'auto', display:'inline-block'}}>
           <br/><h3 style={{height:'auto'}}>Username: {this.props.profile.username}</h3><br/>
@@ -56,7 +56,7 @@ class Profile extends React.Component {
               </div>
             </div><br/>
             <div style={{height:'1em', display:'inline-block'}}>
-              <h3 style={{paddingRight:'1em'}}>Saved Sets: {this.renderSets()}</h3>
+              <div style={{paddingRight:'1em'}}><h3>Saved Sets: {this.renderSets()},</h3></div>
               <div style={{height:'auto'}}>
               </div>
             </div><br/>

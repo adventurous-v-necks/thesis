@@ -23,7 +23,6 @@ class Player extends React.Component {
        username: data.data.username
      }));
      context.props.dispatch({type:'USER_LOGIN'});
-     context.forceUpdate()
     })
   }
 
