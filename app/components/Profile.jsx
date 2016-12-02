@@ -21,7 +21,7 @@ class Profile extends React.Component {
   componentWillMount() {
    let theHeaders = new Headers({ "Content-Type": "application/json" });
    fetch('/profile', {credentials: 'include', method: 'GET', headers: theHeaders}).then(resp => {
-    resp.json().then(r => {
+    resp.json().then(r => { 
      this.props.dispatch({type:'FETCH_PROFILE', profile: r.user});
    });
   });
