@@ -75,7 +75,7 @@ class Oscillator extends React.Component {
                 <div style={{width:'100%', height:'auto'}}>
                   <form action="" style={{position: 'relative', top: '-15%', width:'100%', height:'auto'}}>
                     <input type="radio" style={radioLabelStyle} name={oscNum} value="sine" id={'osc'+oscNum}
-                      checked={oscwaves[num] === 'sine'} onChange={this.handleWaveChange}/>
+                      checked={oscwaves[num] === 'sine'} onChange={this.handleWaveChange}></input>
                     <label htmlFor="{'osc'+oscNum}">Sine</label>
                     <input type="radio" style={radioLabelStyle} name={oscNum} value="square"
                       checked={oscwaves[num] === 'square'} onChange={this.handleWaveChange}/>

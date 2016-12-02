@@ -62,7 +62,9 @@ class Sample extends React.Component {
   }
   componentDidUpdate() {
     if (this.state.storedSample !== this.props.sample.sampleUrl) {
+
       this.lazyLoad.call(this, () => {
+
         if (this.props.sample.playing && !this.state.playing) {
           //means the user must have loaded a saved set
           this.props.dispatch({type: 'PLAY_SAMPLE', sample: this.props.sample, buffer: this.state.buffer, loadedFromASavedSet:true});

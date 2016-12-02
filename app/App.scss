@@ -638,17 +638,8 @@ section {
 input[type=radio] {
   border: 5px solid #0DFF92;
   color: green;
-  height:auto;
+  font-size: 6em;
 }
-
-input[type=radio] :checked::before{
-  background: #0DFF92;
-}
-
-input[type=radio] :checked ~ label{
-  color: #0DFF92;
-}
-
 input[type=range] {
   -webkit-appearance: none;
   width: 100%;
