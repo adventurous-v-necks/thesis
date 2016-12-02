@@ -16,6 +16,7 @@ class Player extends React.Component {
   }
 
  componentDidMount(){
+  console.log('this.props', this.props)
    let context = this;
    socket.emit('playerLoading');
    socket.on('userLogin', function(data) {

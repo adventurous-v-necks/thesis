@@ -28,7 +28,6 @@ class Profile extends React.Component {
  }
 
  setClick(e) {
-  console.log('e',e.target.value)
   this.setState({e: this.props.profile.sets[e.target.value]})
   this.forceUpdate()
  }
