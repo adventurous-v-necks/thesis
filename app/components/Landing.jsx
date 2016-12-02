@@ -75,7 +75,7 @@ export default class Landing extends React.Component {
               </div>
 
               <div className="cd-timeline-content">
-                <h2>ReJuicy was Born</h2>
+                <h2>ReactorSound was Born</h2>
                 <p>The app was presented to those who would listen. The V-Necks presented their Ableton-like application to the Seniors of HackReactor cohort 49 as their senior thesis.</p>
                 <span className="cd-date">Dec 2</span>
               </div>
