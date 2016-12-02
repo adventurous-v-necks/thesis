@@ -52,9 +52,9 @@ class loginForm extends React.Component {
     else {
       return (
         <div style={{width:'100%',padding: '0em 3em', height:'auto', display: 'block', textAlign:'center',overflow:'hidden', position:'absolute',marginLeft:'auto',marginRight:'auto'}} >
-          <h1 style={{height: '1em', display:'block', marginLeft:'auto', marginRight:'auto', width:'15em', marginTop:'4em'}}>Sign in to your ReJuicy account</h1>
+          <h1 style={{height: '1em', display:'block', marginLeft:'auto', marginRight:'auto', width:'15em', marginTop:'4em'}}>Sign Up for a ReactorSound account</h1>
           <p style={{height:'auto', display:'block',fontSize:'1.4em',marginTop:'2em', marginBottom:'2em'}}>
-            Welcome back to ReJuicy!</p>
+            Welcome to ReJuicy!</p>
           <div style={{border:'2px solid black', borderRadius:'2px', padding:'1em 1em', fontSize:'1.2em'}}>
           <form onSubmit={this.handleSubmit.bind(this)} style={{paddingTop:'2em', height:'auto'}}>
             <div style={{height:'3em', display:'inline-block'}}>
@@ -64,7 +64,7 @@ class loginForm extends React.Component {
               </div>
             </div><br/>
             <div style={{height:'auto'}}>
-              <label style={{paddingRight:'1em'}}>Email</label>
+              <label style={{paddingRight:'3em'}}>Email</label>
               <div style={{height:'auto', marginBottom:'2em'}}>
                 <input name="password" type="text" placeholder="Email" style={{borderBottom:'1px solid black', fontSize:'1.2em'}}/>
               </div>
