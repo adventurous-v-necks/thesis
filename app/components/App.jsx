@@ -75,7 +75,7 @@ class App extends React.Component {
       <div id="app">
         <nav>
           <ul>
-            <li className="logo"><Link to="/">DJ Controller</Link></li>
+            <li className="logo"><Link to="/">ReactorSound</Link></li>
             <li><select name="midi-select" style={midiDropdownStyle} onChange={this.newMidi.bind(this)}>
               <option value="-1">Choose MIDI device</option>
               {this.props.midiDevices.map((dev,i) => (

@@ -18,7 +18,7 @@ const Grid = require('gridfs-stream');
 const fs = require('fs');
 const isDeveloping = process.env.NODE_ENV !== 'production';
 
-const mongoAddress = isDeveloping ? 'mongodb://localhost/dj-controller' : 'mongodb://devMongo:27017/dj-controller';
+const mongoAddress = isDeveloping ? 'mongodb://localhost/reactorSound' : 'mongodb://devMongo:27017/reactorSound';
 
 mongoose.Promise = Promise;
 mongoose.connect(mongoAddress);
@@ -26,9 +26,9 @@ Grid.mongo = mongoose.mongo;
 
 let conn;
 if (isDeveloping) {
-  conn = mongoose.createConnection('localhost','dj-controller', 27017);
+  conn = mongoose.createConnection('localhost','reactorSound', 27017);
 } else {
-  conn = mongoose.createConnection('devMongo', 'dj-controller', 27017);
+  conn = mongoose.createConnection('devMongo', 'reactorSound', 27017);
 }
 let gfs = new Grid(conn.db);
 var db = mongoose.connection;
