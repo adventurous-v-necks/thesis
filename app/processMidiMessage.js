@@ -21,7 +21,9 @@ export const processMidiMessage = function(evt) {
       break;
     case 128:
       // note off
-      store.dispatch({type:'KEY_UP', frequency: Math.pow(2, (note-69)/12).toFixed(3)*440});
+      if (note >= 48 && note <= 72) {
+        store.dispatch({type:'KEY_UP', frequency: Math.pow(2, (note-69)/12).toFixed(3)*440});
+      }
       break;
     case 176:
       switch(note) {

@@ -537,6 +537,8 @@ export default function reduce(state, action) {
       return Object.assign({}, state, {performance: temp, knobs: temp2});
     }
     case 'PLAY_SAMPLE': {
+      // the next line temporarily disables samples from playing when loading a room state, but midi works again.
+      if (action.loadedFromASavedSet) return Object.assign({}, state);
       if (!action.synthetic) {
         state.socket.emit('event2server', { action: action, room: state.currentRoom });
       }
@@ -552,14 +554,28 @@ export default function reduce(state, action) {
         theSample.source.loop = true;
         if (action.buffer.duration) {
           theSample.source.buffer = action.buffer;
-          const ratio = ((state.BPM + state.minTempo) / state.maxTempo).toFixed(2);
+          let ratio = ((state.BPM + state.minTempo) / state.maxTempo).toFixed(2);
           theSample.source.playbackRate.value = ratio;
+
+          let colFaderVal = document.getElementById('speed'+action.sample.column).value;
+          // TODO: changing BPM does not affect a sample that's not playing
+          let colBpm = Math.round((colFaderVal * (state.maxTempo - state.minTempo) / 100) + state.minTempo);
+          ratio = ((colBpm + state.minTempo) / state.maxTempo).toFixed(2);
+          theSample.source.playbackRate.value = ratio;
+
         } else {
           for (var i = 0; i < COLUMNS * SAMPLES_PER_COLUMN; i++) {
             if ((state.sampleBuffers[i][0] === action.sample.column) && (state.sampleBuffers[i][1] === action.sample.index)) {
               theSample.source.buffer = state.sampleBuffers[i][2];
-              const ratio = ((state.BPM + state.minTempo) / state.maxTempo).toFixed(2);
+              let ratio = ((state.BPM + state.minTempo) / state.maxTempo).toFixed(2);
               theSample.source.playbackRate.value = ratio;
+
+                let colFaderVal = document.getElementById('speed'+action.sample.column).value;
+                // TODO: changing BPM does not affect a sample that's not playing
+                let colBpm = Math.round((colFaderVal * (state.maxTempo - state.minTempo) / 100) + state.minTempo);
+                ratio = ((colBpm + state.minTempo) / state.maxTempo).toFixed(2);
+                theSample.source.playbackRate.value = ratio;
+
             }
           }
         }
@@ -679,7 +695,7 @@ export default function reduce(state, action) {
     }
 
     case 'FETCH_PROFILE': {
-      eturn Object.assign({}, state, {profile: action.profile});
+      return Object.assign({}, state, {profile: action.profile});
     }
 
     case 'EFFECT_FROM_RACK': {

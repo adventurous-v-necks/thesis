@@ -19,7 +19,7 @@ class Patch extends React.Component {
     };
 
     this.props.dispatch({
-      type: 'PATCH_CHANGE', 
+      type: 'PATCH_CHANGE',
       patchName: event.target.value,
       patch: patches[event.target.value],
     });
@@ -38,17 +38,23 @@ class Patch extends React.Component {
 
     const selectStyle = {
       fontSize: '111%',
-      position: 'relative',
-      bottom: '28%',
-      left: '3%',
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      border: '2px solid #383838',
+      height: 'auto',
+      padding: '1em 1em',
+      transform: 'translate(-50%,-50%)',
     }
 
     const labelStyle = {
+      display: 'block',
       backgroundColor: '#efefef',
       marginTop: '-0.5em',
       position: 'relative',
       clear: 'both',
-      top: '-0.8em',
+      top: '-0.1em',
+      width: '3.5em',
       left:'0.3em',
       height:'1em',
       paddingLeft:'0.5em',
@@ -59,7 +65,7 @@ class Patch extends React.Component {
       <div className="patch">
         <div style={style}>
         <span style={labelStyle}>Patch</span>
-        <select size={1} style={selectStyle} 
+        <select size={1} style={selectStyle}
           value={this.props.patch} onChange={this.handleChange}>
             <option value="sine">Constant Waves</option>
             <option value="square">Harsh Waves</option>
@@ -81,4 +87,3 @@ const mapStateToProps = function(state) {
 }
 
 export default connect(mapStateToProps)(Patch);
-
