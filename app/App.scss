@@ -198,7 +198,7 @@ nav li > a {
   text-shadow: 3px -3px 10px #000;
   cursor: default;
   text-align: center;
-  max-width: 70%;
+  width: 100%;
 }
 .hero > a {
   width: 100%;
@@ -223,6 +223,7 @@ nav li > a {
   text-shadow: 3px -3px 10px rgba(249,63,25,0.7);
   box-shadow: 3px -3px 20px rgba(0,0,0,0.9);
   cursor: pointer;
+  margin-top: -6em;
 }
 .login-button:hover {
   text-shadow: 3px -3px 10px rgba(249,63,25,0.7);
@@ -237,6 +238,23 @@ nav li > a {
 }
 .hero > a > button:active {
   background-color: rgba(150,150,150,0.5);
+}
+.hero2-tagline {
+  width: 10em;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  font-size: 5em;
+  font-family: 'Permanent Marker', cursive;
+  height: 1em;
+  display: block;
+  top: 20%;
+  color: #efefef;
+  text-shadow: 3px -3px 10px #000;
+  cursor: default;
+  text-align: center;
+  width: 100%;
+  margin-top: 2em;
 }
 .app-info {
   width: 100%;
@@ -268,30 +286,55 @@ nav li > a {
 .app-info-text {
   min-height: 10em;
   height: auto;
-  padding-top: 2em;
+  padding-top: 1em;
   text-align: justify;
+  font-size: 1.3em;
 }
-.screenshot {
+.screenshot1 {
   border-radius: 50%;
-  background-image: url(https://placehold.it/160x160);
+  background-image: url("../public/images/apcKey.jpg");
   display: block;
   margin-left: auto;
   margin-right: auto;
   margin-top: 1em;
   height: 160px;
   width: 160px;
+  background-size: contain;
 }
-
+.screenshot2 {
+  border-radius: 50%;
+  background-image: url("../public/images/dreamTeam.jpg");
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1em;
+  height: 160px;
+  width: 240px;
+  background-size: cover;
+  background-position: center;
+}
+.screenshot3 {
+  border-radius: 50%;
+  background-image: url("../public/images/playerImage.png");
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1em;
+  height: 160px;
+  width: 160px;
+  background-size: cover;
+  border: 0.5px solid #bbbbbb;
+}
 .footer {
   height: 36%;
   width: 100%;
   background-color: #454545;
-  padding: 5% 5%;
   margin-top: 60px;
 }
 .footer-info {
   width: 100%;
   height: 100%;
+  bottom: 2em;
 }
 .footer-info li {
   height: auto;

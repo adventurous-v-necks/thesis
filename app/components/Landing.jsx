@@ -19,21 +19,21 @@ export default class Landing extends React.Component {
         <div className="app-info">
           <h1>DJing in the style of Ableton, in your browser.</h1>
           <div className="app-info-box">
-            <div className="screenshot">
+            <div className="screenshot1">
             </div>
             <div className="app-info-text">
               Make your own music
             </div>
           </div>
           <div className="app-info-box">
-            <div className="screenshot">
+            <div className="screenshot2">
             </div>
             <div className="app-info-text">
               Live collaboration
             </div>
           </div>
           <div className="app-info-box">
-            <div className="screenshot">
+            <div className="screenshot3">
             </div>
             <div className="app-info-text" style={{textAlign: 'center'}}>
               Anywhere with an internet connection
@@ -41,6 +41,7 @@ export default class Landing extends React.Component {
           </div>
         </div>
         <div className="hero2">
+          <span className="hero2-tagline">Mixing in the browser</span>
         </div>
         <div className="team-info">
 
