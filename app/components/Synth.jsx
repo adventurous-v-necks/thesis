@@ -24,12 +24,14 @@ class Synth extends React.Component {
     }
     const synthVolumeStyle = {
       border: '2px solid #383838',
+      borderRadius: '2px',
       position: 'absolute',
-      height: '32%',
-      top: '5%',
-      width: '100px',
+      height: 'auto',
+      top: '4%',
+      width: 'auto',
       right: '30%',
       textAlign: 'center',
+      display: 'block',
     }
 
     const labelStyle = {
@@ -48,7 +50,7 @@ class Synth extends React.Component {
           <Oscillators />
           <div className="synthVolume" style={synthVolumeStyle}>
             <Knob style={{position: 'relative', top: '20%'}} id={6}/>
-            <span style={{position: 'relative', top: '15%', backgroundColor: '#efefef', width: '4em'}}>Volume</span>
+            <span style={{display: 'block', marginLeft:'auto', marginRight:'auto', position: 'relative', top: '15%', backgroundColor: '#efefef', width: '4em'}}>Volume</span>
           </div>
           <Patch />
           <Keyboard />
