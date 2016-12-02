@@ -32,7 +32,7 @@ class Profile extends React.Component {
   this.forceUpdate()
  }
 
-renderDeets(e) {
+renderDetails(e) {
   return (
     <div>
     <br/>
@@ -87,7 +87,7 @@ renderDeets(e) {
             <div style={{height:'auto'}}><br/>
             <Link className="menu-item" style={{color:'#fff', fontFamily: 'Permanent Marker'}}to="/player">Back to the music!</Link>
             <br/>
-            <div>{(this.state.e) ? this.renderDeets(this.state.e.state) : <h2>Select a set to see it's details</h2>}</div>
+            <div>{(this.state.e) ? this.renderDetails(this.state.e.state) : <h2>Select a set to see it's details</h2>}</div>
             </div>
             </div>
           </div>
