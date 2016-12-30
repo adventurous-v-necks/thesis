@@ -19,6 +19,7 @@ class loginForm extends React.Component {
   handleSubmit(e) {
     console.log('e',e.target)
     e.preventDefault();
+    console.log(e.target.username);
     let theHeaders = new Headers({ "Content-Type":"application/json" });
     let stringyForm = JSON.stringify({
       username: e.target.username.value,
@@ -69,7 +70,7 @@ class loginForm extends React.Component {
               <div style={{height:'auto', marginBottom:'2em'}}>
                 <input name="email" type="text" placeholder="Email" style={{borderBottom:'1px solid black', fontSize:'1.2em'}}/>
               </div>
-            </div><br/>            
+            </div><br/>
             <div style={{height:'auto'}}>
               <label style={{paddingRight:'1em'}}>Password</label>
               <div style={{height:'auto', marginBottom:'2em'}}>
