@@ -95,31 +95,39 @@ export default class Landing extends React.Component {
           </div>
         </section>
 
-        <section>
+        </div>
+
+        <section className="blurb-section">
           <div className="blurb">
-            <div className="blurb-info">Built in three weeks with React/Redux, MongoDB, and Node/Express.</div>
+            <div className="blurb-header">Technical Information</div>
+            <div className="blurb-info">This app was built in three weeks with React/Redux, MongoDB, Socket.js and Node/Express.</div>
 
-            <div className="blurb-info">React was chosen for it's performant rendering of the many interrelated 
-            components and paired with a Redux store to manage state and emit updates.</div>
+            <div className="blurb-info">We wanted to do something really spectacular with React. Could we get lots of graphical
+            components to render fast enough to be usable? Yes, with some optimization! Redux was ideal for loading and
+            saving the state of the app across sessions, and replicating the state of the DJ's app to other users
+            who are listening in or collaborating.</div>
 
-            <div className="blurb-info">MongoDB was also chosen for speed and flexibility. We store as a series of 
-            time-stamped events, essentially recreating a performance, instead of recording, storing, and retreiving 
-            the audio itself.</div>
+            <div className="blurb-info">MongoDB was chosen for its speed and flexibility. We store a series of
+            time-stamped events, essentially recreating a performance, instead of recording, storing, and retreiving
+            the audio itself. You can drag and drop files into sampler bricks, which are then uploaded to our server.
+            Files are stored and served from Mongo using GridFS.</div>
 
-            <div className="blurb-info">Music is composed by leveraging the open source Web Audio API to generate an 
-            audio context upon which we attach, remove or fine-tune effects as the user desires. For example, the 
-            audio effects and synth oscillators are individual nodes attached to the audio 
-            context to manipulate the sound waves produced.</div>
+          <div className="blurb-info">We use the Web Audio API to create an
+            audio context where we place and manipulate generators (synths) and effects as nodes in a DSP signal graph. We
+            love the simplicity and power of the API. We also use the WebMIDI API to control and receive events
+            from a connected MIDI device. For time reasons, the app only officially supports the Akai APC Key 25,
+            the controller keyboard we used in development.</div>
 
-            <div className="blurb-info">Sockets connect our users in realtime. Anytime a user logs in, a room is 
-            created via a Socket.io connection. Users can join other performance rooms to mix together in realtime 
-            with the sockets broadcasting all relevant events within those rooms.</div>
+            <div className="blurb-info">Sockets connect our users in realtime. Anytime a user logs in, a room is
+            created via a Socket.io connection. Users can join other performance rooms to mix together in realtime
+            with the sockets broadcasting all relevant events within those rooms. The app has beat-sync
+            algorithms to ensure samples trigger in-line with each other, and this helps prevent sound clash
+            when running real-time over a network.</div>
 
             <div className="blurb-info">The app is fully containerized with Docker and deployed on Linode running Ubuntu 16.</div>
           </div>
         </section>
 
-        </div>
         <div className="footer">
           <div className="footer-info">
             <div className="col-1">
@@ -132,7 +140,9 @@ export default class Landing extends React.Component {
               </ul>
             </div>
             <div className="col-2">
+              <Link to="https://github.com/adventurous-v-necks/thesis.git" target="_blank">
               <img src="images/GitHub-Mark-120px-plus.png"/>
+              </Link>
             </div>
             <div className="col-3">
               Adventurous V-Necks<br/>

@@ -34,7 +34,6 @@ class RoomDropDown extends React.Component {
 
     let roomContainer = {
       position: 'relative',
-      top: '1.08em',
     }
     let dropDownStyle = {
       maxHeight: '0px',
@@ -51,6 +50,7 @@ class RoomDropDown extends React.Component {
       border: '1px solid white',
       height: '2em',
       marginRight: '1.5em',
+      top: '1.5em',
     };
 
     let allActiveRooms = this.props.activeRooms.filter(roomname => roomname !== this.props.currentRoom);
